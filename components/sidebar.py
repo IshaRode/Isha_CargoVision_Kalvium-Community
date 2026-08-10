@@ -1,30 +1,85 @@
 import streamlit as st
 
 def render_sidebar():
-    with st.sidebar:
-        st.markdown("""
-        <div style="display: flex; align-items: center; margin-bottom: 2rem;">
-            <div style="background-color: var(--accent); color: white; border-radius: 8px; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: bold; margin-right: 12px;">
+    # Hide sidebar toggle via HTML
+    st.markdown("""
+        <style>
+            [data-testid="collapsedControl"] { display: none; }
+            [data-testid="stSidebar"] { display: none; }
+            .top-nav-link {
+                color: var(--text-muted);
+                text-decoration: none;
+                font-weight: 500;
+                font-size: 0.95rem;
+                transition: color 0.2s;
+            }
+            .top-nav-link:hover {
+                color: var(--text-main);
+            }
+            .top-nav-container {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 10px 0;
+                margin-bottom: 30px;
+                border-bottom: 1px solid var(--border-color);
+            }
+            .logo-section {
+                display: flex;
+                align-items: center;
+            }
+            .nav-links {
+                display: flex;
+                gap: 24px;
+            }
+            .nav-actions {
+                display: flex;
+                gap: 12px;
+                align-items: center;
+            }
+            .btn-outline {
+                background: transparent;
+                border: 1px solid var(--border-color);
+                color: var(--text-main);
+                padding: 8px 16px;
+                border-radius: 8px;
+                text-decoration: none;
+                font-weight: 500;
+                font-size: 0.9rem;
+            }
+            .btn-solid {
+                background: var(--accent);
+                color: white;
+                padding: 8px 16px;
+                border-radius: 8px;
+                text-decoration: none;
+                font-weight: 500;
+                font-size: 0.9rem;
+            }
+        </style>
+    """, unsafe_allow_html=True)
+    
+    # Render the actual horizontal nav using custom HTML
+    st.markdown("""
+    <div class="top-nav-container">
+        <div class="logo-section">
+            <div style="background-color: var(--accent); color: white; border-radius: 8px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 10px;">
                 CV
             </div>
-            <h2 style="margin: 0; padding: 0; font-size: 1.5rem; letter-spacing: -0.5px;">CargoVision</h2>
+            <h2 style="margin: 0; font-size: 1.3rem; letter-spacing: -0.5px;">CargoVision</h2>
         </div>
-        """, unsafe_allow_html=True)
-        
-        st.page_link("app.py", label="Home", icon="🏠")
-        st.page_link("pages/dashboard.py", label="Dashboard", icon="📊")
-        st.page_link("pages/shipment_tracking.py", label="Shipments", icon="📦")
-        st.page_link("pages/route_analytics.py", label="Routes", icon="🗺️")
-        st.page_link("pages/warehouse_intelligence.py", label="Warehouses", icon="🏭")
-        st.page_link("pages/ai_predictions.py", label="AI Predictions", icon="🧠")
-        st.page_link("pages/recommendations.py", label="Recommendations", icon="💡")
-        st.page_link("pages/reports.py", label="Reports", icon="📄")
-        
-        st.markdown("<br><hr style='border-color: var(--border-color);'><br>", unsafe_allow_html=True)
-        
-        st.markdown("""
-        <div style="font-size: 0.8rem; color: var(--text-muted);">
-            <strong>CargoVision v1.0.0</strong><br>
-            Predict. Prevent. Deliver.
+        <div class="nav-links">
+            <a href="/app" target="_self" class="top-nav-link">Home</a>
+            <a href="/dashboard" target="_self" class="top-nav-link">Dashboard</a>
+            <a href="/shipment_tracking" target="_self" class="top-nav-link">Shipments</a>
+            <a href="/route_analytics" target="_self" class="top-nav-link">Routes</a>
+            <a href="/warehouse_intelligence" target="_self" class="top-nav-link">Warehouses</a>
+            <a href="/ai_predictions" target="_self" class="top-nav-link">AI Predictions</a>
+            <a href="/reports" target="_self" class="top-nav-link">Reports</a>
         </div>
-        """, unsafe_allow_html=True)
+        <div class="nav-actions">
+            <a href="#" class="btn-outline">Login</a>
+            <a href="#" class="btn-solid">Get Started</a>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
