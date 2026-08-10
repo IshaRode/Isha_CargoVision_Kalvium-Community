@@ -11,7 +11,8 @@ def render_sidebar():
         </div>
         """, unsafe_allow_html=True)
         
-        st.page_link("app.py", label="Dashboard", icon="📊")
+        st.page_link("app.py", label="Home", icon="🏠")
+        st.page_link("pages/dashboard.py", label="Dashboard", icon="📊")
         st.page_link("pages/shipment_tracking.py", label="Shipments", icon="📦")
         st.page_link("pages/route_analytics.py", label="Routes", icon="🗺️")
         st.page_link("pages/warehouse_intelligence.py", label="Warehouses", icon="🏭")
