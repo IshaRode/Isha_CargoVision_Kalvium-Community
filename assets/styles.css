@@ -1,0 +1,158 @@
+/* assets/styles.css */
+
+/* Global styles */
+:root {
+    --primary-bg: #0b1120;
+    --card-bg: #151f32;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --accent: #3b82f6;
+    --accent-hover: #2563eb;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --border-color: #1e293b;
+    --font-family: 'Inter', 'Roboto', sans-serif;
+}
+
+[data-testid="stAppViewContainer"] {
+    background-color: var(--primary-bg);
+    color: var(--text-main);
+    font-family: var(--font-family);
+}
+
+[data-testid="stSidebar"] {
+    background-color: var(--card-bg);
+    border-right: 1px solid var(--border-color);
+}
+
+[data-testid="stSidebar"] * {
+    color: var(--text-main);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: var(--text-main) !important;
+    font-weight: 600;
+}
+
+/* KPIs and Cards */
+.kpi-card {
+    background-color: var(--card-bg);
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    margin-bottom: 1rem;
+}
+
+.kpi-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
+    border-color: var(--accent);
+}
+
+.kpi-title {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.kpi-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 0.25rem;
+}
+
+.trend-up {
+    color: var(--success);
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.trend-down {
+    color: var(--danger);
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.trend-neutral {
+    color: var(--warning);
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+/* Alerts */
+.alert-card {
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    border-left: 4px solid;
+}
+
+.alert-critical {
+    background-color: rgba(239, 68, 68, 0.1);
+    border-left-color: var(--danger);
+    color: #fca5a5;
+}
+
+.alert-warning {
+    background-color: rgba(245, 158, 11, 0.1);
+    border-left-color: var(--warning);
+    color: #fcd34d;
+}
+
+/* Glassmorphism */
+.glass-panel {
+    background: rgba(21, 31, 50, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 24px;
+}
+
+/* Custom Table Styles */
+[data-testid="stDataFrame"] {
+    background-color: var(--card-bg);
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.stDataFrame div[data-testid="stTable"] th {
+    background-color: var(--primary-bg) !important;
+    color: var(--text-muted) !important;
+    font-weight: 600 !important;
+}
+
+/* Buttons */
+.stButton > button {
+    background-color: var(--accent);
+    color: white;
+    border-radius: 8px;
+    border: none;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    transition: background-color 0.2s ease;
+}
+
+.stButton > button:hover {
+    background-color: var(--accent-hover);
+    color: white;
+}
+
+/* Metrics fallback */
+[data-testid="stMetricValue"] {
+    font-size: 1.8rem;
+}
+
+/* Hide main menu and footer for cleaner look */
+#MainMenu {visibility: hidden;}
+footer {visibility: hidden;}
+header {visibility: hidden;}
