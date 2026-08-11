@@ -32,29 +32,30 @@
 /* ---------------------------------
    OVERRIDE STREAMLIT LAYOUT
 ----------------------------------- */
-html, body, [class*="stApp"], .stApp {
-    background-color: var(--hero-bg-dark) !important;
+html, body {
     margin: 0 !important;
     padding: 0 !important;
     overflow-x: hidden;
-}
-
-[data-testid="stAppViewContainer"] {
     background-color: var(--hero-bg-dark) !important;
-    color: var(--text-dark);
-    font-family: var(--font-family);
-    padding: 0 !important;
-    margin: 0 !important;
 }
 
 /* Aggressively nuke all padding in Streamlit block containers */
+[data-testid="stAppViewContainer"],
+.stApp,
+[data-testid="stAppViewBlockContainer"],
 [data-testid="block-container"], 
-[data-testid="stAppViewBlockContainer"], 
-.main .block-container {
-    padding: 0 !important;
+.main .block-container,
+.main {
+    padding-top: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    padding-bottom: 0 !important;
     margin: 0 !important;
     max-width: 100% !important;
     width: 100% !important;
+    background-color: var(--hero-bg-dark) !important;
+    color: var(--text-dark);
+    font-family: var(--font-family);
 }
 
 /* Remove Streamlit's internal gaps */
@@ -68,11 +69,17 @@ html, body, [class*="stApp"], .stApp {
     margin: 0 !important;
 }
 
-/* Hide native streamlit UI */
-[data-testid="stHeader"] { display: none !important; }
+/* Hide native streamlit UI completely */
+[data-testid="stHeader"], 
+header[data-testid="stHeader"],
+.stApp > header { 
+    display: none !important; 
+    height: 0 !important;
+    visibility: hidden !important;
+}
 [data-testid="stSidebar"] { display: none !important; }
 [data-testid="collapsedControl"] { display: none !important; }
-footer {visibility: hidden !important;}
+footer {display: none !important;}
 
 /* Base typography */
 h1, h2, h3, h4, h5, h6 { font-weight: 700; color: var(--text-dark); margin: 0; }
@@ -88,11 +95,13 @@ p { color: var(--text-muted); margin: 0; }
     display: flex;
     justify-content: center;
     border-bottom: 1px solid rgba(255,255,255,0.05);
+    margin: 0;
+    padding: 0;
 }
 
 .top-nav-container {
     width: 100%;
-    max-width: 1440px; /* Static width to prevent flying apart */
+    max-width: 1440px; /* Centric width */
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -177,11 +186,12 @@ p { color: var(--text-muted); margin: 0; }
     display: flex;
     justify-content: center; /* Center the static container */
     padding: 80px 0 120px 0;
+    margin: 0;
 }
 
 .hero-container {
     width: 100%;
-    max-width: 1440px; /* STATIC WIDTH so it doesn't move */
+    max-width: 1440px; /* Centric width */
     padding: 0 40px;
     box-sizing: border-box;
     display: flex;
@@ -371,11 +381,12 @@ p { color: var(--text-muted); margin: 0; }
     display: flex;
     justify-content: center;
     padding: 80px 0;
+    margin: 0;
 }
 
 .page-content {
     width: 100%;
-    max-width: 1440px;
+    max-width: 1440px; /* Centric width */
     padding: 0 40px;
     box-sizing: border-box;
 }
