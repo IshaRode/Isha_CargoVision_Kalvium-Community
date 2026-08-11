@@ -9,13 +9,10 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Apply global CSS
 load_css()
-
-# Render Top Nav
 render_top_nav()
 
-# --- HERO SECTION ---
+# --- FULL WIDTH DARK HERO SECTION ---
 st.markdown(
 '<div class="hero-wrapper">'
 '<div class="hero-tag">● AI-POWERED LOGISTICS INTELLIGENCE</div>'
@@ -29,10 +26,13 @@ st.markdown(
 unsafe_allow_html=True
 )
 
-# --- NETWORK KPI SECTION ---
+# --- WHITE BODY SECTIONS ---
+st.markdown('<div class="page-content">', unsafe_allow_html=True)
+
+# KPIs
 st.markdown(
-'<div class="light-section-subtitle" style="margin-top: 60px;">LIVE OPERATIONS</div>'
-'<h2 class="light-section-title">Your Logistics Network at a Glance</h2>',
+'<div class="section-subtitle">LIVE OPERATIONS</div>'
+'<h2 class="section-title">Your Logistics Network at a Glance</h2>',
 unsafe_allow_html=True
 )
 
@@ -40,50 +40,35 @@ st.markdown(
 '<div class="kpi-grid">'
 '<!-- Card 1 -->'
 '<div class="kpi-card total">'
-'<div class="kpi-icon-row">'
-'<div class="kpi-icon">📦</div>'
-'<div class="kpi-tag">Total</div>'
-'</div>'
+'<div class="kpi-icon-row"><div class="kpi-icon">📦</div><div class="kpi-tag">Total</div></div>'
 '<div class="kpi-value">124,892</div>'
 '<div class="kpi-label">Total Shipments</div>'
 '<div class="kpi-trend up">+12.4% vs last month</div>'
 '</div>'
 '<!-- Card 2 -->'
 '<div class="kpi-card live">'
-'<div class="kpi-icon-row">'
-'<div class="kpi-icon">🚚</div>'
-'<div class="kpi-tag">Live</div>'
-'</div>'
+'<div class="kpi-icon-row"><div class="kpi-icon">🚚</div><div class="kpi-tag">Live</div></div>'
 '<div class="kpi-value">8,341</div>'
 '<div class="kpi-label">Active Deliveries</div>'
 '<div class="kpi-trend up">+5.2% vs last month</div>'
 '</div>'
 '<!-- Card 3 -->'
 '<div class="kpi-card alert">'
-'<div class="kpi-icon-row">'
-'<div class="kpi-icon">⚠️</div>'
-'<div class="kpi-tag">Alert</div>'
-'</div>'
+'<div class="kpi-icon-row"><div class="kpi-icon">⚠️</div><div class="kpi-tag">Alert</div></div>'
 '<div class="kpi-value">412</div>'
 '<div class="kpi-label">Delayed Shipments</div>'
 '<div class="kpi-trend down">-18.7% vs last month</div>'
 '</div>'
 '<!-- Card 4 -->'
 '<div class="kpi-card excellent">'
-'<div class="kpi-icon-row">'
-'<div class="kpi-icon">✅</div>'
-'<div class="kpi-tag">Excellent</div>'
-'</div>'
+'<div class="kpi-icon-row"><div class="kpi-icon">✅</div><div class="kpi-tag">Excellent</div></div>'
 '<div class="kpi-value">96.7%</div>'
 '<div class="kpi-label">On-Time Rate</div>'
 '<div class="kpi-trend up">+2.1% vs last month</div>'
 '</div>'
 '<!-- Card 5 -->'
 '<div class="kpi-card warning">'
-'<div class="kpi-icon-row">'
-'<div class="kpi-icon">🛣️</div>'
-'<div class="kpi-tag">Warning</div>'
-'</div>'
+'<div class="kpi-icon-row"><div class="kpi-icon">🛣️</div><div class="kpi-tag">Warning</div></div>'
 '<div class="kpi-value">23</div>'
 '<div class="kpi-label">High Risk Routes</div>'
 '<div class="kpi-trend down">-8.3% vs last month</div>'
@@ -92,11 +77,10 @@ st.markdown(
 unsafe_allow_html=True
 )
 
-# --- FEATURES SECTION ---
+# FEATURES
 st.markdown(
-'<div class="light-section-subtitle" style="margin-top: 80px;">PLATFORM CAPABILITIES</div>'
-'<h2 class="light-section-title">Intelligence Built for Modern Logistics</h2>'
-'<p style="text-align: center; color: var(--text-muted); font-size: 1.1rem; max-width: 600px; margin: 0 auto 60px auto;">Six core modules working together to transform raw logistics data into clear, actionable decisions.</p>',
+'<div class="section-subtitle" style="margin-top: 100px;">PLATFORM CAPABILITIES</div>'
+'<h2 class="section-title">Intelligence Built for Modern Logistics</h2>',
 unsafe_allow_html=True
 )
 
@@ -123,3 +107,5 @@ st.markdown(
 '</div>',
 unsafe_allow_html=True
 )
+
+st.markdown('</div>', unsafe_allow_html=True) # End page-content

@@ -1,81 +1,68 @@
 import streamlit as st
-import plotly.graph_objects as go
-import pandas as pd
-import numpy as np
+from utils.helpers import load_css
+from components.sidebar import render_top_nav
 
-def show_ai_predictions():
-    st.markdown('<div class="glass-panel">', unsafe_allow_html=True)
-    st.markdown("### AI Delay Prediction Engine")
-    st.markdown("Forecast delivery disruptions 48–72 hours ahead using multi-variate ML models trained on millions of shipment records.")
-    
-    col1, col2, col3 = st.columns(3)
-    
-    # Mock AI output
-    confidence_score = 87
-    risk_score = 92
-    
-    with col1:
-        fig1 = go.Figure(go.Indicator(
-            mode = "gauge+number",
-            value = risk_score,
-            title = {'text': "Network Risk Level"},
-            domain = {'x': [0, 1], 'y': [0, 1]},
-            gauge = {'axis': {'range': [None, 100]},
-                     'bar': {'color': "#ef4444"},
-                     'steps': [
-                         {'range': [0, 33], 'color': "rgba(16, 185, 129, 0.2)"},
-                         {'range': [33, 66], 'color': "rgba(245, 158, 11, 0.2)"},
-                         {'range': [66, 100], 'color': "rgba(239, 68, 68, 0.2)"}],
-                     }
-        ))
-        fig1.update_layout(paper_bgcolor='rgba(0,0,0,0)', font={'color': '#f8fafc'}, height=300)
-        st.plotly_chart(fig1, use_container_width=True)
-        
-    with col2:
-        fig2 = go.Figure(go.Indicator(
-            mode = "gauge+number",
-            value = confidence_score,
-            title = {'text': "Prediction Confidence"},
-            domain = {'x': [0, 1], 'y': [0, 1]},
-            gauge = {'axis': {'range': [None, 100]},
-                     'bar': {'color': "#3b82f6"}}
-        ))
-        fig2.update_layout(paper_bgcolor='rgba(0,0,0,0)', font={'color': '#f8fafc'}, height=300)
-        st.plotly_chart(fig2, use_container_width=True)
-        
-    with col3:
-        st.markdown("<br><br>", unsafe_allow_html=True)
-        st.markdown("""
-        <div style="background-color: var(--card-bg); padding: 20px; border-radius: 8px; border-left: 4px solid var(--danger);">
-            <h4 style="color: var(--danger); margin-top: 0;">High Risk Alert</h4>
-            <p style="font-size: 1.2rem; margin-bottom: 5px;"><strong>Mumbai → Pune</strong></p>
-            <p style="color: var(--text-muted); margin-bottom: 0;">Predicted delay: 14 hours due to severe congestion at Pune DC.</p>
-        </div>
-        """, unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
-    
-    st.markdown("<br>", unsafe_allow_html=True)
-    
-    st.markdown('<div class="glass-panel">', unsafe_allow_html=True)
-    st.markdown("### Top Predicted Delays")
-    
-    mock_predictions = pd.DataFrame({
-        'Shipment ID': ['SHP-1045', 'SHP-1299', 'SHP-1302', 'SHP-1455'],
-        'Route': ['Delhi → Mumbai', 'Chennai → Bangalore', 'Pune → Hyderabad', 'Mumbai → Chennai'],
-        'Delay Probability': ['94%', '88%', '82%', '76%'],
-        'Est. Delay Duration': ['24 hrs', '12 hrs', '8 hrs', '6 hrs'],
-        'Primary Cause': ['Weather (Storm)', 'Warehouse Congestion', 'Traffic Incident', 'Carrier Capacity']
-    })
-    
-    st.dataframe(mock_predictions, use_container_width=True, hide_index=True)
-    st.markdown('</div>', unsafe_allow_html=True)
+st.set_page_config(
+    page_title="CargoVision | AI Predictions",
+    page_icon="🚚",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
 
-if __name__ == "__main__":
-    st.set_page_config(page_title="AI Predictions", layout="wide")
-    from utils.helpers import load_css
-    from components.sidebar import render_top_nav
-    from components.navbar import render_navbar
-    load_css()
-    render_top_nav()
-    render_navbar("AI Predictions")
-    show_ai_predictions()
+load_css()
+render_top_nav()
+
+st.markdown('<div class="page-content">', unsafe_allow_html=True)
+
+st.markdown(
+'<div class="section-subtitle">HOW IT WORKS</div>'
+'<h2 class="section-title">From Raw Data to Smarter Deliveries</h2>',
+unsafe_allow_html=True
+)
+
+st.markdown(
+'<div class="timeline-grid" style="margin-top: 60px;">'
+'<div class="timeline-arrow arrow-1">→</div>'
+'<div class="timeline-arrow arrow-2">→</div>'
+'<div class="timeline-arrow arrow-3">→</div>'
+'<!-- Step 1 -->'
+'<div class="timeline-step">'
+'<div class="timeline-circle">'
+'📡'
+'<div class="timeline-number tl-num-1">01</div>'
+'</div>'
+'<div class="timeline-title">Collect Data</div>'
+'<div class="timeline-desc">Shipment scans, warehouse records, carrier events, IoT sensors, and delay reports flow into our unified data layer.</div>'
+'</div>'
+'<!-- Step 2 -->'
+'<div class="timeline-step">'
+'<div class="timeline-circle">'
+'🧠'
+'<div class="timeline-number tl-num-2">02</div>'
+'</div>'
+'<div class="timeline-title">AI Analysis</div>'
+'<div class="timeline-desc">Machine learning models detect risk patterns, route congestion, warehouse bottlenecks, and carrier anomalies in real time.</div>'
+'</div>'
+'<!-- Step 3 -->'
+'<div class="timeline-step">'
+'<div class="timeline-circle">'
+'⚡'
+'<div class="timeline-number tl-num-3">03</div>'
+'</div>'
+'<div class="timeline-title">Predict Delays</div>'
+'<div class="timeline-desc">Forecast cascading delivery disruptions up to 72 hours in advance with confidence scores and impact estimates.</div>'
+'</div>'
+'<!-- Step 4 -->'
+'<div class="timeline-step">'
+'<div class="timeline-circle">'
+'🚀'
+'<div class="timeline-number tl-num-4">04</div>'
+'</div>'
+'<div class="timeline-title">Take Action</div>'
+'<div class="timeline-desc">Receive AI-ranked recommendations: reroute shipments, rebalance warehouses, and optimize carrier splits before delays cascade.</div>'
+'</div>'
+'</div>',
+unsafe_allow_html=True
+)
+
+st.markdown('</div>', unsafe_allow_html=True)

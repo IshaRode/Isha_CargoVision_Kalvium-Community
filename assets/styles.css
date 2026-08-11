@@ -4,20 +4,21 @@
     /* Fonts */
     --font-family: 'Inter', 'Outfit', sans-serif;
     
-    /* Dark Theme Colors */
-    --dark-bg: #0B1120;
-    --dark-bg-gradient: radial-gradient(circle at center top, #152238 0%, #0b1120 100%);
-    --dark-nav: rgba(11, 17, 32, 0.8);
-    --text-white: #ffffff;
-    --text-gray: #94a3b8;
-    
-    /* Light Theme Colors */
+    /* Global Background (Light) */
     --light-bg: #f8fafc;
-    --card-white: #ffffff;
     --text-dark: #0f172a;
     --text-muted: #64748b;
+    --card-white: #ffffff;
     --card-shadow: 0 10px 40px -10px rgba(0,0,0,0.08);
     --card-border: 1px solid rgba(0,0,0,0.05);
+    
+    /* Top Nav (Dark) */
+    --nav-bg: #0f172a;
+    --nav-text: #94a3b8;
+    --nav-text-active: #ffffff;
+    
+    /* Hero (Dark) */
+    --hero-bg-gradient: radial-gradient(circle at center top, #1e293b 0%, #0f172a 100%);
     
     /* Accents */
     --accent-blue: #3b82f6;
@@ -27,31 +28,47 @@
     --tag-warning: #f59e0b;
 }
 
-/* Base App Overrides */
+/* ---------------------------------
+   OVERRIDE STREAMLIT LAYOUT
+----------------------------------- */
+/* The main container background */
 [data-testid="stAppViewContainer"] {
     background-color: var(--light-bg);
     color: var(--text-dark);
     font-family: var(--font-family);
 }
 
+/* Remove padding from the main block container so we can do edge-to-edge designs */
+[data-testid="block-container"] {
+    padding: 0 !important;
+    max-width: 100% !important;
+}
+
+/* Hide native streamlit UI */
 [data-testid="stHeader"] { display: none !important; }
 [data-testid="stSidebar"] { display: none !important; }
 [data-testid="collapsedControl"] { display: none !important; }
+footer {visibility: hidden;}
+
+/* Base typography */
+h1, h2, h3, h4, h5, h6 { font-weight: 700; color: var(--text-dark); }
+p { color: var(--text-muted); }
+
 
 /* ---------------------------------
-   TOP NAVIGATION
+   TOP NAVIGATION BAR (FULL WIDTH)
 ----------------------------------- */
 .top-nav-container {
+    width: 100vw;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 20px 40px;
-    margin: -6rem -4rem 0 -4rem; /* Stretch past streamlit padding */
-    background: var(--dark-bg);
-    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding: 20px 5%;
+    background-color: var(--nav-bg);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
     position: sticky;
     top: 0;
-    z-index: 999;
+    z-index: 9999;
 }
 
 .logo-section {
@@ -65,7 +82,7 @@
 }
 
 .top-nav-link {
-    color: var(--text-gray);
+    color: var(--nav-text);
     text-decoration: none;
     font-weight: 500;
     font-size: 0.95rem;
@@ -73,7 +90,7 @@
 }
 
 .top-nav-link:hover, .top-nav-link.active {
-    color: var(--text-white);
+    color: var(--nav-text-active);
 }
 
 .nav-actions {
@@ -85,8 +102,8 @@
 .btn-outline {
     background: transparent;
     border: 1px solid rgba(255,255,255,0.2);
-    color: var(--text-white);
-    padding: 8px 24px;
+    color: white;
+    padding: 10px 24px;
     border-radius: 20px;
     text-decoration: none;
     font-weight: 600;
@@ -96,23 +113,34 @@
 .btn-solid {
     background: var(--accent-blue);
     color: white;
-    padding: 8px 24px;
+    padding: 10px 24px;
     border-radius: 20px;
     text-decoration: none;
     font-weight: 600;
     font-size: 0.9rem;
 }
 
+
 /* ---------------------------------
-   DARK HERO SECTION
+   PAGE CONTENT WRAPPER
+----------------------------------- */
+/* Since we removed global padding, we need a wrapper for standard content */
+.page-content {
+    padding: 60px 5%;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+
+/* ---------------------------------
+   HERO SECTION (HOME PAGE)
 ----------------------------------- */
 .hero-wrapper {
-    background-color: var(--dark-bg);
-    background-image: var(--dark-bg-gradient);
-    margin: 0 -4rem;
-    padding: 80px 20px 120px 20px;
-    color: var(--text-white);
+    width: 100vw;
+    background-image: var(--hero-bg-gradient);
+    padding: 100px 5% 120px 5%;
     text-align: center;
+    color: white;
 }
 
 .hero-tag {
@@ -142,16 +170,10 @@
 
 .hero-subtitle {
     font-size: 1.25rem;
-    color: var(--text-gray);
+    color: var(--nav-text);
     max-width: 700px;
     margin: 0 auto 3rem auto;
     line-height: 1.6;
-}
-
-.hero-buttons {
-    display: flex;
-    gap: 1.5rem;
-    justify-content: center;
 }
 
 .btn-primary {
@@ -174,40 +196,39 @@
     border: 1px solid rgba(255,255,255,0.2);
 }
 
+
 /* ---------------------------------
-   WHITE KPI CARDS (Dashboard & Home)
+   WHITE KPI CARDS (Dashboard / Shipments)
 ----------------------------------- */
-.light-section-title {
-    text-align: center;
-    color: var(--text-dark);
-    font-size: 2.5rem;
-    font-weight: 800;
-    margin: 40px 0;
-}
-.light-section-subtitle {
+.section-subtitle {
     text-align: center;
     color: var(--accent-blue);
     font-size: 0.85rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 1.5px;
-    margin-bottom: -30px;
+    margin-bottom: 10px;
+}
+.section-title {
+    text-align: center;
+    color: var(--text-dark);
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 60px;
 }
 
 .kpi-grid {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
+    gap: 24px;
     justify-content: center;
-    max-width: 1200px;
-    margin: 0 auto 40px auto;
 }
 
 .kpi-card {
     background: var(--card-white);
     border-radius: 20px;
-    padding: 24px;
-    width: 220px;
+    padding: 32px 24px;
+    width: 240px;
     box-shadow: var(--card-shadow);
     border: var(--card-border);
     position: relative;
@@ -218,17 +239,17 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    margin-bottom: 24px;
+    margin-bottom: 30px;
 }
 
 .kpi-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.2rem;
+    font-size: 1.5rem;
 }
 
 .kpi-tag {
@@ -255,71 +276,68 @@
 .kpi-card.warning .kpi-tag { color: var(--tag-warning); }
 
 .kpi-value {
-    font-size: 2.2rem;
+    font-size: 2.8rem;
     font-weight: 800;
     color: var(--text-dark);
-    margin-bottom: 4px;
+    margin-bottom: 8px;
     line-height: 1;
 }
 
 .kpi-label {
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     font-weight: 600;
     color: var(--text-dark);
-    margin-bottom: 12px;
+    margin-bottom: 16px;
 }
 
 .kpi-trend {
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     font-weight: 600;
 }
 .kpi-trend.up { color: var(--tag-excellent); }
 .kpi-trend.down { color: var(--tag-alert); }
 
+
 /* ---------------------------------
-   FEATURES GRID (Home)
+   FEATURES GRID (Routes)
 ----------------------------------- */
 .feature-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 30px;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding-bottom: 80px;
 }
 
 .feature-card {
     background: var(--card-white);
     border-radius: 24px;
-    padding: 32px;
+    padding: 40px;
     box-shadow: var(--card-shadow);
     border: var(--card-border);
-    text-align: left;
 }
 
 .feature-icon {
-    width: 48px;
-    height: 48px;
-    border-radius: 12px;
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
     background: rgba(59, 130, 246, 0.1);
     color: var(--accent-blue);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     margin-bottom: 24px;
 }
 
 .feature-title {
-    font-size: 1.25rem;
+    font-size: 1.4rem;
     font-weight: 800;
     color: var(--text-dark);
-    margin-bottom: 12px;
+    margin-bottom: 16px;
 }
 
 .feature-desc {
     color: var(--text-muted);
-    font-size: 0.95rem;
+    font-size: 1rem;
     line-height: 1.6;
     margin-bottom: 24px;
 }
@@ -328,12 +346,83 @@
     color: var(--accent-blue);
     font-weight: 600;
     text-decoration: none;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
 }
 
+
 /* ---------------------------------
-   MISC
+   TIMELINE SECTION (AI Predictions)
 ----------------------------------- */
-.stTabs [data-baseweb="tab-list"] { gap: 32px; background-color: transparent; border-bottom: 1px solid rgba(0,0,0,0.1); }
-.stTabs [data-baseweb="tab"] { height: 50px; background-color: transparent; border-radius: 0; color: var(--text-muted); font-weight: 600; }
-.stTabs [aria-selected="true"] { color: var(--text-dark) !important; border-bottom: 3px solid var(--accent-blue) !important; }
+.timeline-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    text-align: center;
+    position: relative;
+    padding-top: 40px;
+}
+
+/* The arrow connecting the circles */
+.timeline-arrow {
+    position: absolute;
+    top: 80px;
+    color: rgba(59, 130, 246, 0.4);
+    font-size: 1.5rem;
+}
+.arrow-1 { left: 23%; }
+.arrow-2 { left: 48%; }
+.arrow-3 { left: 73%; }
+
+.timeline-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.timeline-circle {
+    width: 80px;
+    height: 80px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    box-shadow: 0 10px 30px rgba(59, 130, 246, 0.15);
+    margin-bottom: 24px;
+    position: relative;
+}
+
+.timeline-number {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    width: 24px;
+    height: 24px;
+    background: var(--accent-blue);
+    color: white;
+    border-radius: 50%;
+    font-size: 0.75rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.tl-num-1 { background: var(--accent-blue); }
+.tl-num-2 { background: #d946ef; }
+.tl-num-3 { background: #f59e0b; }
+.tl-num-4 { background: #10b981; }
+
+.timeline-title {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--text-dark);
+    margin-bottom: 12px;
+}
+
+.timeline-desc {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    max-width: 250px;
+}
