@@ -119,22 +119,28 @@ white_body_html = """
 <h2 class="section-title">Intelligence Built for Modern Logistics</h2>
 <div class="feature-grid">
 <div class="feature-card">
-<div class="feature-icon">🧠</div>
+<div class="feature-icon" style="background: rgba(59, 130, 246, 0.1); color: #3b82f6;">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+</div>
 <div class="feature-title">AI Delay Prediction</div>
 <div class="feature-desc">Forecast delivery disruptions 48-72 hours ahead using multi-variate ML models trained on millions of shipment records.</div>
-<a href="/ai_predictions" class="feature-link" target="_self">Learn more →</a>
+<a href="/ai_predictions" class="feature-link" target="_self" style="color: #3b82f6; background: rgba(59, 130, 246, 0.1); padding: 8px 16px; border-radius: 20px; display: inline-block; font-weight: 600;">Learn more →</a>
 </div>
 <div class="feature-card">
-<div class="feature-icon">🗺️</div>
+<div class="feature-icon" style="background: rgba(6, 182, 212, 0.1); color: #06b6d4;">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+</div>
 <div class="feature-title">Route Analytics</div>
 <div class="feature-desc">Analyze route efficiency, congestion windows, and carrier performance across every lane in your network.</div>
-<a href="/route_analytics" class="feature-link" target="_self">Learn more →</a>
+<a href="/route_analytics" class="feature-link" target="_self" style="color: #06b6d4; background: rgba(6, 182, 212, 0.1); padding: 8px 16px; border-radius: 20px; display: inline-block; font-weight: 600;">Learn more →</a>
 </div>
 <div class="feature-card">
-<div class="feature-icon">🏭</div>
+<div class="feature-icon" style="background: rgba(168, 85, 247, 0.1); color: #a855f7;">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+</div>
 <div class="feature-title">Warehouse Intelligence</div>
 <div class="feature-desc">Monitor capacity utilization, dwell time, and throughput bottlenecks across your entire warehouse network in real time.</div>
-<a href="/warehouse_intelligence" class="feature-link" target="_self">Learn more →</a>
+<a href="/warehouse_intelligence" class="feature-link" target="_self" style="color: #a855f7; background: rgba(168, 85, 247, 0.1); padding: 8px 16px; border-radius: 20px; display: inline-block; font-weight: 600;">Learn more →</a>
 </div>
 </div>
 </div>
