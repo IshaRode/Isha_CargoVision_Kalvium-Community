@@ -30,26 +30,26 @@ with main_col:
         
         with k1:
             st.markdown("""
-            <div class="db-kpi-card">
-                <div class="db-kpi-title">Avg Delay</div>
-                <div class="db-kpi-value" style="color: var(--danger);">4.2h</div>
-            </div>
+<div class="db-kpi-card">
+<div class="db-kpi-title">Avg Delay</div>
+<div class="db-kpi-value" style="color: var(--danger);">4.2h</div>
+</div>
             """, unsafe_allow_html=True)
             
         with k2:
             st.markdown("""
-            <div class="db-kpi-card">
-                <div class="db-kpi-title">Prediction Accuracy</div>
-                <div class="db-kpi-value" style="color: var(--success);">94.8%</div>
-            </div>
+<div class="db-kpi-card">
+<div class="db-kpi-title">Prediction Accuracy</div>
+<div class="db-kpi-value" style="color: var(--success);">94.8%</div>
+</div>
             """, unsafe_allow_html=True)
             
         with k3:
             st.markdown("""
-            <div class="db-kpi-card">
-                <div class="db-kpi-title">Routes Optimised</div>
-                <div class="db-kpi-value" style="color: var(--accent);">312</div>
-            </div>
+<div class="db-kpi-card">
+<div class="db-kpi-title">Routes Optimised</div>
+<div class="db-kpi-value" style="color: var(--accent);">312</div>
+</div>
             """, unsafe_allow_html=True)
             
         st.write("") # Spacing
@@ -79,42 +79,42 @@ with main_col:
 
 with insights_col:
     st.markdown("""
-    <div class="ai-insight-panel">
-        <div class="ai-insight-header">AI INSIGHTS</div>
+<div class="ai-insight-panel">
+<div class="ai-insight-header">AI INSIGHTS</div>
         
-        <!-- High Risk Card -->
-        <div class="insight-card risk">
-            <div class="insight-tag risk">● HIGH DELAY RISK</div>
-            <div class="insight-title">Mumbai → Pune</div>
-            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--text-muted);">
-                <span>Risk Score</span>
-                <span style="color: var(--danger); font-weight: bold;">87%</span>
-            </div>
-            <div class="insight-meter">
-                <div class="insight-meter-fill risk"></div>
-            </div>
-        </div>
+<!-- High Risk Card -->
+<div class="insight-card risk">
+<div class="insight-tag risk">● HIGH DELAY RISK</div>
+<div class="insight-title">Mumbai → Pune</div>
+<div style="display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--text-muted);">
+<span>Risk Score</span>
+<span style="color: var(--danger); font-weight: bold;">87%</span>
+</div>
+<div class="insight-meter">
+<div class="insight-meter-fill risk"></div>
+</div>
+</div>
         
-        <!-- Warehouse Alert Card -->
-        <div class="insight-card alert">
-            <div class="insight-tag alert">⚠️ WAREHOUSE ALERT</div>
-            <div class="insight-title">Pune Distribution Center</div>
-            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--text-muted);">
-                <span>Capacity</span>
-                <span style="color: var(--warning); font-weight: bold;">95%</span>
-            </div>
-            <div class="insight-meter">
-                <div class="insight-meter-fill alert"></div>
-            </div>
-        </div>
+<!-- Warehouse Alert Card -->
+<div class="insight-card alert">
+<div class="insight-tag alert">⚠️ WAREHOUSE ALERT</div>
+<div class="insight-title">Pune Distribution Center</div>
+<div style="display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--text-muted);">
+<span>Capacity</span>
+<span style="color: var(--warning); font-weight: bold;">95%</span>
+</div>
+<div class="insight-meter">
+<div class="insight-meter-fill alert"></div>
+</div>
+</div>
         
-        <!-- Recommendation Card -->
-        <div class="insight-card rec">
-            <div class="insight-tag rec">💡 RECOMMENDATION</div>
-            <div class="insight-desc">
+<!-- Recommendation Card -->
+<div class="insight-card rec">
+<div class="insight-tag rec">💡 RECOMMENDATION</div>
+<div class="insight-desc">
                 Redirect shipments through <strong>Nashik Hub</strong> to reduce delivery time by <strong style="color: var(--success);">18%</strong>.
-            </div>
-        </div>
+</div>
+</div>
         
-    </div>
+</div>
     """, unsafe_allow_html=True)

@@ -53,9 +53,9 @@ def show_reports():
 if __name__ == "__main__":
     st.set_page_config(page_title="Reports", layout="wide")
     from utils.helpers import load_css
-    from components.sidebar import render_sidebar
+    from components.sidebar import render_dashboard_sidebar
     from components.navbar import render_navbar
     load_css()
-    render_sidebar()
+    render_dashboard_sidebar()
     render_navbar("Reports")
     show_reports()

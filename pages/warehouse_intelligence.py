@@ -21,38 +21,38 @@ col1, col2, col3, col4 = st.columns(4)
 
 with col1:
     st.markdown("""
-    <div class="db-kpi-card" style="padding: 16px;">
-        <div class="db-kpi-title">NETWORK UTILIZATION</div>
-        <div class="db-kpi-value">66.7%</div>
-        <div class="db-kpi-sub red">↓ 2.1% higher</div>
-    </div>
+<div class="db-kpi-card" style="padding: 16px;">
+<div class="db-kpi-title">NETWORK UTILIZATION</div>
+<div class="db-kpi-value">66.7%</div>
+<div class="db-kpi-sub red">↓ 2.1% higher</div>
+</div>
     """, unsafe_allow_html=True)
 
 with col2:
     st.markdown("""
-    <div class="db-kpi-card" style="padding: 16px;">
-        <div class="db-kpi-title">AVG PROCESSING TIME</div>
-        <div class="db-kpi-value">14.4 hrs</div>
-        <div class="db-kpi-sub green">↑ 0.4 hrs faster</div>
-    </div>
+<div class="db-kpi-card" style="padding: 16px;">
+<div class="db-kpi-title">AVG PROCESSING TIME</div>
+<div class="db-kpi-value">14.4 hrs</div>
+<div class="db-kpi-sub green">↑ 0.4 hrs faster</div>
+</div>
     """, unsafe_allow_html=True)
 
 with col3:
     st.markdown("""
-    <div class="db-kpi-card" style="padding: 16px;">
-        <div class="db-kpi-title">CRITICAL WAREHOUSES</div>
-        <div class="db-kpi-value" style="color: var(--danger);">6</div>
-        <div class="db-kpi-sub red">↓ Needs Attention</div>
-    </div>
+<div class="db-kpi-card" style="padding: 16px;">
+<div class="db-kpi-title">CRITICAL WAREHOUSES</div>
+<div class="db-kpi-value" style="color: var(--danger);">6</div>
+<div class="db-kpi-sub red">↓ Needs Attention</div>
+</div>
     """, unsafe_allow_html=True)
 
 with col4:
     st.markdown("""
-    <div class="db-kpi-card" style="padding: 16px;">
-        <div class="db-kpi-title">TRANSFER VOLUME</div>
-        <div class="db-kpi-value">142k</div>
-        <div class="db-kpi-sub blue">— Peak volume</div>
-    </div>
+<div class="db-kpi-card" style="padding: 16px;">
+<div class="db-kpi-title">TRANSFER VOLUME</div>
+<div class="db-kpi-value">142k</div>
+<div class="db-kpi-sub blue">— Peak volume</div>
+</div>
     """, unsafe_allow_html=True)
 
 st.write("")

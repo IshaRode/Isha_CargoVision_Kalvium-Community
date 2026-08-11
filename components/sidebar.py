@@ -3,7 +3,7 @@ import streamlit as st
 def render_top_nav():
     # Hide sidebar toggle via HTML
     st.markdown("""
-        <style>
+<style>
             [data-testid="collapsedControl"] { display: none !important; }
             [data-testid="stSidebar"] { display: none !important; }
             .top-nav-link {
@@ -56,7 +56,7 @@ def render_top_nav():
                 font-weight: 500;
                 font-size: 0.9rem;
             }
-        </style>
+</style>
     """, unsafe_allow_html=True)
     
     # Render the actual horizontal nav using custom HTML
@@ -87,12 +87,12 @@ CV
 def render_dashboard_sidebar():
     with st.sidebar:
         st.markdown("""
-        <div style="display: flex; align-items: center; margin-bottom: 2rem;">
-            <div style="background-color: var(--accent); color: white; border-radius: 8px; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: bold; margin-right: 12px;">
+<div style="display: flex; align-items: center; margin-bottom: 2rem;">
+<div style="background-color: var(--accent); color: white; border-radius: 8px; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: bold; margin-right: 12px;">
                 CV
-            </div>
-            <h2 style="margin: 0; padding: 0; font-size: 1.5rem; letter-spacing: -0.5px; color: var(--text-main);">CargoVision</h2>
-        </div>
+</div>
+<h2 style="margin: 0; padding: 0; font-size: 1.5rem; letter-spacing: -0.5px; color: var(--text-main);">CargoVision</h2>
+</div>
         """, unsafe_allow_html=True)
         
         st.page_link("app.py", label="Home", icon="🏠")
@@ -107,8 +107,8 @@ def render_dashboard_sidebar():
         st.markdown("<br><hr style='border-color: var(--border-color);'><br>", unsafe_allow_html=True)
         
         st.markdown("""
-        <div style="font-size: 0.8rem; color: var(--text-muted);">
-            <strong>CargoVision v1.0.0</strong><br>
+<div style="font-size: 0.8rem; color: var(--text-muted);">
+<strong>CargoVision v1.0.0</strong><br>
             Predict. Prevent. Deliver.
-        </div>
+</div>
         """, unsafe_allow_html=True)
