@@ -159,6 +159,34 @@ Apply Recommendation
 </div>
 </div>
 
+<div style="margin-top: 30px;">
+<div style="color: var(--nav-text); font-size: 0.8rem; font-weight: 700; letter-spacing: 1px; margin-bottom: 20px;">RECENT EVENTS</div>
+
+<div style="display: flex; gap: 12px; margin-bottom: 15px;">
+<div style="color: #10b981; font-size: 0.6rem; margin-top: 4px;">●</div>
+<div>
+<div style="color: white; font-size: 0.85rem; line-height: 1.4; margin-bottom: 2px;">Shipment SH-4821 scanned at Chennai port</div>
+<div style="color: var(--nav-text); font-size: 0.75rem;">2m ago</div>
+</div>
+</div>
+
+<div style="display: flex; gap: 12px; margin-bottom: 15px;">
+<div style="color: #f59e0b; font-size: 0.6rem; margin-top: 4px;">●</div>
+<div>
+<div style="color: white; font-size: 0.85rem; line-height: 1.4; margin-bottom: 2px;">Route NH-48 congestion detected</div>
+<div style="color: var(--nav-text); font-size: 0.75rem;">8m ago</div>
+</div>
+</div>
+
+<div style="display: flex; gap: 12px;">
+<div style="color: #3b82f6; font-size: 0.6rem; margin-top: 4px;">●</div>
+<div>
+<div style="color: white; font-size: 0.85rem; line-height: 1.4; margin-bottom: 2px;">Bangalore WH transfer completed</div>
+<div style="color: var(--nav-text); font-size: 0.75rem;">15m ago</div>
+</div>
+</div>
+</div>
+
 </div>
 </div>
 
