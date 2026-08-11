@@ -1,17 +1,19 @@
 import streamlit as st
-from utils.helpers import load_css
+import os
 from components.nav import get_top_nav_html
 
 st.set_page_config(
     page_title="CargoVision | Logistics Intelligence",
     page_icon="🚚",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="collapsed"
 )
 
-load_css()
+# Read CSS directly
+css_file = os.path.join(os.path.dirname(__file__), 'assets', 'styles.css')
+with open(css_file) as f:
+    css_content = f"<style>{f.read()}</style>"
 
-# We must NOT use any leading spaces in the HTML strings, otherwise Streamlit renders them as code blocks!
 hero_html = """
 <div class="hero-wrapper">
 <div class="hero-container">
@@ -30,13 +32,11 @@ hero_html = """
 </div>
 </div>
 <div class="hero-right">
-<!-- Active Deliveries Card -->
 <div class="floating-card fc-deliveries">
 <div class="fc-header">🚚 Active Deliveries</div>
 <div class="fc-value">8,341</div>
 <div class="fc-sub">↑ 5.2% this week</div>
 </div>
-<!-- High Risk Alert Card -->
 <div class="floating-card fc-alert">
 <div class="fc-header" style="color: #ef4444;">🔴 High Risk Alert</div>
 <div style="font-weight: 700; color: white; margin-bottom: 4px;">Mumbai → Pune</div>
@@ -45,7 +45,6 @@ hero_html = """
 <div style="height: 100%; width: 87%; background: #ef4444; border-radius: 2px;"></div>
 </div>
 </div>
-<!-- Pune DC Capacity Card -->
 <div class="floating-card fc-capacity">
 <div class="fc-header" style="color: var(--text-muted);">Pune DC Capacity</div>
 <div class="fc-value">95%</div>
@@ -54,7 +53,6 @@ hero_html = """
 <div style="height: 100%; width: 95%; background: #8b5cf6; border-radius: 2px;"></div>
 </div>
 </div>
-<!-- CargoVision Live Chart Card -->
 <div class="floating-card fc-chart">
 <div class="fc-chart-title"><span></span> CargoVision Live <div style="margin-left:auto; font-size: 0.75rem; background: rgba(59, 130, 246, 0.2); color: var(--accent-blue); padding: 4px 8px; border-radius: 4px;">LIVE</div></div>
 <div class="fc-chart-wave"></div>
@@ -78,10 +76,7 @@ hero_html = """
 </div>
 </div>
 """
-st.markdown(get_top_nav_html() + hero_html, unsafe_allow_html=True)
 
-
-# --- WHITE BODY SECTIONS (STATIC WRAPPER) ---
 white_body_html = """
 <div class="white-section-wrapper">
 <div class="page-content">
@@ -145,4 +140,6 @@ white_body_html = """
 </div>
 </div>
 """
-st.markdown(white_body_html, unsafe_allow_html=True)
+
+# Render absolutely everything in a SINGLE st.markdown block so Streamlit cannot add gaps!
+st.markdown(css_content + get_top_nav_html() + hero_html + white_body_html, unsafe_allow_html=True)
