@@ -2,13 +2,13 @@ import streamlit as st
 import pandas as pd
 from utils.data_loader import load_data
 from utils.helpers import load_css
-from components.sidebar import render_dashboard_sidebar
+from components.sidebar import render_top_nav
 from components.charts import get_chart_layout
 import plotly.express as px
 
 # Apply global CSS and sidebar
 load_css()
-render_dashboard_sidebar()
+render_top_nav()
 
 # Top URL Bar Mockup (Optional, but looks nice for SaaS feel)
 st.markdown("""

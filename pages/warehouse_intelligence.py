@@ -1,11 +1,11 @@
 import streamlit as st
 from utils.data_loader import load_data
 from utils.helpers import load_css
-from components.sidebar import render_dashboard_sidebar
+from components.sidebar import render_top_nav
 
 # Apply global CSS and sidebar
 load_css()
-render_dashboard_sidebar()
+render_top_nav()
 
 st.markdown("""
 <div style="background-color: var(--card-bg-light); padding: 8px 16px; border-radius: 8px; font-size: 0.85rem; color: var(--text-muted); display: inline-block; margin-bottom: 24px; border: 1px solid var(--border-color);">
