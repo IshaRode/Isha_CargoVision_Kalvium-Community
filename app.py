@@ -1,6 +1,6 @@
 import streamlit as st
 import os
-from components.nav import get_top_nav_html
+from components.top_navigation import get_top_nav_html
 
 st.set_page_config(
     page_title="CargoVision | Logistics Intelligence",
