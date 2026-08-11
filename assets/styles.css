@@ -18,7 +18,8 @@
     --nav-text-active: #ffffff;
     
     /* Hero (Dark) */
-    --hero-bg-gradient: radial-gradient(circle at center top, #1e293b 0%, #0f172a 100%);
+    --hero-bg-dark: #0f172a;
+    --hero-bg-gradient: radial-gradient(circle at 30% 50%, #1e293b 0%, #0f172a 70%);
     
     /* Accents */
     --accent-blue: #3b82f6;
@@ -44,6 +45,12 @@
     max-width: 100% !important;
 }
 
+/* Remove Streamlit's internal gaps between st.markdown blocks */
+[data-testid="stVerticalBlock"] {
+    gap: 0 !important;
+    padding: 0 !important;
+}
+
 /* Hide native streamlit UI */
 [data-testid="stHeader"] { display: none !important; }
 [data-testid="stSidebar"] { display: none !important; }
@@ -51,8 +58,8 @@
 footer {visibility: hidden;}
 
 /* Base typography */
-h1, h2, h3, h4, h5, h6 { font-weight: 700; color: var(--text-dark); }
-p { color: var(--text-muted); }
+h1, h2, h3, h4, h5, h6 { font-weight: 700; color: var(--text-dark); margin: 0; }
+p { color: var(--text-muted); margin: 0; }
 
 
 /* ---------------------------------
@@ -65,15 +72,27 @@ p { color: var(--text-muted); }
     justify-content: space-between;
     padding: 20px 5%;
     background-color: var(--nav-bg);
-    border-bottom: 1px solid rgba(255,255,255,0.05);
     position: sticky;
     top: 0;
     z-index: 9999;
+    box-sizing: border-box;
 }
 
 .logo-section {
     display: flex;
     align-items: center;
+    gap: 12px;
+}
+
+.nav-logo-icon {
+    width: 32px;
+    height: 32px;
+    background: var(--accent-blue);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
 }
 
 .nav-links {
@@ -124,9 +143,8 @@ p { color: var(--text-muted); }
 /* ---------------------------------
    PAGE CONTENT WRAPPER
 ----------------------------------- */
-/* Since we removed global padding, we need a wrapper for standard content */
 .page-content {
-    padding: 60px 5%;
+    padding: 80px 5%;
     max-width: 1400px;
     margin: 0 auto;
 }
@@ -137,10 +155,34 @@ p { color: var(--text-muted); }
 ----------------------------------- */
 .hero-wrapper {
     width: 100vw;
-    background-image: var(--hero-bg-gradient);
-    padding: 100px 5% 120px 5%;
-    text-align: center;
+    background-color: var(--hero-bg-dark);
+    background-image: 
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px),
+        var(--hero-bg-gradient);
+    background-size: 40px 40px, 40px 40px, 100% 100%;
+    background-position: center;
+    padding: 120px 5% 140px 5%;
     color: white;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    overflow: hidden;
+}
+
+.hero-left {
+    flex: 1;
+    max-width: 650px;
+}
+
+.hero-right {
+    flex: 1;
+    position: relative;
+    height: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .hero-tag {
@@ -151,7 +193,7 @@ p { color: var(--text-muted); }
     font-size: 0.85rem;
     font-weight: 600;
     display: inline-block;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
     border: 1px solid rgba(59, 130, 246, 0.2);
 }
 
@@ -160,10 +202,7 @@ p { color: var(--text-muted); }
     line-height: 1.1;
     margin-bottom: 1.5rem;
     color: white;
-    max-width: 900px;
-    margin-left: auto;
-    margin-right: auto;
-    letter-spacing: -1px;
+    letter-spacing: -1.5px;
     font-weight: 800;
 }
 .hero-title span { color: var(--accent-blue); }
@@ -171,9 +210,13 @@ p { color: var(--text-muted); }
 .hero-subtitle {
     font-size: 1.25rem;
     color: var(--nav-text);
-    max-width: 700px;
-    margin: 0 auto 3rem auto;
+    margin-bottom: 3rem;
     line-height: 1.6;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 1.5rem;
 }
 
 .btn-primary {
@@ -184,17 +227,98 @@ p { color: var(--text-muted); }
     font-size: 1.1rem;
     font-weight: 600;
     text-decoration: none;
+    box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
 }
-.btn-secondary {
-    background: transparent;
-    color: white;
-    padding: 14px 32px;
-    border-radius: 30px;
-    font-size: 1.1rem;
+
+/* Floating Hero Cards */
+.floating-card {
+    background: rgba(30, 41, 59, 0.7);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 16px;
+    padding: 24px;
+    position: absolute;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
+
+.fc-deliveries {
+    top: 20px;
+    left: 40px;
+    width: 220px;
+    z-index: 2;
+}
+
+.fc-capacity {
+    bottom: 20px;
+    left: 60px;
+    width: 220px;
+    z-index: 2;
+}
+
+.fc-chart {
+    right: 0;
+    top: 80px;
+    width: 320px;
+    background: linear-gradient(180deg, rgba(30,41,59,0.9) 0%, rgba(15,23,42,0.9) 100%);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    z-index: 1;
+}
+
+.fc-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--nav-text);
+    font-size: 0.85rem;
     font-weight: 600;
-    text-decoration: none;
-    border: 1px solid rgba(255,255,255,0.2);
+    margin-bottom: 16px;
 }
+
+.fc-value {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: white;
+    margin-bottom: 4px;
+}
+
+.fc-sub {
+    font-size: 0.85rem;
+    color: var(--tag-excellent);
+    font-weight: 500;
+}
+
+/* Chart mockup inside FC */
+.fc-chart-title {
+    color: white;
+    font-weight: 600;
+    font-size: 1rem;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.fc-chart-title span {
+    width: 8px; height: 8px; background: var(--tag-excellent); border-radius: 50%;
+}
+
+.fc-chart-wave {
+    height: 100px;
+    width: 100%;
+    background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 100 40" xmlns="http://www.w3.org/2000/svg"><path d="M0 20 Q 25 5, 50 20 T 100 20 L 100 40 L 0 40 Z" fill="rgba(16, 185, 129, 0.1)" stroke="%2310b981" stroke-width="2"/></svg>');
+    background-size: cover;
+    background-position: center;
+    margin-bottom: 16px;
+}
+
+.fc-recommendation {
+    background: rgba(0,0,0,0.3);
+    border-radius: 8px;
+    padding: 12px;
+    border-left: 3px solid var(--tag-warning);
+}
+.fc-rec-title { font-size: 0.75rem; color: var(--nav-text); font-weight: 600; margin-bottom: 4px; }
+.fc-rec-text { font-size: 0.85rem; color: white; font-weight: 500; }
+.fc-rec-highlight { color: var(--tag-warning); }
 
 
 /* ---------------------------------
@@ -347,82 +471,4 @@ p { color: var(--text-muted); }
     font-weight: 600;
     text-decoration: none;
     font-size: 0.95rem;
-}
-
-
-/* ---------------------------------
-   TIMELINE SECTION (AI Predictions)
------------------------------------ */
-.timeline-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
-    text-align: center;
-    position: relative;
-    padding-top: 40px;
-}
-
-/* The arrow connecting the circles */
-.timeline-arrow {
-    position: absolute;
-    top: 80px;
-    color: rgba(59, 130, 246, 0.4);
-    font-size: 1.5rem;
-}
-.arrow-1 { left: 23%; }
-.arrow-2 { left: 48%; }
-.arrow-3 { left: 73%; }
-
-.timeline-step {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.timeline-circle {
-    width: 80px;
-    height: 80px;
-    background: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2rem;
-    box-shadow: 0 10px 30px rgba(59, 130, 246, 0.15);
-    margin-bottom: 24px;
-    position: relative;
-}
-
-.timeline-number {
-    position: absolute;
-    top: -5px;
-    right: -5px;
-    width: 24px;
-    height: 24px;
-    background: var(--accent-blue);
-    color: white;
-    border-radius: 50%;
-    font-size: 0.75rem;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.tl-num-1 { background: var(--accent-blue); }
-.tl-num-2 { background: #d946ef; }
-.tl-num-3 { background: #f59e0b; }
-.tl-num-4 { background: #10b981; }
-
-.timeline-title {
-    font-size: 1.25rem;
-    font-weight: 800;
-    color: var(--text-dark);
-    margin-bottom: 12px;
-}
-
-.timeline-desc {
-    font-size: 0.95rem;
-    color: var(--text-muted);
-    line-height: 1.6;
-    max-width: 250px;
 }
