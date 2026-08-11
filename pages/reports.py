@@ -7,32 +7,32 @@ def show_reports():
     st.markdown('<div class="glass-panel">', unsafe_allow_html=True)
     st.markdown("### Reports & Insights")
     st.markdown("Automated executive reports, SLA dashboards, and custom analytics exports for carrier scorecards and board reviews.")
-    
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        report_type = st.selectbox("Report Type", ["Executive Summary", "Carrier Performance", "Warehouse Utilization", "Route Efficiency"])
-    with col2:
-        date_range = st.selectbox("Date Range", ["Last 7 Days", "Last 30 Days", "This Quarter", "Year to Date", "Custom"])
-    with col3:
+
+col1, col2, col3 = st.columns(3)
+with col1:
+report_type = st.selectbox("Report Type", ["Executive Summary", "Carrier Performance", "Warehouse Utilization", "Route Efficiency"])
+with col2:
+date_range = st.selectbox("Date Range", ["Last 7 Days", "Last 30 Days", "This Quarter", "Year to Date", "Custom"])
+with col3:
         st.markdown("<br>", unsafe_allow_html=True)
         st.button("Generate Report", use_container_width=True)
         
     st.markdown("<hr style='border-color: var(--border-color);'>", unsafe_allow_html=True)
     
     st.markdown(f"#### Preview: {report_type} ({date_range})")
-    
-    # Mock report data based on selection
-    if report_type == "Executive Summary":
-        df = load_data('shipments.csv').head(50)
-    elif report_type == "Warehouse Utilization":
-        df = load_data('warehouses.csv')
-    elif report_type == "Route Efficiency":
-        df = load_data('routes.csv').head(50)
-    else:
-        df = pd.DataFrame({"Metric": ["On-Time Delivery", "Cost per Mile", "Damage Rate"], "Value": ["96.7%", "$1.45", "0.2%"]})
-        
-    st.dataframe(df, use_container_width=True, hide_index=True)
-    
+
+# Mock report data based on selection
+if report_type == "Executive Summary":
+df = load_data('shipments.csv').head(50)
+elif report_type == "Warehouse Utilization":
+df = load_data('warehouses.csv')
+elif report_type == "Route Efficiency":
+df = load_data('routes.csv').head(50)
+else:
+df = pd.DataFrame({"Metric": ["On-Time Delivery", "Cost per Mile", "Damage Rate"], "Value": ["96.7%", "$1.45", "0.2%"]})
+
+st.dataframe(df, use_container_width=True, hide_index=True)
+
     st.markdown("<br>", unsafe_allow_html=True)
     
     csv = df.to_csv(index=False).encode('utf-8')

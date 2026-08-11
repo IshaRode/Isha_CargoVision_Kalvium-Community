@@ -2,43 +2,34 @@ import os
 import glob
 import re
 
-# 1. Fix imports in all pages
+# Fix imports in all pages
 pages = glob.glob('pages/*.py')
 for page in pages:
     with open(page, 'r', encoding='utf-8') as f:
         content = f.read()
-    content = content.replace('render_sidebar', 'render_dashboard_sidebar')
-    with open(page, 'w', encoding='utf-8') as f:
-        f.write(content)
-
-# 2. Function to strip indentation from HTML in python files
-def fix_html_indentation(filepath):
-    with open(filepath, 'r', encoding='utf-8') as f:
-        lines = f.readlines()
-
+    
+    # We want to remove all indentation inside the st.markdown HTML strings
+    # We can do this by regex replacing lines that start with spaces or quotes inside st.markdown
+    
+    lines = content.split('\n')
     new_lines = []
-    in_html = False
+    in_markdown = False
     for line in lines:
-        if 'st.markdown("""' in line or 'st.markdown(\'\'\'' in line:
-            in_html = True
+        if 'st.markdown(' in line and 'unsafe_allow_html=True' not in line:
+            in_markdown = True
             new_lines.append(line)
-            continue
-            
-        if '""", unsafe_allow_html=True)' in line or "''', unsafe_allow_html=True)" in line:
-            in_html = False
+        elif 'unsafe_allow_html=True' in line:
+            in_markdown = False
             new_lines.append(line)
-            continue
-            
-        if in_html and line.strip().startswith('<'):
-            new_lines.append(line.lstrip())
+        elif in_markdown:
+            # strip leading spaces but keep the quotes
+            stripped = line.lstrip()
+            # if it starts with quote, make sure we don't accidentally remove actual content
+            new_lines.append(stripped)
         else:
             new_lines.append(line)
+            
+    with open(page, 'w', encoding='utf-8') as f:
+        f.write('\n'.join(new_lines))
 
-    with open(filepath, 'w', encoding='utf-8') as f:
-        f.writelines(new_lines)
-
-fix_html_indentation('pages/dashboard.py')
-fix_html_indentation('pages/warehouse_intelligence.py')
-fix_html_indentation('components/sidebar.py')
-
-print('Fixed all pages')
+print("Fixed indentation in all pages!")

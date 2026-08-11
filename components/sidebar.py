@@ -26,3 +26,4 @@ def get_top_nav_html():
 def render_top_nav():
     import streamlit as st
     st.markdown(get_top_nav_html(), unsafe_allow_html=True)
+# Force reload
