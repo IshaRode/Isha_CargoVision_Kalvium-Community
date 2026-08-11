@@ -19,7 +19,7 @@ hero_html = """
 <div class="hero-container">
 <div class="hero-left">
 <div class="hero-tag">● AI-POWERED LOGISTICS INTELLIGENCE</div>
-<h1 class="hero-title">Predict Logistics Delays<br><span>Before They Impact Your<br>Business</span></h1>
+<div class="hero-title">Predict Logistics Delays<br><span>Before They Impact Your<br>Business</span></div>
 <p class="hero-subtitle">CargoVision unifies shipment scans, warehouse transfers, and delay reports into one AI-powered platform that predicts cascading delivery delays, detects operational bottlenecks, and provides actionable recommendations.</p>
 <div class="hero-buttons">
 <a href="/dashboard" class="btn-primary" target="_self">Explore Dashboard →</a>

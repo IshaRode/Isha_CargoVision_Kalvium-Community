@@ -1,10 +1,7 @@
 /* assets/styles.css */
 
 :root {
-    /* Fonts */
     --font-family: 'Inter', 'Outfit', sans-serif;
-    
-    /* Global Background (Light) */
     --light-bg: #f8fafc;
     --text-dark: #0f172a;
     --text-muted: #64748b;
@@ -12,16 +9,13 @@
     --card-shadow: 0 10px 40px -10px rgba(0,0,0,0.08);
     --card-border: 1px solid rgba(0,0,0,0.05);
     
-    /* Top Nav (Dark) */
     --nav-bg: #0f172a;
     --nav-text: #94a3b8;
     --nav-text-active: #ffffff;
     
-    /* Hero (Dark) */
     --hero-bg-dark: #0f172a;
     --hero-bg-gradient: radial-gradient(circle at 30% 50%, #1e293b 0%, #0f172a 70%);
     
-    /* Accents */
     --accent-blue: #0ea5e9;
     --tag-live: #0ea5e9;
     --tag-alert: #ef4444;
@@ -29,9 +23,6 @@
     --tag-warning: #f59e0b;
 }
 
-/* ---------------------------------
-   OVERRIDE STREAMLIT LAYOUT
------------------------------------ */
 html, body {
     margin: 0 !important;
     padding: 0 !important;
@@ -39,69 +30,53 @@ html, body {
     background-color: var(--hero-bg-dark) !important;
 }
 
-/* Aggressively nuke all padding in Streamlit block containers */
-[data-testid="stAppViewContainer"],
-.stApp,
-[data-testid="stAppViewBlockContainer"],
-[data-testid="block-container"], 
+/* Nuke Streamlit's native header padding */
+[data-testid="stHeader"] { display: none !important; }
+.stApp > header { display: none !important; }
+
+/* Force the main container to have 0 padding */
 .main .block-container,
-.main {
-    padding-top: 0 !important;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-    padding-bottom: 0 !important;
+[data-testid="stAppViewBlockContainer"],
+[data-testid="block-container"],
+[class*="block-container"] {
+    padding: 0 !important;
     margin: 0 !important;
     max-width: 100% !important;
     width: 100% !important;
-    background-color: var(--hero-bg-dark) !important;
-    color: var(--text-dark);
-    font-family: var(--font-family);
 }
 
-/* Remove Streamlit's internal gaps */
-[data-testid="stVerticalBlock"] > div {
-    padding: 0 !important;
-    margin: 0 !important;
-}
-[data-testid="stVerticalBlock"] {
-    gap: 0 !important;
-    padding: 0 !important;
-    margin: 0 !important;
-}
-
-/* Hide native streamlit UI completely */
-[data-testid="stHeader"], 
-header[data-testid="stHeader"],
-.stApp > header { 
+/* Hide streamlit anchor links on headers */
+a.anchor-link, 
+.hero-title a { 
     display: none !important; 
-    height: 0 !important;
-    visibility: hidden !important;
 }
-[data-testid="stSidebar"] { display: none !important; }
-[data-testid="collapsedControl"] { display: none !important; }
-footer {display: none !important;}
-
-/* Base typography */
-h1, h2, h3, h4, h5, h6 { font-weight: 700; color: var(--text-dark); margin: 0; }
-p { color: var(--text-muted); margin: 0; }
-
 
 /* ---------------------------------
-   TOP NAVIGATION BAR
+   TOP NAVIGATION BAR (ABSOLUTE FULL WIDTH TRICK)
 ----------------------------------- */
 .top-nav-wrapper {
     background-color: var(--nav-bg);
+    
+    /* Break out of Streamlit container */
     width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    
     display: flex;
     justify-content: center;
     border-bottom: 1px solid rgba(255,255,255,0.05);
-    margin: 0;
-    padding: 0;
+    
+    /* Nuke top gap by pulling it up */
+    margin-top: -100px; /* Streamlit has stubborn top margin, this pulls it flush to the top */
+    padding-top: 100px; /* Compensate padding so content stays visible */
 }
 
 .top-nav-container {
     width: 100%;
-    max-width: 1440px; /* Centric width */
+    max-width: 1440px; 
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -109,73 +84,28 @@ p { color: var(--text-muted); margin: 0; }
     box-sizing: border-box;
 }
 
-.logo-section {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.nav-logo-icon {
-    width: 32px;
-    height: 32px;
-    background: var(--accent-blue);
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-}
-
-.nav-links {
-    display: flex;
-    gap: 32px;
-}
-
-.top-nav-link {
-    color: var(--nav-text);
-    text-decoration: none;
-    font-weight: 500;
-    font-size: 0.95rem;
-    transition: color 0.2s;
-}
-
-.top-nav-link:hover, .top-nav-link.active {
-    color: var(--nav-text-active);
-}
-
-.nav-actions {
-    display: flex;
-    gap: 16px;
-    align-items: center;
-}
-
-.btn-outline {
-    background: transparent;
-    border: 1px solid rgba(255,255,255,0.2);
-    color: white;
-    padding: 10px 24px;
-    border-radius: 20px;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 0.9rem;
-}
-
-.btn-solid {
-    background: var(--accent-blue);
-    color: white;
-    padding: 10px 24px;
-    border-radius: 20px;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 0.9rem;
-}
+.logo-section { display: flex; align-items: center; gap: 12px; }
+.nav-logo-icon { width: 32px; height: 32px; background: var(--accent-blue); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; }
+.nav-links { display: flex; gap: 32px; }
+.top-nav-link { color: var(--nav-text); text-decoration: none; font-weight: 500; font-size: 0.95rem; transition: color 0.2s; }
+.top-nav-link:hover, .top-nav-link.active { color: var(--nav-text-active); }
+.nav-actions { display: flex; gap: 16px; align-items: center; }
+.btn-outline { background: transparent; border: 1px solid rgba(255,255,255,0.2); color: white; padding: 10px 24px; border-radius: 20px; text-decoration: none; font-weight: 600; font-size: 0.9rem; }
+.btn-solid { background: var(--accent-blue); color: white; padding: 10px 24px; border-radius: 20px; text-decoration: none; font-weight: 600; font-size: 0.9rem; }
 
 
 /* ---------------------------------
-   HERO SECTION (STATIC 1440px LAYOUT)
+   HERO SECTION (ABSOLUTE FULL WIDTH TRICK)
 ----------------------------------- */
 .hero-wrapper {
+    /* Break out of Streamlit container */
     width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    
     background-color: var(--hero-bg-dark);
     background-image: 
         linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
@@ -184,14 +114,13 @@ p { color: var(--text-muted); margin: 0; }
     background-size: 40px 40px, 40px 40px, 100% 100%;
     background-position: center;
     display: flex;
-    justify-content: center; /* Center the static container */
+    justify-content: center; 
     padding: 80px 0 120px 0;
-    margin: 0;
 }
 
 .hero-container {
     width: 100%;
-    max-width: 1440px; /* Centric width */
+    max-width: 1440px; 
     padding: 0 40px;
     box-sizing: border-box;
     display: flex;
@@ -200,30 +129,12 @@ p { color: var(--text-muted); margin: 0; }
     position: relative;
 }
 
-.hero-left {
-    width: 55%;
-    padding-top: 40px;
-}
+.hero-left { width: 55%; padding-top: 40px; }
+.hero-right { width: 45%; position: relative; height: 500px; }
 
-.hero-right {
-    width: 45%;
-    position: relative;
-    height: 500px;
-}
+.hero-tag { background: rgba(14, 165, 233, 0.1); color: var(--accent-blue); padding: 6px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; display: inline-block; margin-bottom: 2rem; border: 1px solid rgba(14, 165, 233, 0.2); letter-spacing: 0.5px; }
 
-.hero-tag {
-    background: rgba(14, 165, 233, 0.1);
-    color: var(--accent-blue);
-    padding: 6px 16px;
-    border-radius: 20px;
-    font-size: 0.85rem;
-    font-weight: 700;
-    display: inline-block;
-    margin-bottom: 2rem;
-    border: 1px solid rgba(14, 165, 233, 0.2);
-    letter-spacing: 0.5px;
-}
-
+/* Use a div instead of h1 to avoid anchor link icons */
 .hero-title {
     font-size: 4.5rem;
     line-height: 1.1;
@@ -234,139 +145,26 @@ p { color: var(--text-muted); margin: 0; }
 }
 .hero-title span { color: var(--accent-blue); }
 
-.hero-subtitle {
-    font-size: 1.1rem;
-    color: var(--nav-text);
-    margin-bottom: 3rem;
-    line-height: 1.6;
-    max-width: 90%;
-}
-
-.hero-buttons {
-    display: flex;
-    gap: 1.5rem;
-    margin-bottom: 3rem;
-}
-
-.btn-primary {
-    background: var(--accent-blue);
-    color: white;
-    padding: 14px 32px;
-    border-radius: 30px;
-    font-size: 1.1rem;
-    font-weight: 600;
-    text-decoration: none;
-    box-shadow: 0 10px 25px rgba(14, 165, 233, 0.3);
-}
-
-.trust-badges {
-    display: flex;
-    gap: 30px;
-    color: var(--text-muted);
-    font-size: 0.85rem;
-    font-weight: 500;
-}
-.trust-badges div {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
+.hero-subtitle { font-size: 1.1rem; color: var(--nav-text); margin-bottom: 3rem; line-height: 1.6; max-width: 90%; font-family: var(--font-family); }
+.hero-buttons { display: flex; gap: 1.5rem; margin-bottom: 3rem; }
+.btn-primary { background: var(--accent-blue); color: white; padding: 14px 32px; border-radius: 30px; font-size: 1.1rem; font-weight: 600; text-decoration: none; box-shadow: 0 10px 25px rgba(14, 165, 233, 0.3); }
+.trust-badges { display: flex; gap: 30px; color: var(--text-muted); font-size: 0.85rem; font-weight: 500; font-family: var(--font-family); }
+.trust-badges div { display: flex; align-items: center; gap: 8px; }
 
 /* Floating Hero Cards - STATICALLY POSITIONED */
-.floating-card {
-    background: rgba(30, 41, 59, 0.6);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(255,255,255,0.05);
-    border-radius: 16px;
-    padding: 24px;
-    position: absolute;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-}
+.floating-card { background: rgba(30, 41, 59, 0.6); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 24px; position: absolute; box-shadow: 0 20px 40px rgba(0,0,0,0.4); font-family: var(--font-family); }
+.fc-deliveries { top: 0; left: 20px; width: 240px; z-index: 2; }
+.fc-alert { top: 40px; right: 0; width: 240px; z-index: 2; background: rgba(30, 41, 59, 0.8); border: 1px solid rgba(239, 68, 68, 0.2); }
+.fc-capacity { bottom: 20px; left: 0; width: 220px; z-index: 2; }
+.fc-chart { right: -20px; bottom: -40px; width: 380px; background: linear-gradient(180deg, rgba(30,41,59,0.95) 0%, rgba(15,23,42,0.95) 100%); border: 1px solid rgba(16, 185, 129, 0.2); z-index: 1; }
 
-.fc-deliveries {
-    top: 0;
-    left: 20px;
-    width: 240px;
-    z-index: 2;
-}
-
-.fc-alert {
-    top: 40px;
-    right: 0;
-    width: 240px;
-    z-index: 2;
-    background: rgba(30, 41, 59, 0.8);
-    border: 1px solid rgba(239, 68, 68, 0.2);
-}
-
-.fc-capacity {
-    bottom: 20px;
-    left: 0;
-    width: 220px;
-    z-index: 2;
-}
-
-.fc-chart {
-    right: -20px;
-    bottom: -40px;
-    width: 380px;
-    background: linear-gradient(180deg, rgba(30,41,59,0.95) 0%, rgba(15,23,42,0.95) 100%);
-    border: 1px solid rgba(16, 185, 129, 0.2);
-    z-index: 1;
-}
-
-.fc-header {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: var(--nav-text);
-    font-size: 0.85rem;
-    font-weight: 600;
-    margin-bottom: 16px;
-}
-
-.fc-value {
-    font-size: 2.2rem;
-    font-weight: 800;
-    color: white;
-    margin-bottom: 4px;
-}
-
-.fc-sub {
-    font-size: 0.85rem;
-    color: var(--tag-excellent);
-    font-weight: 500;
-}
-
-/* Chart mockup inside FC */
-.fc-chart-title {
-    color: white;
-    font-weight: 600;
-    font-size: 1rem;
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-.fc-chart-title span {
-    width: 8px; height: 8px; background: var(--tag-excellent); border-radius: 50%;
-}
-
-.fc-chart-wave {
-    height: 80px;
-    width: 100%;
-    background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 100 40" xmlns="http://www.w3.org/2000/svg"><path d="M0 20 Q 25 5, 50 20 T 100 20 L 100 40 L 0 40 Z" fill="rgba(16, 185, 129, 0.1)" stroke="%2310b981" stroke-width="2"/></svg>');
-    background-size: cover;
-    background-position: center;
-    margin-bottom: 16px;
-}
-
-.fc-recommendation {
-    background: rgba(0,0,0,0.3);
-    border-radius: 8px;
-    padding: 12px;
-    border-left: 3px solid var(--tag-warning);
-}
+.fc-header { display: flex; align-items: center; gap: 8px; color: var(--nav-text); font-size: 0.85rem; font-weight: 600; margin-bottom: 16px; }
+.fc-value { font-size: 2.2rem; font-weight: 800; color: white; margin-bottom: 4px; }
+.fc-sub { font-size: 0.85rem; color: var(--tag-excellent); font-weight: 500; }
+.fc-chart-title { color: white; font-weight: 600; font-size: 1rem; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
+.fc-chart-title span { width: 8px; height: 8px; background: var(--tag-excellent); border-radius: 50%; }
+.fc-chart-wave { height: 80px; width: 100%; background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 100 40" xmlns="http://www.w3.org/2000/svg"><path d="M0 20 Q 25 5, 50 20 T 100 20 L 100 40 L 0 40 Z" fill="rgba(16, 185, 129, 0.1)" stroke="%2310b981" stroke-width="2"/></svg>'); background-size: cover; background-position: center; margin-bottom: 16px; }
+.fc-recommendation { background: rgba(0,0,0,0.3); border-radius: 8px; padding: 12px; border-left: 3px solid var(--tag-warning); }
 .fc-rec-title { font-size: 0.75rem; color: var(--nav-text); font-weight: 600; margin-bottom: 4px; }
 .fc-rec-text { font-size: 0.85rem; color: white; font-weight: 500; }
 .fc-rec-highlight { color: var(--tag-warning); }
@@ -378,24 +176,27 @@ p { color: var(--text-muted); margin: 0; }
 .white-section-wrapper {
     background-color: var(--light-bg);
     width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
     display: flex;
     justify-content: center;
     padding: 80px 0;
-    margin: 0;
 }
 
 .page-content {
     width: 100%;
-    max-width: 1440px; /* Centric width */
+    max-width: 1440px; 
     padding: 0 40px;
     box-sizing: border-box;
 }
 
-/* Rest of the KPI/Feature CSS remains the same... */
-.section-subtitle { text-align: center; color: var(--accent-blue); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 10px; }
-.section-title { text-align: center; color: var(--text-dark); font-size: 2.5rem; font-weight: 800; margin-bottom: 60px; }
+.section-subtitle { text-align: center; color: var(--accent-blue); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 10px; font-family: var(--font-family); }
+.section-title { text-align: center; color: var(--text-dark); font-size: 2.5rem; font-weight: 800; margin-bottom: 60px; font-family: var(--font-family); }
 .kpi-grid { display: flex; flex-wrap: wrap; gap: 24px; justify-content: center; }
-.kpi-card { background: var(--card-white); border-radius: 20px; padding: 32px 24px; width: 240px; box-shadow: var(--card-shadow); border: var(--card-border); text-align: left; }
+.kpi-card { background: var(--card-white); border-radius: 20px; padding: 32px 24px; width: 240px; box-shadow: var(--card-shadow); border: var(--card-border); text-align: left; font-family: var(--font-family); }
 .kpi-icon-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 30px; }
 .kpi-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
 .kpi-tag { font-size: 0.75rem; font-weight: 700; padding: 4px 10px; border-radius: 12px; }
@@ -414,3 +215,11 @@ p { color: var(--text-muted); margin: 0; }
 .kpi-trend { font-size: 0.85rem; font-weight: 600; }
 .kpi-trend.up { color: var(--tag-excellent); }
 .kpi-trend.down { color: var(--tag-alert); }
+
+.feature-grid { display: flex; flex-wrap: wrap; gap: 24px; justify-content: center; }
+.feature-card { background: var(--card-white); border-radius: 20px; padding: 32px 24px; width: 320px; box-shadow: var(--card-shadow); border: var(--card-border); text-align: left; font-family: var(--font-family); }
+.feature-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; background: rgba(14, 165, 233, 0.1); margin-bottom: 20px; }
+.feature-title { font-size: 1.2rem; font-weight: 700; color: var(--text-dark); margin-bottom: 12px; }
+.feature-desc { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 24px; line-height: 1.5; }
+.feature-link { color: var(--accent-blue); font-weight: 600; text-decoration: none; font-size: 0.95rem; }
+.feature-link:hover { text-decoration: underline; }
