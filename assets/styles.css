@@ -88,7 +88,13 @@ a.anchor-link,
 .nav-logo-icon { width: 32px; height: 32px; background: var(--accent-blue); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; }
 .nav-links { display: flex; gap: 32px; }
 .top-nav-link { color: var(--nav-text); text-decoration: none; font-weight: 500; font-size: 0.95rem; transition: color 0.2s; }
-.top-nav-link:hover, .top-nav-link.active { color: var(--nav-text-active); }
+.top-nav-link:hover { color: var(--nav-text-active); }
+.top-nav-link.active { 
+    color: var(--nav-text-active); 
+    background-color: rgba(255, 255, 255, 0.1); 
+    padding: 8px 16px; 
+    border-radius: 20px; 
+}
 .nav-actions { display: flex; gap: 16px; align-items: center; }
 .btn-outline { background: transparent; border: 1px solid rgba(255,255,255,0.2); color: white; padding: 10px 24px; border-radius: 20px; text-decoration: none; font-weight: 600; font-size: 0.9rem; }
 .btn-solid { background: var(--accent-blue); color: white; padding: 10px 24px; border-radius: 20px; text-decoration: none; font-weight: 600; font-size: 0.9rem; }

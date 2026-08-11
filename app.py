@@ -142,4 +142,4 @@ white_body_html = """
 """
 
 # Render absolutely everything in a SINGLE st.markdown block so Streamlit cannot add gaps!
-st.markdown(css_content + get_top_nav_html() + hero_html + white_body_html, unsafe_allow_html=True)
+st.markdown(css_content + get_top_nav_html('home') + hero_html + white_body_html, unsafe_allow_html=True)
