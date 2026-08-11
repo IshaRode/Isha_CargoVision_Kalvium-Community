@@ -1,6 +1,6 @@
 import streamlit as st
 from utils.helpers import load_css
-from components.sidebar import render_sidebar
+from components.sidebar import render_top_nav
 
 st.set_page_config(
     page_title="CargoVision | Logistics Intelligence",
@@ -12,8 +12,8 @@ st.set_page_config(
 # Apply global CSS
 load_css()
 
-# Render sidebar
-render_sidebar()
+# Render Top Nav
+render_top_nav()
 
 # --- HERO SECTION ---
 st.markdown("""
