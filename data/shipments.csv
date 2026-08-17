@@ -1,0 +1,551 @@
+shipment_id,current_location,destination,status,delay_risk,eta
+SHP-1000,Delhi Central,Mumbai Hub,Delivered,97.0,2026-08-23
+SHP-1001,Delhi Central,Chennai Port,Delivered,81.0,2026-08-11
+SHP-1002,Chennai Port,Pune DC,Pending,3.8,2026-08-22
+SHP-1003,Hyderabad Station,Bangalore Facility,In Transit,93.2,2026-08-21
+SHP-1004,Delhi Central,Mumbai Hub,Delivered,91.3,2026-08-18
+SHP-1005,Hyderabad Station,Delhi Central,In Transit,48.7,2026-08-14
+SHP-1006,Mumbai Hub,Pune DC,Delayed,64.2,2026-08-12
+SHP-1007,Mumbai Hub,Chennai Port,Delivered,67.5,2026-08-22
+SHP-1008,Hyderabad Station,Chennai Port,In Transit,70.1,2026-08-21
+SHP-1009,Delhi Central,Pune DC,Delivered,36.7,2026-08-13
+SHP-1010,Bangalore Facility,Bangalore Facility,Delivered,17.1,2026-08-11
+SHP-1011,Mumbai Hub,Chennai Port,Delivered,58.7,2026-08-17
+SHP-1012,Chennai Port,Bangalore Facility,In Transit,15.7,2026-08-11
+SHP-1013,Mumbai Hub,Bangalore Facility,In Transit,48.7,2026-08-13
+SHP-1014,Mumbai Hub,Pune DC,In Transit,94.9,2026-08-20
+SHP-1015,Hyderabad Station,Delhi Central,Delivered,48.2,2026-08-13
+SHP-1016,Pune DC,Mumbai Hub,In Transit,88.8,2026-08-17
+SHP-1017,Delhi Central,Chennai Port,Delivered,90.3,2026-08-19
+SHP-1018,Chennai Port,Hyderabad Station,Delayed,10.7,2026-08-18
+SHP-1019,Mumbai Hub,Mumbai Hub,Delivered,68.6,2026-08-20
+SHP-1020,Chennai Port,Chennai Port,Delivered,20.1,2026-08-22
+SHP-1021,Hyderabad Station,Pune DC,Pending,3.6,2026-08-16
+SHP-1022,Delhi Central,Mumbai Hub,In Transit,37.2,2026-08-16
+SHP-1023,Delhi Central,Bangalore Facility,In Transit,43.7,2026-08-12
+SHP-1024,Hyderabad Station,Hyderabad Station,Delayed,52.9,2026-08-23
+SHP-1025,Mumbai Hub,Delhi Central,In Transit,33.6,2026-08-23
+SHP-1026,Chennai Port,Mumbai Hub,Delayed,17.4,2026-08-23
+SHP-1027,Pune DC,Delhi Central,In Transit,32.4,2026-08-12
+SHP-1028,Pune DC,Bangalore Facility,In Transit,11.9,2026-08-17
+SHP-1029,Pune DC,Hyderabad Station,In Transit,92.4,2026-08-20
+SHP-1030,Hyderabad Station,Hyderabad Station,Delayed,52.9,2026-08-19
+SHP-1031,Bangalore Facility,Delhi Central,Delivered,69.2,2026-08-17
+SHP-1032,Pune DC,Pune DC,Delayed,17.2,2026-08-17
+SHP-1033,Pune DC,Hyderabad Station,In Transit,67.8,2026-08-22
+SHP-1034,Delhi Central,Bangalore Facility,Delivered,0.7,2026-08-18
+SHP-1035,Hyderabad Station,Mumbai Hub,In Transit,96.2,2026-08-14
+SHP-1036,Mumbai Hub,Bangalore Facility,Delivered,9.2,2026-08-18
+SHP-1037,Delhi Central,Delhi Central,In Transit,49.7,2026-08-15
+SHP-1038,Mumbai Hub,Chennai Port,Delivered,30.8,2026-08-22
+SHP-1039,Bangalore Facility,Bangalore Facility,In Transit,21.4,2026-08-12
+SHP-1040,Mumbai Hub,Mumbai Hub,Delivered,63.2,2026-08-18
+SHP-1041,Delhi Central,Pune DC,In Transit,12.0,2026-08-21
+SHP-1042,Chennai Port,Delhi Central,Delivered,60.2,2026-08-15
+SHP-1043,Mumbai Hub,Delhi Central,In Transit,30.1,2026-08-23
+SHP-1044,Chennai Port,Hyderabad Station,In Transit,16.2,2026-08-17
+SHP-1045,Delhi Central,Bangalore Facility,Delivered,97.4,2026-08-21
+SHP-1046,Bangalore Facility,Hyderabad Station,Delivered,39.8,2026-08-13
+SHP-1047,Pune DC,Bangalore Facility,Delivered,77.5,2026-08-17
+SHP-1048,Hyderabad Station,Pune DC,Delayed,42.6,2026-08-20
+SHP-1049,Chennai Port,Mumbai Hub,Delayed,85.8,2026-08-17
+SHP-1050,Mumbai Hub,Mumbai Hub,In Transit,88.1,2026-08-17
+SHP-1051,Hyderabad Station,Hyderabad Station,In Transit,38.7,2026-08-13
+SHP-1052,Delhi Central,Mumbai Hub,Delivered,28.8,2026-08-20
+SHP-1053,Chennai Port,Delhi Central,Delivered,18.6,2026-08-22
+SHP-1054,Hyderabad Station,Chennai Port,Delivered,76.1,2026-08-22
+SHP-1055,Chennai Port,Bangalore Facility,Pending,43.7,2026-08-11
+SHP-1056,Bangalore Facility,Mumbai Hub,Delivered,24.8,2026-08-19
+SHP-1057,Delhi Central,Mumbai Hub,In Transit,34.5,2026-08-21
+SHP-1058,Hyderabad Station,Delhi Central,In Transit,95.9,2026-08-22
+SHP-1059,Bangalore Facility,Bangalore Facility,In Transit,14.3,2026-08-13
+SHP-1060,Hyderabad Station,Hyderabad Station,Delivered,36.0,2026-08-11
+SHP-1061,Hyderabad Station,Chennai Port,Delivered,22.9,2026-08-16
+SHP-1062,Chennai Port,Hyderabad Station,Delayed,16.0,2026-08-11
+SHP-1063,Chennai Port,Delhi Central,In Transit,84.2,2026-08-17
+SHP-1064,Delhi Central,Mumbai Hub,Delivered,32.7,2026-08-17
+SHP-1065,Mumbai Hub,Chennai Port,Delivered,63.3,2026-08-16
+SHP-1066,Pune DC,Bangalore Facility,Delivered,75.8,2026-08-18
+SHP-1067,Pune DC,Bangalore Facility,In Transit,75.6,2026-08-21
+SHP-1068,Delhi Central,Hyderabad Station,In Transit,79.0,2026-08-12
+SHP-1069,Pune DC,Delhi Central,Delivered,85.8,2026-08-13
+SHP-1070,Mumbai Hub,Mumbai Hub,Delivered,43.0,2026-08-18
+SHP-1071,Pune DC,Delhi Central,Pending,48.6,2026-08-14
+SHP-1072,Hyderabad Station,Chennai Port,Delivered,16.0,2026-08-18
+SHP-1073,Pune DC,Mumbai Hub,In Transit,17.9,2026-08-15
+SHP-1074,Delhi Central,Mumbai Hub,In Transit,25.6,2026-08-23
+SHP-1075,Bangalore Facility,Pune DC,Delivered,29.7,2026-08-12
+SHP-1076,Mumbai Hub,Pune DC,In Transit,13.9,2026-08-21
+SHP-1077,Chennai Port,Mumbai Hub,Delivered,93.7,2026-08-23
+SHP-1078,Pune DC,Delhi Central,Delivered,85.7,2026-08-16
+SHP-1079,Pune DC,Bangalore Facility,Delivered,15.7,2026-08-14
+SHP-1080,Hyderabad Station,Chennai Port,Delayed,65.2,2026-08-13
+SHP-1081,Chennai Port,Hyderabad Station,Delivered,56.0,2026-08-15
+SHP-1082,Delhi Central,Delhi Central,Delivered,61.4,2026-08-11
+SHP-1083,Chennai Port,Bangalore Facility,In Transit,46.7,2026-08-22
+SHP-1084,Hyderabad Station,Pune DC,Delayed,59.6,2026-08-20
+SHP-1085,Delhi Central,Chennai Port,In Transit,41.9,2026-08-18
+SHP-1086,Delhi Central,Delhi Central,In Transit,83.2,2026-08-14
+SHP-1087,Hyderabad Station,Bangalore Facility,In Transit,84.4,2026-08-14
+SHP-1088,Pune DC,Chennai Port,Delivered,80.9,2026-08-11
+SHP-1089,Pune DC,Bangalore Facility,Delayed,43.9,2026-08-11
+SHP-1090,Chennai Port,Hyderabad Station,Delivered,34.0,2026-08-20
+SHP-1091,Mumbai Hub,Pune DC,Delivered,8.3,2026-08-13
+SHP-1092,Bangalore Facility,Mumbai Hub,Delivered,87.8,2026-08-20
+SHP-1093,Chennai Port,Delhi Central,Delivered,22.5,2026-08-20
+SHP-1094,Pune DC,Bangalore Facility,In Transit,16.6,2026-08-23
+SHP-1095,Mumbai Hub,Delhi Central,Delayed,91.1,2026-08-17
+SHP-1096,Chennai Port,Pune DC,Delivered,12.5,2026-08-15
+SHP-1097,Hyderabad Station,Hyderabad Station,Delayed,19.4,2026-08-11
+SHP-1098,Chennai Port,Hyderabad Station,In Transit,44.3,2026-08-19
+SHP-1099,Mumbai Hub,Pune DC,In Transit,50.9,2026-08-15
+SHP-1100,Delhi Central,Bangalore Facility,Delivered,13.1,2026-08-23
+SHP-1101,Bangalore Facility,Delhi Central,In Transit,50.2,2026-08-22
+SHP-1102,Chennai Port,Pune DC,Delivered,49.0,2026-08-11
+SHP-1103,Chennai Port,Pune DC,In Transit,73.4,2026-08-12
+SHP-1104,Pune DC,Mumbai Hub,Delivered,40.4,2026-08-22
+SHP-1105,Bangalore Facility,Hyderabad Station,Pending,96.1,2026-08-12
+SHP-1106,Delhi Central,Bangalore Facility,Delivered,12.9,2026-08-21
+SHP-1107,Pune DC,Delhi Central,Delivered,62.8,2026-08-13
+SHP-1108,Chennai Port,Mumbai Hub,In Transit,26.5,2026-08-14
+SHP-1109,Pune DC,Hyderabad Station,Delivered,48.6,2026-08-12
+SHP-1110,Bangalore Facility,Bangalore Facility,Pending,92.5,2026-08-11
+SHP-1111,Chennai Port,Bangalore Facility,Delayed,38.6,2026-08-23
+SHP-1112,Chennai Port,Pune DC,In Transit,61.7,2026-08-21
+SHP-1113,Bangalore Facility,Bangalore Facility,Delivered,39.3,2026-08-22
+SHP-1114,Chennai Port,Hyderabad Station,Delivered,84.8,2026-08-21
+SHP-1115,Bangalore Facility,Pune DC,In Transit,28.8,2026-08-23
+SHP-1116,Hyderabad Station,Chennai Port,Pending,71.9,2026-08-23
+SHP-1117,Delhi Central,Pune DC,In Transit,31.9,2026-08-23
+SHP-1118,Pune DC,Chennai Port,In Transit,55.0,2026-08-18
+SHP-1119,Bangalore Facility,Bangalore Facility,Delivered,89.4,2026-08-19
+SHP-1120,Mumbai Hub,Hyderabad Station,Delayed,19.2,2026-08-12
+SHP-1121,Pune DC,Mumbai Hub,In Transit,3.5,2026-08-17
+SHP-1122,Delhi Central,Chennai Port,Pending,30.6,2026-08-22
+SHP-1123,Pune DC,Hyderabad Station,In Transit,4.5,2026-08-20
+SHP-1124,Hyderabad Station,Chennai Port,Delivered,76.4,2026-08-23
+SHP-1125,Pune DC,Mumbai Hub,Delayed,15.7,2026-08-19
+SHP-1126,Mumbai Hub,Pune DC,Delayed,67.5,2026-08-13
+SHP-1127,Bangalore Facility,Bangalore Facility,Delivered,58.9,2026-08-21
+SHP-1128,Chennai Port,Hyderabad Station,Delivered,80.7,2026-08-11
+SHP-1129,Bangalore Facility,Pune DC,Delayed,73.6,2026-08-16
+SHP-1130,Pune DC,Hyderabad Station,Delayed,37.4,2026-08-20
+SHP-1131,Pune DC,Pune DC,In Transit,13.6,2026-08-12
+SHP-1132,Mumbai Hub,Hyderabad Station,Delivered,40.9,2026-08-15
+SHP-1133,Pune DC,Bangalore Facility,In Transit,56.2,2026-08-13
+SHP-1134,Hyderabad Station,Delhi Central,Pending,87.4,2026-08-14
+SHP-1135,Pune DC,Mumbai Hub,In Transit,72.7,2026-08-12
+SHP-1136,Chennai Port,Mumbai Hub,Pending,0.2,2026-08-17
+SHP-1137,Bangalore Facility,Hyderabad Station,Delivered,58.3,2026-08-12
+SHP-1138,Chennai Port,Pune DC,In Transit,54.2,2026-08-23
+SHP-1139,Hyderabad Station,Chennai Port,In Transit,95.1,2026-08-12
+SHP-1140,Delhi Central,Hyderabad Station,Delivered,58.6,2026-08-23
+SHP-1141,Chennai Port,Hyderabad Station,Delivered,63.9,2026-08-19
+SHP-1142,Mumbai Hub,Chennai Port,Delivered,14.7,2026-08-13
+SHP-1143,Pune DC,Pune DC,Delivered,61.0,2026-08-18
+SHP-1144,Bangalore Facility,Chennai Port,Delayed,12.4,2026-08-15
+SHP-1145,Hyderabad Station,Pune DC,Delivered,99.6,2026-08-18
+SHP-1146,Pune DC,Bangalore Facility,In Transit,28.9,2026-08-22
+SHP-1147,Pune DC,Chennai Port,Delivered,43.1,2026-08-16
+SHP-1148,Bangalore Facility,Hyderabad Station,In Transit,64.4,2026-08-12
+SHP-1149,Mumbai Hub,Delhi Central,In Transit,77.8,2026-08-16
+SHP-1150,Chennai Port,Hyderabad Station,In Transit,10.5,2026-08-21
+SHP-1151,Pune DC,Pune DC,In Transit,56.8,2026-08-17
+SHP-1152,Bangalore Facility,Delhi Central,Pending,98.3,2026-08-20
+SHP-1153,Mumbai Hub,Chennai Port,In Transit,10.6,2026-08-14
+SHP-1154,Hyderabad Station,Delhi Central,In Transit,9.3,2026-08-16
+SHP-1155,Delhi Central,Pune DC,In Transit,73.7,2026-08-23
+SHP-1156,Chennai Port,Pune DC,In Transit,98.1,2026-08-12
+SHP-1157,Bangalore Facility,Hyderabad Station,Delivered,32.3,2026-08-23
+SHP-1158,Pune DC,Mumbai Hub,Delivered,25.3,2026-08-11
+SHP-1159,Chennai Port,Bangalore Facility,Delivered,42.8,2026-08-13
+SHP-1160,Delhi Central,Hyderabad Station,In Transit,0.1,2026-08-11
+SHP-1161,Bangalore Facility,Delhi Central,In Transit,56.5,2026-08-12
+SHP-1162,Pune DC,Chennai Port,In Transit,19.0,2026-08-22
+SHP-1163,Chennai Port,Hyderabad Station,Delivered,48.3,2026-08-23
+SHP-1164,Bangalore Facility,Pune DC,Delayed,16.0,2026-08-20
+SHP-1165,Bangalore Facility,Mumbai Hub,Delivered,29.7,2026-08-12
+SHP-1166,Hyderabad Station,Chennai Port,In Transit,40.9,2026-08-23
+SHP-1167,Pune DC,Hyderabad Station,In Transit,77.2,2026-08-13
+SHP-1168,Chennai Port,Bangalore Facility,In Transit,18.9,2026-08-23
+SHP-1169,Hyderabad Station,Chennai Port,In Transit,78.7,2026-08-14
+SHP-1170,Hyderabad Station,Mumbai Hub,Pending,86.5,2026-08-18
+SHP-1171,Hyderabad Station,Bangalore Facility,In Transit,37.7,2026-08-12
+SHP-1172,Bangalore Facility,Delhi Central,Pending,10.1,2026-08-14
+SHP-1173,Pune DC,Delhi Central,Pending,7.1,2026-08-20
+SHP-1174,Mumbai Hub,Pune DC,In Transit,32.9,2026-08-15
+SHP-1175,Chennai Port,Chennai Port,Delivered,60.6,2026-08-12
+SHP-1176,Hyderabad Station,Hyderabad Station,In Transit,47.3,2026-08-19
+SHP-1177,Mumbai Hub,Bangalore Facility,In Transit,90.2,2026-08-11
+SHP-1178,Delhi Central,Bangalore Facility,In Transit,61.2,2026-08-19
+SHP-1179,Pune DC,Pune DC,Delivered,20.5,2026-08-23
+SHP-1180,Pune DC,Bangalore Facility,Delivered,32.6,2026-08-21
+SHP-1181,Chennai Port,Delhi Central,Delivered,18.3,2026-08-11
+SHP-1182,Chennai Port,Hyderabad Station,In Transit,91.9,2026-08-16
+SHP-1183,Delhi Central,Chennai Port,Delayed,88.6,2026-08-20
+SHP-1184,Hyderabad Station,Mumbai Hub,In Transit,52.9,2026-08-12
+SHP-1185,Pune DC,Pune DC,In Transit,89.2,2026-08-19
+SHP-1186,Bangalore Facility,Hyderabad Station,In Transit,41.6,2026-08-15
+SHP-1187,Bangalore Facility,Hyderabad Station,Delivered,97.8,2026-08-13
+SHP-1188,Hyderabad Station,Chennai Port,Delivered,63.9,2026-08-21
+SHP-1189,Pune DC,Delhi Central,Delayed,2.2,2026-08-16
+SHP-1190,Delhi Central,Pune DC,Delivered,14.4,2026-08-19
+SHP-1191,Hyderabad Station,Hyderabad Station,In Transit,10.9,2026-08-13
+SHP-1192,Mumbai Hub,Hyderabad Station,In Transit,65.7,2026-08-12
+SHP-1193,Chennai Port,Pune DC,Delivered,2.8,2026-08-19
+SHP-1194,Chennai Port,Pune DC,In Transit,62.0,2026-08-19
+SHP-1195,Mumbai Hub,Chennai Port,In Transit,13.2,2026-08-21
+SHP-1196,Pune DC,Mumbai Hub,Delivered,70.0,2026-08-15
+SHP-1197,Hyderabad Station,Delhi Central,In Transit,12.3,2026-08-11
+SHP-1198,Mumbai Hub,Pune DC,Pending,73.0,2026-08-14
+SHP-1199,Mumbai Hub,Mumbai Hub,In Transit,71.4,2026-08-15
+SHP-1200,Chennai Port,Bangalore Facility,Delivered,93.0,2026-08-11
+SHP-1201,Chennai Port,Mumbai Hub,In Transit,1.2,2026-08-23
+SHP-1202,Pune DC,Pune DC,In Transit,7.4,2026-08-12
+SHP-1203,Delhi Central,Delhi Central,Pending,44.3,2026-08-14
+SHP-1204,Chennai Port,Pune DC,In Transit,96.6,2026-08-11
+SHP-1205,Bangalore Facility,Delhi Central,In Transit,68.7,2026-08-20
+SHP-1206,Chennai Port,Bangalore Facility,In Transit,16.9,2026-08-20
+SHP-1207,Hyderabad Station,Pune DC,Delivered,15.7,2026-08-20
+SHP-1208,Bangalore Facility,Chennai Port,Delivered,40.0,2026-08-14
+SHP-1209,Delhi Central,Hyderabad Station,Delivered,54.0,2026-08-21
+SHP-1210,Bangalore Facility,Mumbai Hub,In Transit,79.5,2026-08-21
+SHP-1211,Delhi Central,Mumbai Hub,In Transit,16.4,2026-08-17
+SHP-1212,Chennai Port,Mumbai Hub,Delivered,70.9,2026-08-19
+SHP-1213,Chennai Port,Bangalore Facility,Delayed,20.6,2026-08-12
+SHP-1214,Pune DC,Mumbai Hub,In Transit,98.4,2026-08-12
+SHP-1215,Delhi Central,Hyderabad Station,Pending,33.0,2026-08-22
+SHP-1216,Delhi Central,Chennai Port,Delayed,47.1,2026-08-16
+SHP-1217,Delhi Central,Bangalore Facility,Delivered,56.9,2026-08-13
+SHP-1218,Bangalore Facility,Mumbai Hub,Pending,65.4,2026-08-17
+SHP-1219,Delhi Central,Delhi Central,Delivered,3.4,2026-08-21
+SHP-1220,Chennai Port,Chennai Port,Delivered,9.0,2026-08-16
+SHP-1221,Chennai Port,Hyderabad Station,Delivered,91.4,2026-08-22
+SHP-1222,Mumbai Hub,Pune DC,Delayed,48.3,2026-08-13
+SHP-1223,Bangalore Facility,Bangalore Facility,In Transit,27.5,2026-08-20
+SHP-1224,Delhi Central,Chennai Port,Delivered,33.5,2026-08-20
+SHP-1225,Mumbai Hub,Pune DC,Delivered,32.0,2026-08-19
+SHP-1226,Mumbai Hub,Hyderabad Station,In Transit,46.5,2026-08-14
+SHP-1227,Bangalore Facility,Bangalore Facility,Delivered,63.1,2026-08-23
+SHP-1228,Pune DC,Bangalore Facility,In Transit,10.9,2026-08-20
+SHP-1229,Delhi Central,Hyderabad Station,Delivered,62.7,2026-08-23
+SHP-1230,Bangalore Facility,Delhi Central,Delayed,94.9,2026-08-20
+SHP-1231,Chennai Port,Bangalore Facility,Delivered,34.6,2026-08-11
+SHP-1232,Mumbai Hub,Hyderabad Station,Delivered,42.7,2026-08-18
+SHP-1233,Delhi Central,Bangalore Facility,Pending,71.4,2026-08-23
+SHP-1234,Bangalore Facility,Mumbai Hub,In Transit,35.8,2026-08-11
+SHP-1235,Hyderabad Station,Chennai Port,In Transit,69.5,2026-08-13
+SHP-1236,Delhi Central,Pune DC,In Transit,74.1,2026-08-21
+SHP-1237,Mumbai Hub,Hyderabad Station,Delayed,83.1,2026-08-21
+SHP-1238,Chennai Port,Delhi Central,Delivered,56.1,2026-08-20
+SHP-1239,Chennai Port,Pune DC,Delivered,22.2,2026-08-21
+SHP-1240,Mumbai Hub,Delhi Central,Delivered,24.1,2026-08-16
+SHP-1241,Chennai Port,Hyderabad Station,In Transit,1.3,2026-08-16
+SHP-1242,Bangalore Facility,Hyderabad Station,Delivered,61.6,2026-08-17
+SHP-1243,Bangalore Facility,Delhi Central,Delivered,38.2,2026-08-12
+SHP-1244,Delhi Central,Delhi Central,In Transit,89.8,2026-08-22
+SHP-1245,Mumbai Hub,Mumbai Hub,In Transit,17.7,2026-08-19
+SHP-1246,Mumbai Hub,Hyderabad Station,Delivered,80.7,2026-08-17
+SHP-1247,Chennai Port,Chennai Port,Delivered,87.9,2026-08-15
+SHP-1248,Delhi Central,Bangalore Facility,Delivered,8.2,2026-08-16
+SHP-1249,Delhi Central,Hyderabad Station,Delivered,17.7,2026-08-14
+SHP-1250,Hyderabad Station,Mumbai Hub,Delivered,74.4,2026-08-18
+SHP-1251,Hyderabad Station,Mumbai Hub,Delivered,95.3,2026-08-17
+SHP-1252,Chennai Port,Bangalore Facility,Delivered,11.4,2026-08-22
+SHP-1253,Chennai Port,Pune DC,Delivered,66.6,2026-08-18
+SHP-1254,Mumbai Hub,Mumbai Hub,Delayed,40.0,2026-08-19
+SHP-1255,Chennai Port,Hyderabad Station,Delivered,78.7,2026-08-16
+SHP-1256,Hyderabad Station,Hyderabad Station,Pending,47.6,2026-08-17
+SHP-1257,Chennai Port,Delhi Central,Delivered,86.3,2026-08-11
+SHP-1258,Mumbai Hub,Delhi Central,In Transit,73.9,2026-08-12
+SHP-1259,Delhi Central,Chennai Port,In Transit,68.8,2026-08-14
+SHP-1260,Bangalore Facility,Mumbai Hub,Delayed,76.0,2026-08-20
+SHP-1261,Delhi Central,Hyderabad Station,In Transit,35.3,2026-08-16
+SHP-1262,Chennai Port,Delhi Central,In Transit,26.0,2026-08-18
+SHP-1263,Pune DC,Delhi Central,Delivered,84.6,2026-08-16
+SHP-1264,Mumbai Hub,Bangalore Facility,In Transit,37.6,2026-08-23
+SHP-1265,Hyderabad Station,Chennai Port,Delayed,5.3,2026-08-20
+SHP-1266,Mumbai Hub,Bangalore Facility,Delivered,42.7,2026-08-22
+SHP-1267,Bangalore Facility,Bangalore Facility,In Transit,4.1,2026-08-17
+SHP-1268,Pune DC,Pune DC,Delivered,25.9,2026-08-15
+SHP-1269,Mumbai Hub,Pune DC,Delivered,50.8,2026-08-16
+SHP-1270,Delhi Central,Delhi Central,Delayed,21.7,2026-08-20
+SHP-1271,Pune DC,Bangalore Facility,Delivered,48.3,2026-08-16
+SHP-1272,Hyderabad Station,Hyderabad Station,Pending,87.0,2026-08-14
+SHP-1273,Chennai Port,Mumbai Hub,Delivered,21.7,2026-08-14
+SHP-1274,Pune DC,Bangalore Facility,Delivered,91.7,2026-08-12
+SHP-1275,Chennai Port,Delhi Central,Delivered,68.8,2026-08-14
+SHP-1276,Delhi Central,Pune DC,Delivered,75.1,2026-08-17
+SHP-1277,Chennai Port,Delhi Central,Delivered,37.3,2026-08-17
+SHP-1278,Bangalore Facility,Pune DC,Delivered,91.4,2026-08-23
+SHP-1279,Delhi Central,Chennai Port,In Transit,78.8,2026-08-20
+SHP-1280,Mumbai Hub,Hyderabad Station,Delivered,30.2,2026-08-17
+SHP-1281,Delhi Central,Bangalore Facility,In Transit,68.8,2026-08-14
+SHP-1282,Pune DC,Hyderabad Station,In Transit,32.6,2026-08-17
+SHP-1283,Pune DC,Hyderabad Station,Pending,9.9,2026-08-19
+SHP-1284,Pune DC,Mumbai Hub,Delayed,69.2,2026-08-11
+SHP-1285,Pune DC,Pune DC,Delayed,47.2,2026-08-12
+SHP-1286,Pune DC,Delhi Central,Delayed,32.8,2026-08-14
+SHP-1287,Bangalore Facility,Mumbai Hub,Delivered,54.7,2026-08-18
+SHP-1288,Pune DC,Pune DC,Delivered,80.3,2026-08-14
+SHP-1289,Delhi Central,Bangalore Facility,In Transit,91.8,2026-08-22
+SHP-1290,Hyderabad Station,Bangalore Facility,In Transit,31.2,2026-08-11
+SHP-1291,Pune DC,Pune DC,Delivered,25.0,2026-08-17
+SHP-1292,Delhi Central,Pune DC,Delivered,96.1,2026-08-16
+SHP-1293,Hyderabad Station,Hyderabad Station,In Transit,70.3,2026-08-21
+SHP-1294,Hyderabad Station,Mumbai Hub,Delivered,63.2,2026-08-15
+SHP-1295,Delhi Central,Hyderabad Station,Delivered,39.3,2026-08-16
+SHP-1296,Mumbai Hub,Hyderabad Station,Delivered,92.1,2026-08-21
+SHP-1297,Mumbai Hub,Pune DC,In Transit,24.0,2026-08-23
+SHP-1298,Bangalore Facility,Mumbai Hub,Delivered,27.9,2026-08-23
+SHP-1299,Chennai Port,Hyderabad Station,Delivered,92.2,2026-08-12
+SHP-1300,Mumbai Hub,Delhi Central,Pending,1.1,2026-08-20
+SHP-1301,Mumbai Hub,Bangalore Facility,Delivered,8.1,2026-08-18
+SHP-1302,Mumbai Hub,Chennai Port,Delivered,20.5,2026-08-16
+SHP-1303,Pune DC,Delhi Central,Pending,85.5,2026-08-18
+SHP-1304,Delhi Central,Mumbai Hub,Delayed,17.2,2026-08-14
+SHP-1305,Hyderabad Station,Delhi Central,Pending,43.0,2026-08-20
+SHP-1306,Chennai Port,Chennai Port,Delivered,39.9,2026-08-15
+SHP-1307,Chennai Port,Chennai Port,Delivered,41.9,2026-08-13
+SHP-1308,Mumbai Hub,Mumbai Hub,Delivered,90.2,2026-08-13
+SHP-1309,Hyderabad Station,Delhi Central,Delivered,50.4,2026-08-17
+SHP-1310,Delhi Central,Chennai Port,Pending,89.3,2026-08-13
+SHP-1311,Chennai Port,Chennai Port,In Transit,24.7,2026-08-22
+SHP-1312,Bangalore Facility,Pune DC,In Transit,1.4,2026-08-11
+SHP-1313,Delhi Central,Mumbai Hub,Delivered,8.1,2026-08-11
+SHP-1314,Chennai Port,Pune DC,In Transit,49.8,2026-08-12
+SHP-1315,Bangalore Facility,Delhi Central,In Transit,47.4,2026-08-23
+SHP-1316,Pune DC,Delhi Central,Delivered,9.5,2026-08-14
+SHP-1317,Hyderabad Station,Mumbai Hub,Delayed,66.6,2026-08-18
+SHP-1318,Bangalore Facility,Pune DC,Delivered,45.7,2026-08-12
+SHP-1319,Delhi Central,Hyderabad Station,In Transit,72.9,2026-08-23
+SHP-1320,Bangalore Facility,Delhi Central,Pending,44.0,2026-08-20
+SHP-1321,Bangalore Facility,Pune DC,Delivered,93.2,2026-08-22
+SHP-1322,Bangalore Facility,Bangalore Facility,In Transit,98.7,2026-08-22
+SHP-1323,Mumbai Hub,Mumbai Hub,In Transit,30.1,2026-08-14
+SHP-1324,Bangalore Facility,Bangalore Facility,Delivered,73.4,2026-08-13
+SHP-1325,Bangalore Facility,Hyderabad Station,In Transit,41.4,2026-08-13
+SHP-1326,Chennai Port,Delhi Central,In Transit,23.9,2026-08-11
+SHP-1327,Hyderabad Station,Bangalore Facility,In Transit,82.5,2026-08-17
+SHP-1328,Pune DC,Chennai Port,Delivered,50.4,2026-08-23
+SHP-1329,Pune DC,Delhi Central,Delivered,28.1,2026-08-14
+SHP-1330,Chennai Port,Delhi Central,In Transit,96.1,2026-08-20
+SHP-1331,Delhi Central,Chennai Port,Delivered,63.9,2026-08-20
+SHP-1332,Hyderabad Station,Hyderabad Station,Delivered,38.2,2026-08-22
+SHP-1333,Bangalore Facility,Chennai Port,Pending,44.7,2026-08-16
+SHP-1334,Mumbai Hub,Hyderabad Station,In Transit,96.0,2026-08-22
+SHP-1335,Delhi Central,Mumbai Hub,In Transit,25.7,2026-08-17
+SHP-1336,Chennai Port,Hyderabad Station,Delivered,8.4,2026-08-20
+SHP-1337,Mumbai Hub,Delhi Central,Delayed,34.3,2026-08-17
+SHP-1338,Pune DC,Hyderabad Station,Pending,29.8,2026-08-23
+SHP-1339,Delhi Central,Mumbai Hub,In Transit,83.8,2026-08-12
+SHP-1340,Mumbai Hub,Pune DC,Delivered,86.4,2026-08-18
+SHP-1341,Hyderabad Station,Chennai Port,Delayed,15.0,2026-08-23
+SHP-1342,Delhi Central,Hyderabad Station,In Transit,13.4,2026-08-19
+SHP-1343,Hyderabad Station,Pune DC,In Transit,8.3,2026-08-18
+SHP-1344,Pune DC,Bangalore Facility,Delivered,40.7,2026-08-12
+SHP-1345,Bangalore Facility,Hyderabad Station,In Transit,68.8,2026-08-11
+SHP-1346,Mumbai Hub,Mumbai Hub,Delivered,64.0,2026-08-22
+SHP-1347,Pune DC,Delhi Central,Pending,97.5,2026-08-23
+SHP-1348,Bangalore Facility,Hyderabad Station,In Transit,22.9,2026-08-14
+SHP-1349,Delhi Central,Delhi Central,In Transit,62.0,2026-08-13
+SHP-1350,Delhi Central,Chennai Port,Delivered,25.1,2026-08-15
+SHP-1351,Pune DC,Delhi Central,Delivered,52.7,2026-08-22
+SHP-1352,Pune DC,Chennai Port,Delivered,52.1,2026-08-15
+SHP-1353,Delhi Central,Mumbai Hub,Delivered,73.0,2026-08-18
+SHP-1354,Mumbai Hub,Pune DC,In Transit,55.9,2026-08-12
+SHP-1355,Mumbai Hub,Mumbai Hub,Delivered,3.0,2026-08-17
+SHP-1356,Hyderabad Station,Mumbai Hub,Pending,78.2,2026-08-17
+SHP-1357,Chennai Port,Delhi Central,In Transit,11.6,2026-08-17
+SHP-1358,Mumbai Hub,Pune DC,Delivered,29.3,2026-08-19
+SHP-1359,Bangalore Facility,Bangalore Facility,Delivered,32.2,2026-08-22
+SHP-1360,Bangalore Facility,Delhi Central,In Transit,3.0,2026-08-12
+SHP-1361,Chennai Port,Delhi Central,In Transit,79.7,2026-08-14
+SHP-1362,Bangalore Facility,Delhi Central,Delivered,85.8,2026-08-17
+SHP-1363,Hyderabad Station,Hyderabad Station,Delivered,19.0,2026-08-20
+SHP-1364,Chennai Port,Delhi Central,Delivered,34.3,2026-08-20
+SHP-1365,Pune DC,Hyderabad Station,In Transit,95.3,2026-08-12
+SHP-1366,Pune DC,Delhi Central,In Transit,31.5,2026-08-19
+SHP-1367,Pune DC,Chennai Port,In Transit,99.2,2026-08-23
+SHP-1368,Chennai Port,Bangalore Facility,In Transit,49.5,2026-08-13
+SHP-1369,Delhi Central,Mumbai Hub,Delivered,41.2,2026-08-15
+SHP-1370,Hyderabad Station,Delhi Central,In Transit,33.6,2026-08-14
+SHP-1371,Hyderabad Station,Hyderabad Station,In Transit,34.7,2026-08-16
+SHP-1372,Pune DC,Mumbai Hub,In Transit,90.7,2026-08-11
+SHP-1373,Chennai Port,Mumbai Hub,Delivered,0.7,2026-08-21
+SHP-1374,Bangalore Facility,Chennai Port,Delayed,60.4,2026-08-18
+SHP-1375,Pune DC,Mumbai Hub,In Transit,59.9,2026-08-19
+SHP-1376,Pune DC,Pune DC,In Transit,51.9,2026-08-13
+SHP-1377,Hyderabad Station,Chennai Port,In Transit,37.9,2026-08-16
+SHP-1378,Bangalore Facility,Mumbai Hub,In Transit,67.0,2026-08-18
+SHP-1379,Hyderabad Station,Delhi Central,In Transit,57.0,2026-08-14
+SHP-1380,Mumbai Hub,Bangalore Facility,In Transit,99.9,2026-08-13
+SHP-1381,Delhi Central,Mumbai Hub,In Transit,33.8,2026-08-16
+SHP-1382,Mumbai Hub,Pune DC,Delivered,96.5,2026-08-14
+SHP-1383,Chennai Port,Chennai Port,Pending,47.5,2026-08-14
+SHP-1384,Chennai Port,Mumbai Hub,Delayed,97.5,2026-08-11
+SHP-1385,Chennai Port,Hyderabad Station,In Transit,89.0,2026-08-14
+SHP-1386,Bangalore Facility,Pune DC,Delivered,0.2,2026-08-18
+SHP-1387,Mumbai Hub,Mumbai Hub,Pending,13.5,2026-08-14
+SHP-1388,Pune DC,Mumbai Hub,In Transit,88.2,2026-08-15
+SHP-1389,Mumbai Hub,Pune DC,Pending,68.8,2026-08-12
+SHP-1390,Hyderabad Station,Chennai Port,Pending,97.5,2026-08-17
+SHP-1391,Pune DC,Mumbai Hub,In Transit,78.4,2026-08-11
+SHP-1392,Pune DC,Bangalore Facility,In Transit,89.9,2026-08-15
+SHP-1393,Delhi Central,Bangalore Facility,In Transit,96.3,2026-08-13
+SHP-1394,Delhi Central,Delhi Central,Pending,90.2,2026-08-16
+SHP-1395,Pune DC,Delhi Central,Delivered,86.6,2026-08-18
+SHP-1396,Bangalore Facility,Pune DC,In Transit,29.0,2026-08-23
+SHP-1397,Mumbai Hub,Chennai Port,Delivered,65.0,2026-08-20
+SHP-1398,Pune DC,Chennai Port,Delayed,26.2,2026-08-20
+SHP-1399,Bangalore Facility,Chennai Port,Delivered,17.7,2026-08-17
+SHP-1400,Pune DC,Hyderabad Station,In Transit,67.2,2026-08-12
+SHP-1401,Bangalore Facility,Chennai Port,In Transit,93.1,2026-08-18
+SHP-1402,Pune DC,Chennai Port,In Transit,19.2,2026-08-13
+SHP-1403,Pune DC,Delhi Central,In Transit,12.4,2026-08-14
+SHP-1404,Delhi Central,Hyderabad Station,Delayed,60.8,2026-08-19
+SHP-1405,Chennai Port,Delhi Central,Delivered,78.8,2026-08-17
+SHP-1406,Pune DC,Mumbai Hub,Delivered,9.4,2026-08-11
+SHP-1407,Delhi Central,Chennai Port,In Transit,78.1,2026-08-12
+SHP-1408,Mumbai Hub,Mumbai Hub,In Transit,8.5,2026-08-12
+SHP-1409,Mumbai Hub,Hyderabad Station,In Transit,95.4,2026-08-19
+SHP-1410,Pune DC,Hyderabad Station,Delivered,94.2,2026-08-20
+SHP-1411,Delhi Central,Hyderabad Station,Delivered,16.5,2026-08-13
+SHP-1412,Hyderabad Station,Chennai Port,Delivered,33.6,2026-08-21
+SHP-1413,Chennai Port,Pune DC,Delivered,19.4,2026-08-13
+SHP-1414,Mumbai Hub,Delhi Central,In Transit,34.0,2026-08-17
+SHP-1415,Pune DC,Hyderabad Station,In Transit,98.4,2026-08-16
+SHP-1416,Delhi Central,Chennai Port,In Transit,21.4,2026-08-15
+SHP-1417,Chennai Port,Delhi Central,In Transit,7.2,2026-08-14
+SHP-1418,Delhi Central,Chennai Port,Delivered,63.3,2026-08-13
+SHP-1419,Pune DC,Pune DC,In Transit,98.5,2026-08-14
+SHP-1420,Mumbai Hub,Hyderabad Station,Delivered,31.4,2026-08-13
+SHP-1421,Bangalore Facility,Chennai Port,Delivered,10.7,2026-08-21
+SHP-1422,Delhi Central,Mumbai Hub,Delivered,89.0,2026-08-21
+SHP-1423,Bangalore Facility,Mumbai Hub,Delayed,79.4,2026-08-16
+SHP-1424,Bangalore Facility,Pune DC,Pending,76.0,2026-08-11
+SHP-1425,Pune DC,Chennai Port,Delayed,45.4,2026-08-18
+SHP-1426,Hyderabad Station,Bangalore Facility,In Transit,28.3,2026-08-20
+SHP-1427,Pune DC,Pune DC,In Transit,28.2,2026-08-19
+SHP-1428,Hyderabad Station,Hyderabad Station,In Transit,16.7,2026-08-14
+SHP-1429,Hyderabad Station,Chennai Port,Delivered,92.4,2026-08-17
+SHP-1430,Delhi Central,Pune DC,Delivered,19.7,2026-08-20
+SHP-1431,Pune DC,Delhi Central,Delivered,72.0,2026-08-17
+SHP-1432,Chennai Port,Delhi Central,Delivered,78.9,2026-08-21
+SHP-1433,Hyderabad Station,Mumbai Hub,In Transit,45.8,2026-08-16
+SHP-1434,Mumbai Hub,Chennai Port,Delivered,0.9,2026-08-17
+SHP-1435,Pune DC,Pune DC,In Transit,78.8,2026-08-14
+SHP-1436,Mumbai Hub,Bangalore Facility,Delivered,69.5,2026-08-19
+SHP-1437,Bangalore Facility,Mumbai Hub,Delivered,43.7,2026-08-14
+SHP-1438,Mumbai Hub,Delhi Central,Delivered,80.3,2026-08-14
+SHP-1439,Bangalore Facility,Pune DC,In Transit,79.3,2026-08-14
+SHP-1440,Hyderabad Station,Bangalore Facility,Pending,67.1,2026-08-20
+SHP-1441,Bangalore Facility,Hyderabad Station,Delivered,82.9,2026-08-22
+SHP-1442,Bangalore Facility,Chennai Port,In Transit,12.6,2026-08-23
+SHP-1443,Mumbai Hub,Delhi Central,In Transit,75.7,2026-08-20
+SHP-1444,Pune DC,Delhi Central,In Transit,27.1,2026-08-22
+SHP-1445,Hyderabad Station,Mumbai Hub,In Transit,13.0,2026-08-16
+SHP-1446,Pune DC,Delhi Central,In Transit,90.4,2026-08-16
+SHP-1447,Pune DC,Delhi Central,In Transit,42.2,2026-08-23
+SHP-1448,Hyderabad Station,Chennai Port,Delivered,53.5,2026-08-16
+SHP-1449,Pune DC,Hyderabad Station,Delivered,68.2,2026-08-15
+SHP-1450,Mumbai Hub,Pune DC,In Transit,48.0,2026-08-18
+SHP-1451,Bangalore Facility,Mumbai Hub,Delivered,85.7,2026-08-13
+SHP-1452,Chennai Port,Pune DC,In Transit,30.3,2026-08-14
+SHP-1453,Bangalore Facility,Mumbai Hub,Pending,39.0,2026-08-20
+SHP-1454,Pune DC,Hyderabad Station,Delivered,50.6,2026-08-20
+SHP-1455,Pune DC,Pune DC,Pending,8.8,2026-08-13
+SHP-1456,Bangalore Facility,Pune DC,Delivered,51.9,2026-08-19
+SHP-1457,Hyderabad Station,Pune DC,Pending,52.2,2026-08-20
+SHP-1458,Pune DC,Hyderabad Station,Delivered,40.4,2026-08-23
+SHP-1459,Mumbai Hub,Delhi Central,In Transit,4.6,2026-08-11
+SHP-1460,Delhi Central,Mumbai Hub,Pending,69.2,2026-08-23
+SHP-1461,Delhi Central,Hyderabad Station,In Transit,0.8,2026-08-20
+SHP-1462,Mumbai Hub,Hyderabad Station,In Transit,16.7,2026-08-20
+SHP-1463,Hyderabad Station,Pune DC,Delayed,64.0,2026-08-19
+SHP-1464,Hyderabad Station,Pune DC,In Transit,3.8,2026-08-21
+SHP-1465,Bangalore Facility,Delhi Central,In Transit,83.3,2026-08-22
+SHP-1466,Pune DC,Bangalore Facility,In Transit,64.8,2026-08-14
+SHP-1467,Bangalore Facility,Mumbai Hub,Delivered,65.7,2026-08-22
+SHP-1468,Delhi Central,Pune DC,In Transit,48.9,2026-08-21
+SHP-1469,Delhi Central,Hyderabad Station,Pending,7.6,2026-08-18
+SHP-1470,Bangalore Facility,Chennai Port,Pending,35.7,2026-08-23
+SHP-1471,Pune DC,Hyderabad Station,In Transit,11.3,2026-08-15
+SHP-1472,Chennai Port,Hyderabad Station,Pending,83.3,2026-08-11
+SHP-1473,Bangalore Facility,Bangalore Facility,In Transit,64.2,2026-08-15
+SHP-1474,Bangalore Facility,Bangalore Facility,In Transit,77.8,2026-08-12
+SHP-1475,Delhi Central,Chennai Port,Delivered,29.9,2026-08-19
+SHP-1476,Chennai Port,Delhi Central,Delivered,86.4,2026-08-23
+SHP-1477,Bangalore Facility,Bangalore Facility,In Transit,11.7,2026-08-12
+SHP-1478,Delhi Central,Hyderabad Station,In Transit,23.7,2026-08-16
+SHP-1479,Delhi Central,Pune DC,Delayed,78.1,2026-08-19
+SHP-1480,Chennai Port,Chennai Port,In Transit,61.8,2026-08-11
+SHP-1481,Chennai Port,Mumbai Hub,Delivered,20.7,2026-08-23
+SHP-1482,Mumbai Hub,Pune DC,Pending,15.9,2026-08-20
+SHP-1483,Pune DC,Mumbai Hub,Delivered,5.1,2026-08-11
+SHP-1484,Mumbai Hub,Delhi Central,Delayed,28.6,2026-08-12
+SHP-1485,Pune DC,Pune DC,Delivered,89.0,2026-08-11
+SHP-1486,Delhi Central,Bangalore Facility,Delivered,86.3,2026-08-15
+SHP-1487,Hyderabad Station,Chennai Port,In Transit,96.1,2026-08-22
+SHP-1488,Hyderabad Station,Delhi Central,Delayed,95.2,2026-08-13
+SHP-1489,Chennai Port,Pune DC,Delivered,50.1,2026-08-14
+SHP-1490,Mumbai Hub,Hyderabad Station,Delivered,29.1,2026-08-23
+SHP-1491,Delhi Central,Delhi Central,Delayed,42.4,2026-08-20
+SHP-1492,Mumbai Hub,Delhi Central,Delayed,35.4,2026-08-12
+SHP-1493,Mumbai Hub,Hyderabad Station,In Transit,93.2,2026-08-22
+SHP-1494,Mumbai Hub,Pune DC,In Transit,18.2,2026-08-19
+SHP-1495,Hyderabad Station,Chennai Port,Delivered,91.1,2026-08-14
+SHP-1496,Mumbai Hub,Delhi Central,In Transit,91.2,2026-08-15
+SHP-1497,Delhi Central,Pune DC,In Transit,43.9,2026-08-22
+SHP-1498,Mumbai Hub,Delhi Central,In Transit,96.8,2026-08-16
+SHP-1499,Pune DC,Pune DC,In Transit,81.1,2026-08-11
+SHP-1500,Chennai Port,Hyderabad Station,In Transit,13.2,2026-08-15
+SHP-1501,Pune DC,Delhi Central,In Transit,76.2,2026-08-17
+SHP-1502,Mumbai Hub,Bangalore Facility,Delivered,27.1,2026-08-16
+SHP-1503,Delhi Central,Delhi Central,Delivered,72.2,2026-08-13
+SHP-1504,Chennai Port,Hyderabad Station,In Transit,66.7,2026-08-12
+SHP-1505,Mumbai Hub,Bangalore Facility,In Transit,4.2,2026-08-23
+SHP-1506,Hyderabad Station,Hyderabad Station,Pending,67.3,2026-08-11
+SHP-1507,Pune DC,Mumbai Hub,In Transit,15.0,2026-08-15
+SHP-1508,Mumbai Hub,Delhi Central,In Transit,97.8,2026-08-18
+SHP-1509,Delhi Central,Delhi Central,Delivered,82.7,2026-08-15
+SHP-1510,Chennai Port,Chennai Port,Delivered,34.9,2026-08-21
+SHP-1511,Pune DC,Bangalore Facility,Delivered,55.3,2026-08-20
+SHP-1512,Hyderabad Station,Chennai Port,In Transit,35.7,2026-08-11
+SHP-1513,Chennai Port,Pune DC,Delivered,43.7,2026-08-23
+SHP-1514,Delhi Central,Delhi Central,In Transit,25.4,2026-08-12
+SHP-1515,Bangalore Facility,Mumbai Hub,Delivered,22.9,2026-08-13
+SHP-1516,Pune DC,Hyderabad Station,Delivered,93.6,2026-08-18
+SHP-1517,Chennai Port,Delhi Central,Pending,96.5,2026-08-23
+SHP-1518,Chennai Port,Mumbai Hub,Delayed,23.2,2026-08-19
+SHP-1519,Pune DC,Pune DC,Delivered,8.8,2026-08-11
+SHP-1520,Delhi Central,Bangalore Facility,Delayed,76.2,2026-08-17
+SHP-1521,Bangalore Facility,Chennai Port,Delivered,55.8,2026-08-11
+SHP-1522,Hyderabad Station,Pune DC,Delivered,9.6,2026-08-15
+SHP-1523,Delhi Central,Bangalore Facility,Delivered,65.3,2026-08-15
+SHP-1524,Delhi Central,Pune DC,In Transit,53.2,2026-08-17
+SHP-1525,Chennai Port,Chennai Port,In Transit,9.6,2026-08-15
+SHP-1526,Hyderabad Station,Delhi Central,In Transit,71.7,2026-08-20
+SHP-1527,Chennai Port,Hyderabad Station,Pending,16.3,2026-08-13
+SHP-1528,Chennai Port,Pune DC,In Transit,86.4,2026-08-17
+SHP-1529,Mumbai Hub,Delhi Central,In Transit,99.8,2026-08-15
+SHP-1530,Delhi Central,Mumbai Hub,Delivered,11.6,2026-08-14
+SHP-1531,Mumbai Hub,Mumbai Hub,Delivered,55.4,2026-08-23
+SHP-1532,Pune DC,Delhi Central,Delivered,7.5,2026-08-23
+SHP-1533,Chennai Port,Hyderabad Station,Delayed,11.2,2026-08-22
+SHP-1534,Mumbai Hub,Hyderabad Station,In Transit,52.9,2026-08-11
+SHP-1535,Mumbai Hub,Bangalore Facility,In Transit,88.5,2026-08-13
+SHP-1536,Pune DC,Hyderabad Station,Delivered,29.9,2026-08-13
+SHP-1537,Bangalore Facility,Hyderabad Station,Delivered,7.7,2026-08-14
+SHP-1538,Pune DC,Mumbai Hub,Pending,93.5,2026-08-14
+SHP-1539,Mumbai Hub,Delhi Central,In Transit,8.9,2026-08-16
+SHP-1540,Pune DC,Bangalore Facility,Delivered,43.6,2026-08-16
+SHP-1541,Hyderabad Station,Chennai Port,In Transit,25.3,2026-08-22
+SHP-1542,Delhi Central,Mumbai Hub,In Transit,98.3,2026-08-23
+SHP-1543,Chennai Port,Hyderabad Station,Delivered,33.2,2026-08-20
+SHP-1544,Delhi Central,Chennai Port,In Transit,41.8,2026-08-13
+SHP-1545,Mumbai Hub,Mumbai Hub,In Transit,36.3,2026-08-17
+SHP-1546,Pune DC,Mumbai Hub,Delivered,76.6,2026-08-17
+SHP-1547,Bangalore Facility,Pune DC,In Transit,91.6,2026-08-20
+SHP-1548,Delhi Central,Hyderabad Station,Delivered,93.8,2026-08-21
+SHP-1549,Delhi Central,Delhi Central,Delivered,41.7,2026-08-16
