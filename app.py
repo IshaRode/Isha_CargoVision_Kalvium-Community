@@ -1,6 +1,8 @@
 import streamlit as st
 import os
 from components.top_navigation import get_top_nav_html
+from utils.auth import init_auth, is_authenticated, get_auth_token
+from utils.auth_ui import render_auth_page
 
 st.set_page_config(
     page_title="CargoVision | Logistics Intelligence",
@@ -9,12 +11,23 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Read CSS directly
+init_auth()
+
+# Authentication Gate:
+# If NOT authenticated: Show ONLY the Login / Signup page
+if not is_authenticated():
+    render_auth_page()
+    st.stop()
+
+# If IS authenticated: Show the existing CargoVision dashboard & platform
 css_file = os.path.join(os.path.dirname(__file__), 'assets', 'styles.css')
 with open(css_file) as f:
     css_content = f"<style>{f.read()}</style>"
 
-hero_html = """
+token = get_auth_token()
+q_str = f"?auth_token={token}" if token else ""
+
+hero_html = f"""
 <div class="hero-wrapper">
 <div class="hero-container">
 <div class="hero-left">
@@ -22,13 +35,13 @@ hero_html = """
 <div class="hero-title">Predict Logistics Delays<br><span>Before They Impact Your<br>Business</span></div>
 <p class="hero-subtitle">CargoVision unifies shipment scans, warehouse transfers, and delay reports into one AI-powered platform that predicts cascading delivery delays, detects operational bottlenecks, and provides actionable recommendations.</p>
 <div class="hero-buttons">
-<a href="/dashboard" class="btn-primary" target="_self">Explore Dashboard →</a>
-<a href="/ai_predictions" class="btn-outline" target="_self" style="border: 1px solid rgba(255,255,255,0.2); border-radius: 30px; padding: 14px 32px; font-size: 1.1rem; display: flex; align-items: center;">View Analytics</a>
+<a href="/dashboard{q_str}" class="btn-primary" target="_self">Explore Dashboard →</a>
+<a href="/ai_predictions{q_str}" class="btn-outline" target="_self">View Analytics</a>
 </div>
 <div class="trust-badges">
-<div>🏢 500+ Enterprises</div>
-<div>🔒 SOC 2 Certified</div>
-<div>⚡ 99.9% Uptime</div>
+<div>📦 Shipment Visibility</div>
+<div>🛣️ Route Intelligence</div>
+<div>🧠 AI Predictions</div>
 </div>
 </div>
 <div class="hero-right">
@@ -77,7 +90,7 @@ hero_html = """
 </div>
 """
 
-white_body_html = """
+white_body_html = f"""
 <div class="white-section-wrapper">
 <div class="page-content">
 <div class="section-subtitle">LIVE OPERATIONS</div>
@@ -124,7 +137,7 @@ white_body_html = """
 </div>
 <div class="feature-title">AI Delay Prediction</div>
 <div class="feature-desc">Forecast delivery disruptions 48-72 hours ahead using multi-variate ML models trained on millions of shipment records.</div>
-<a href="/ai_predictions" class="feature-link" target="_self" style="color: #3b82f6; background: rgba(59, 130, 246, 0.1); padding: 8px 16px; border-radius: 20px; display: inline-block; font-weight: 600;">Learn more →</a>
+<a href="/ai_predictions{q_str}" class="feature-link" target="_self" style="color: #3b82f6; background: rgba(59, 130, 246, 0.1); padding: 8px 16px; border-radius: 20px; display: inline-block; font-weight: 600;">Learn more →</a>
 </div>
 <div class="feature-card">
 <div class="feature-icon" style="background: rgba(6, 182, 212, 0.1); color: #06b6d4;">
@@ -132,7 +145,7 @@ white_body_html = """
 </div>
 <div class="feature-title">Route Analytics</div>
 <div class="feature-desc">Analyze route efficiency, congestion windows, and carrier performance across every lane in your network.</div>
-<a href="/route_analytics" class="feature-link" target="_self" style="color: #06b6d4; background: rgba(6, 182, 212, 0.1); padding: 8px 16px; border-radius: 20px; display: inline-block; font-weight: 600;">Learn more →</a>
+<a href="/route_analytics{q_str}" class="feature-link" target="_self" style="color: #06b6d4; background: rgba(6, 182, 212, 0.1); padding: 8px 16px; border-radius: 20px; display: inline-block; font-weight: 600;">Learn more →</a>
 </div>
 <div class="feature-card">
 <div class="feature-icon" style="background: rgba(168, 85, 247, 0.1); color: #a855f7;">
@@ -140,12 +153,11 @@ white_body_html = """
 </div>
 <div class="feature-title">Warehouse Intelligence</div>
 <div class="feature-desc">Monitor capacity utilization, dwell time, and throughput bottlenecks across your entire warehouse network in real time.</div>
-<a href="/warehouse_intelligence" class="feature-link" target="_self" style="color: #a855f7; background: rgba(168, 85, 247, 0.1); padding: 8px 16px; border-radius: 20px; display: inline-block; font-weight: 600;">Learn more →</a>
+<a href="/warehouse_intelligence{q_str}" class="feature-link" target="_self" style="color: #a855f7; background: rgba(168, 85, 247, 0.1); padding: 8px 16px; border-radius: 20px; display: inline-block; font-weight: 600;">Learn more →</a>
 </div>
 </div>
 </div>
 </div>
 """
 
-# Render absolutely everything in a SINGLE st.markdown block so Streamlit cannot add gaps!
 st.markdown(css_content + get_top_nav_html('home') + hero_html + white_body_html, unsafe_allow_html=True)
