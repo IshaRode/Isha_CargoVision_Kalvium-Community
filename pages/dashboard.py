@@ -3,6 +3,7 @@ import pandas as pd
 from utils.data_loader import load_data
 import os
 from components.top_navigation import get_top_nav_html
+from utils.auth import require_auth
 import plotly.express as px
 
 st.set_page_config(
@@ -11,6 +12,9 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="collapsed"
 )
+
+# Protect Dashboard
+require_auth("Dashboard")
 
 css_file = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'assets', 'styles.css')
 with open(css_file) as f:

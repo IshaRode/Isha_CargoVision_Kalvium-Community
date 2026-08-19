@@ -23,18 +23,20 @@
     --tag-warning: #f59e0b;
 }
 
-html, body {
+html, body, .stApp, [data-testid="stAppViewContainer"], [data-testid="stApp"], .main {
     margin: 0 !important;
     padding: 0 !important;
     overflow-x: hidden;
-    background-color: var(--hero-bg-dark) !important;
+    background-color: #0f172a !important;
+    background: #0f172a !important;
+    color: #f8fafc !important;
 }
 
 /* Nuke Streamlit's native header padding */
 [data-testid="stHeader"] { display: none !important; }
 .stApp > header { display: none !important; }
 
-/* Force the main container to have 0 padding */
+/* Force the main container to have 0 padding for top-nav alignment */
 .main .block-container,
 [data-testid="stAppViewBlockContainer"],
 [data-testid="block-container"],
@@ -80,24 +82,166 @@ a.anchor-link,
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 20px 40px;
+    padding: 16px 40px;
     box-sizing: border-box;
+    gap: 20px;
 }
 
-.logo-section { display: flex; align-items: center; gap: 12px; }
-.nav-logo-icon { width: 32px; height: 32px; background: var(--accent-blue); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; }
-.nav-links { display: flex; gap: 32px; }
-.top-nav-link { color: var(--nav-text); text-decoration: none; font-weight: 500; font-size: 0.95rem; transition: color 0.2s; }
-.top-nav-link:hover { color: var(--nav-text-active); }
-.top-nav-link.active { 
-    color: var(--nav-text-active); 
-    background-color: rgba(255, 255, 255, 0.1); 
-    padding: 8px 16px; 
-    border-radius: 20px; 
+/* Global Link Resets to override Streamlit default anchor styles */
+.stApp a,
+.stApp a:link,
+.stApp a:visited,
+.stApp a:hover,
+.stApp a:active {
+    text-decoration: none !important;
 }
-.nav-actions { display: flex; gap: 16px; align-items: center; }
-.btn-outline { background: transparent; border: 1px solid rgba(255,255,255,0.2); color: white; padding: 10px 24px; border-radius: 20px; text-decoration: none; font-weight: 600; font-size: 0.9rem; }
-.btn-solid { background: var(--accent-blue); color: white; padding: 10px 24px; border-radius: 20px; text-decoration: none; font-weight: 600; font-size: 0.9rem; }
+
+.logo-section { 
+    display: flex; 
+    align-items: center; 
+    gap: 12px; 
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+.nav-logo-icon { 
+    width: 32px; 
+    height: 32px; 
+    background: var(--accent-blue); 
+    border-radius: 8px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    color: white !important; 
+    font-weight: 800; 
+    flex-shrink: 0;
+}
+.nav-links { 
+    display: flex; 
+    gap: 16px; 
+    align-items: center; 
+    white-space: nowrap;
+    flex-wrap: nowrap;
+}
+.top-nav-link,
+.top-nav-link:link,
+.top-nav-link:visited { 
+    color: var(--nav-text) !important; 
+    text-decoration: none !important; 
+    font-weight: 500; 
+    font-size: 0.92rem; 
+    padding: 7px 12px;
+    border-radius: 20px;
+    transition: all 0.2s ease;
+    display: inline-block;
+    white-space: nowrap;
+}
+.top-nav-link:hover { 
+    color: var(--nav-text-active) !important; 
+    background-color: rgba(255, 255, 255, 0.08);
+    text-decoration: none !important;
+}
+.top-nav-link.active,
+.top-nav-link.active:link,
+.top-nav-link.active:visited { 
+    color: var(--nav-text-active) !important; 
+    background-color: rgba(255, 255, 255, 0.12) !important; 
+    font-weight: 600;
+    text-decoration: none !important;
+}
+.nav-actions { 
+    display: flex; 
+    gap: 12px; 
+    align-items: center; 
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+.btn-outline,
+.btn-outline:link,
+.btn-outline:visited { 
+    background: transparent !important; 
+    border: 1px solid rgba(255,255,255,0.25) !important; 
+    color: #ffffff !important; 
+    padding: 9px 22px !important; 
+    border-radius: 24px !important; 
+    text-decoration: none !important; 
+    font-weight: 600 !important; 
+    font-size: 0.9rem !important; 
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all 0.2s ease !important;
+}
+.btn-outline:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-color: rgba(255, 255, 255, 0.45) !important;
+    color: #ffffff !important;
+    text-decoration: none !important;
+    transform: translateY(-1px);
+}
+.btn-solid,
+.btn-solid:link,
+.btn-solid:visited { 
+    background: var(--accent-blue) !important; 
+    border: 1px solid var(--accent-blue) !important;
+    color: #ffffff !important; 
+    padding: 9px 22px !important; 
+    border-radius: 24px !important; 
+    text-decoration: none !important; 
+    font-weight: 600 !important; 
+    font-size: 0.9rem !important; 
+    box-shadow: 0 4px 14px rgba(14, 165, 233, 0.35) !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all 0.2s ease !important;
+}
+.btn-solid:hover {
+    background: #0284c7 !important;
+    border-color: #0284c7 !important;
+    color: #ffffff !important;
+    text-decoration: none !important;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(14, 165, 233, 0.5) !important;
+}
+
+/* User Avatar Chip in Navbar */
+.top-nav-user-chip,
+.top-nav-user-chip:link,
+.top-nav-user-chip:visited {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    padding: 5px 14px 5px 6px !important;
+    border-radius: 20px !important;
+    color: #ffffff !important;
+    text-decoration: none !important;
+    font-size: 0.85rem !important;
+    font-weight: 600 !important;
+    transition: all 0.2s ease !important;
+}
+.top-nav-user-chip:hover {
+    background: rgba(255, 255, 255, 0.15) !important;
+    border-color: rgba(14, 165, 233, 0.5) !important;
+    color: #ffffff !important;
+}
+.user-avatar-initial {
+    width: 26px;
+    height: 26px;
+    background: linear-gradient(135deg, #0ea5e9, #6366f1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: white;
+}
+.user-name-text {
+    color: white;
+    font-weight: 600;
+}
 
 
 /* ---------------------------------
@@ -152,8 +296,63 @@ a.anchor-link,
 .hero-title span { color: var(--accent-blue); }
 
 .hero-subtitle { font-size: 1.1rem; color: var(--nav-text); margin-bottom: 3rem; line-height: 1.6; max-width: 90%; font-family: var(--font-family); }
-.hero-buttons { display: flex; gap: 1.5rem; margin-bottom: 3rem; }
-.btn-primary { background: var(--accent-blue); color: white; padding: 14px 32px; border-radius: 30px; font-size: 1.1rem; font-weight: 600; text-decoration: none; box-shadow: 0 10px 25px rgba(14, 165, 233, 0.3); }
+.hero-buttons { 
+    display: flex; 
+    gap: 1.25rem; 
+    margin-bottom: 3rem; 
+    align-items: center;
+}
+
+.btn-primary,
+.btn-primary:link,
+.btn-primary:visited { 
+    background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%) !important; 
+    color: #ffffff !important; 
+    padding: 14px 32px !important; 
+    border-radius: 30px !important; 
+    font-size: 1.05rem !important; 
+    font-weight: 600 !important; 
+    text-decoration: none !important; 
+    box-shadow: 0 8px 24px rgba(14, 165, 233, 0.4) !important; 
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border: 1px solid transparent !important;
+    transition: all 0.2s ease !important;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #38bdf8 0%, #0ea5e9 100%) !important;
+    color: #ffffff !important;
+    text-decoration: none !important;
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(14, 165, 233, 0.55) !important;
+}
+
+.hero-buttons .btn-outline,
+.hero-buttons .btn-outline:link,
+.hero-buttons .btn-outline:visited {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.25) !important;
+    color: #ffffff !important;
+    padding: 14px 32px !important;
+    border-radius: 30px !important;
+    font-size: 1.05rem !important;
+    font-weight: 600 !important;
+    text-decoration: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all 0.2s ease !important;
+}
+
+.hero-buttons .btn-outline:hover {
+    background: rgba(255, 255, 255, 0.12) !important;
+    border-color: rgba(255, 255, 255, 0.45) !important;
+    color: #ffffff !important;
+    text-decoration: none !important;
+    transform: translateY(-2px);
+}
 .trust-badges { display: flex; gap: 30px; color: var(--text-muted); font-size: 0.85rem; font-weight: 500; font-family: var(--font-family); }
 .trust-badges div { display: flex; align-items: center; gap: 8px; }
 
@@ -227,5 +426,174 @@ a.anchor-link,
 .feature-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; background: rgba(14, 165, 233, 0.1); margin-bottom: 20px; }
 .feature-title { font-size: 1.2rem; font-weight: 700; color: var(--text-dark); margin-bottom: 12px; }
 .feature-desc { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 24px; line-height: 1.5; }
-.feature-link { color: var(--accent-blue); font-weight: 600; text-decoration: none; font-size: 0.95rem; }
-.feature-link:hover { text-decoration: underline; }
+.feature-link,
+.feature-link:link,
+.feature-link:visited { 
+    color: var(--accent-blue) !important; 
+    font-weight: 600 !important; 
+    text-decoration: none !important; 
+    font-size: 0.95rem; 
+    transition: all 0.2s ease;
+}
+.feature-link:hover { 
+    text-decoration: none !important;
+    opacity: 0.85;
+}
+
+/* ---------------------------------
+   STREAMLIT AUTH FORM REFINEMENTS
+----------------------------------- */
+/* Target the outer BaseWeb input container wrapping text, select, and eye icon */
+div[data-baseweb="input"],
+div[data-baseweb="select"] > div {
+    background-color: #1e293b !important;
+    background: #1e293b !important;
+    color: #f8fafc !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    border-radius: 10px !important;
+    overflow: hidden !important;
+    transition: all 0.2s ease !important;
+}
+
+/* Unified container focus state (wraps input + eye icon seamlessly) */
+div[data-baseweb="input"]:focus-within,
+div[data-baseweb="select"] > div:focus-within {
+    border-color: #0ea5e9 !important;
+    box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.25) !important;
+}
+
+/* Inner input element - remove separate borders, padding, and backgrounds */
+div[data-baseweb="input"] input,
+div[data-baseweb="base-input"] input,
+.stTextInput input {
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    color: #f8fafc !important;
+    padding: 10px 14px !important;
+    font-size: 0.95rem !important;
+}
+
+div[data-baseweb="input"] input:focus,
+div[data-baseweb="base-input"] input:focus,
+.stTextInput input:focus {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* Password eye icon button and adornments */
+div[data-baseweb="input"] button,
+div[data-baseweb="input"] [role="button"] {
+    background: transparent !important;
+    border: none !important;
+    color: #94a3b8 !important;
+    padding: 0 10px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+/* Hide floating 'Press Enter to submit form' text that overlaps with password eye icon */
+div[data-testid="InputInstructions"] {
+    display: none !important;
+}
+
+.stTextInput label,
+.stSelectbox label {
+    color: #cbd5e1 !important;
+    font-size: 0.88rem !important;
+    font-weight: 600 !important;
+    margin-bottom: 4px !important;
+}
+
+div[data-testid="stForm"] {
+    background: rgba(30, 41, 59, 0.6) !important;
+    backdrop-filter: blur(16px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 20px !important;
+    padding: 24px !important;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35) !important;
+    box-sizing: border-box !important;
+    margin-bottom: 12px !important;
+}
+
+button[data-testid="baseButton-primary"],
+button[data-testid="stBaseButton-primary"],
+button[kind="primary"],
+button[kind="primaryFormSubmit"],
+.stButton > button[kind="primary"],
+div[data-testid="stFormSubmitButton"] > button,
+div[data-testid="stFormSubmitButton"] button {
+    background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%) !important;
+    background-color: #0ea5e9 !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    border: none !important;
+    border-radius: 12px !important;
+    padding: 12px 24px !important;
+    box-shadow: 0 4px 14px rgba(14, 165, 233, 0.35) !important;
+    transition: all 0.2s ease !important;
+}
+
+button[data-testid="baseButton-primary"]:hover,
+button[data-testid="stBaseButton-primary"]:hover,
+button[kind="primary"]:hover,
+button[kind="primaryFormSubmit"]:hover,
+div[data-testid="stFormSubmitButton"] > button:hover {
+    background: linear-gradient(135deg, #38bdf8 0%, #0ea5e9 100%) !important;
+    background-color: #38bdf8 !important;
+    color: #ffffff !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 6px 20px rgba(14, 165, 233, 0.55) !important;
+}
+
+button[data-testid="baseButton-secondary"],
+button[data-testid="stBaseButton-secondary"],
+button[kind="secondary"],
+.stButton > button[kind="secondary"],
+div[data-testid="stButton"] > button {
+    background: rgba(30, 41, 59, 0.5) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    color: #f8fafc !important;
+    border-radius: 10px !important;
+    font-weight: 600 !important;
+    transition: all 0.2s ease !important;
+}
+
+button[data-testid="baseButton-secondary"]:hover,
+button[data-testid="stBaseButton-secondary"]:hover,
+button[kind="secondary"]:hover,
+div[data-testid="stButton"] > button:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-color: rgba(14, 165, 233, 0.5) !important;
+    color: #ffffff !important;
+}
+
+/* ---------------------------------
+   AUTH CONTAINER & BALANCED LAYOUT
+----------------------------------- */
+.auth-page-container {
+    max-width: 1040px !important;
+    margin: 40px auto !important;
+    padding: 0 24px !important;
+    box-sizing: border-box !important;
+}
+
+.auth-card {
+    background: rgba(30, 41, 59, 0.6) !important;
+    backdrop-filter: blur(16px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 20px !important;
+    padding: 24px !important;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35) !important;
+    box-sizing: border-box !important;
+}
+
+div[data-testid="stFormSubmitButton"] > button,
+div[data-testid="stButton"] > button {
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
