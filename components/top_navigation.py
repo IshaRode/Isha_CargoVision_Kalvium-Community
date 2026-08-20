@@ -14,11 +14,11 @@ def get_top_nav_html(active_page='home'):
     if auth and user:
         user_name = user.get('name', 'User')
         role = user.get('role', 'Logistics Manager')
-        initial = user_name[0] if user_name else 'U'
+        initial = user_name[0].upper() if user_name else 'U'
         first_name = user_name.split()[0]
         actions_html = f'<div class="nav-actions"><span class="top-nav-user-chip" title="{user_name} ({role})"><span class="user-avatar-initial">{initial}</span><span class="user-name-text">{first_name}</span></span><a href="/?action=logout" target="_self" class="btn-outline" style="padding: 6px 14px; font-size: 0.82rem; border-radius: 18px; border: 1px solid rgba(239, 68, 68, 0.35) !important; color: #fca5a5 !important;">Logout</a></div>'
     else:
-        actions_html = ''
+        actions_html = f'<div class="nav-actions"><a href="/login" target="_self" class="btn-outline">Login</a><a href="/login" target="_self" class="btn-solid">Get Started</a></div>'
     
     return f"""<div class="top-nav-wrapper">
 <div class="top-nav-container">

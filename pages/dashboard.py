@@ -1,10 +1,7 @@
 import streamlit as st
-import pandas as pd
-from utils.data_loader import load_data
 import os
 from components.top_navigation import get_top_nav_html
-from utils.auth import require_auth
-import plotly.express as px
+from utils.auth import require_auth, get_auth_token
 
 st.set_page_config(
     page_title="CargoVision | Dashboard",
@@ -13,15 +10,17 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Protect Dashboard
+# Protect Dashboard with Supabase Auth
 require_auth("Dashboard")
+
+token = get_auth_token()
+q_str = f"?auth_token={token}" if token else ""
 
 css_file = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'assets', 'styles.css')
 with open(css_file) as f:
     css_content = f"<style>{f.read()}</style>"
 
-dashboard_html = """
-<div style="background-color: var(--hero-bg-dark); min-height: 100vh; font-family: 'Inter', sans-serif;">
+dashboard_html = f"""<div style="background-color: var(--hero-bg-dark); min-height: 100vh; font-family: 'Inter', sans-serif;">
 
 <div style="text-align: center; padding: 60px 20px 40px;">
 <div style="color: var(--accent-blue); font-size: 0.85rem; font-weight: 700; letter-spacing: 1.5px; margin-bottom: 10px; text-transform: uppercase;">ANALYTICS PREVIEW</div>
@@ -45,91 +44,150 @@ dashboard_html = """
 <!-- Dashboard Layout -->
 <div style="display: flex;">
 
-<!-- Sidebar -->
-<div style="width: 240px; background-color: #0f172a; padding: 20px 0; border-right: 1px solid rgba(255,255,255,0.05); display: flex; flex-direction: column; gap: 5px;">
-<div style="padding: 12px 24px; color: white; background: rgba(255,255,255,0.05); border-left: 3px solid var(--accent-blue); display: flex; align-items: center; gap: 12px; font-size: 0.95rem; font-weight: 500;">
+<!-- Interactive Sidebar Navigation -->
+<div style="width: 240px; background-color: #0f172a; padding: 20px 0; border-right: 1px solid rgba(255,255,255,0.05); display: flex; flex-direction: column; gap: 4px;">
+<a href="/dashboard{q_str}" class="dash-sidebar-item active" target="_self">
 <span>📊</span> Overview
-</div>
-<div style="padding: 12px 24px; color: var(--nav-text); display: flex; align-items: center; gap: 12px; font-size: 0.95rem;">
+</a>
+<a href="/shipment_tracking{q_str}" class="dash-sidebar-item" target="_self">
 <span>🚚</span> Shipments
-</div>
-<div style="padding: 12px 24px; color: var(--nav-text); display: flex; align-items: center; gap: 12px; font-size: 0.95rem;">
+</a>
+<a href="/route_analytics{q_str}" class="dash-sidebar-item" target="_self">
 <span>🗺️</span> Routes
-</div>
-<div style="padding: 12px 24px; color: var(--nav-text); display: flex; align-items: center; gap: 12px; font-size: 0.95rem;">
+</a>
+<a href="/warehouse_intelligence{q_str}" class="dash-sidebar-item" target="_self">
 <span>🏭</span> Warehouses
-</div>
-<div style="padding: 12px 24px; color: var(--nav-text); display: flex; align-items: center; gap: 12px; font-size: 0.95rem;">
+</a>
+<a href="/ai_predictions{q_str}" class="dash-sidebar-item" target="_self">
 <span>🧠</span> AI Insights
-</div>
-<div style="padding: 12px 24px; color: var(--nav-text); display: flex; align-items: center; gap: 12px; font-size: 0.95rem;">
+</a>
+<a href="/route_analytics{q_str}" class="dash-sidebar-item" target="_self">
 <span>📈</span> Analytics
-</div>
-<div style="padding: 12px 24px; color: var(--nav-text); display: flex; align-items: center; gap: 12px; font-size: 0.95rem;">
+</a>
+<a href="/reports{q_str}" class="dash-sidebar-item" target="_self">
 <span>📄</span> Reports
-</div>
+</a>
 </div>
 
 <!-- Main Content -->
 <div style="flex: 1; padding: 30px;">
 
-<!-- Tabs -->
+<!-- Interactive Tabs -->
 <div style="display: flex; gap: 30px; border-bottom: 1px solid rgba(255,255,255,0.05); margin-bottom: 30px;">
-<div style="color: var(--accent-blue); border-bottom: 2px solid var(--accent-blue); padding-bottom: 15px; font-weight: 600; font-size: 0.95rem;">Delay Trends</div>
-<div style="color: var(--nav-text); padding-bottom: 15px; font-weight: 500; font-size: 0.95rem;">Warehouse Utilization</div>
-<div style="color: var(--nav-text); padding-bottom: 15px; font-weight: 500; font-size: 0.95rem;">Shipment Status</div>
+<a href="/dashboard{q_str}" class="dash-tab active" target="_self">Delay Trends</a>
+<a href="/warehouse_intelligence{q_str}" class="dash-tab" target="_self">Warehouse Utilization</a>
+<a href="/shipment_tracking{q_str}" class="dash-tab" target="_self">Shipment Status</a>
 </div>
 
-<div style="display: flex; gap: 20px;">
-<!-- Chart Area -->
+<div style="display: flex; gap: 24px;">
+
+<!-- Left Column: KPIs & Delay Trends Chart -->
 <div style="flex: 2;">
+
+<!-- KPI Cards Row (Clickable) -->
 <div style="display: flex; gap: 15px; margin-bottom: 25px;">
-<div style="flex: 1; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 20px;">
+<a href="/route_analytics{q_str}" class="dash-metric-card" target="_self">
 <div style="color: #ef4444; font-size: 1.8rem; font-weight: 800; margin-bottom: 5px;">4.2h</div>
-<div style="color: var(--nav-text); font-size: 0.85rem;">Avg Delay</div>
-</div>
-<div style="flex: 1; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 20px;">
+<div style="color: var(--nav-text); font-size: 0.85rem; font-weight: 500;">Avg Delay</div>
+</a>
+<a href="/ai_predictions{q_str}" class="dash-metric-card" target="_self">
 <div style="color: #22c55e; font-size: 1.8rem; font-weight: 800; margin-bottom: 5px;">94.8%</div>
-<div style="color: var(--nav-text); font-size: 0.85rem;">Prediction Accuracy</div>
-</div>
-<div style="flex: 1; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 20px;">
+<div style="color: var(--nav-text); font-size: 0.85rem; font-weight: 500;">Prediction Accuracy</div>
+</a>
+<a href="/route_analytics{q_str}" class="dash-metric-card" target="_self">
 <div style="color: #0ea5e9; font-size: 1.8rem; font-weight: 800; margin-bottom: 5px;">312</div>
-<div style="color: var(--nav-text); font-size: 0.85rem;">Routes Optimised</div>
-</div>
-</div>
-
-<!-- Chart Mockup -->
-<div style="position: relative; height: 300px; width: 100%;">
-<img src="https://raw.githubusercontent.com/IshaRode/Isha_CargoVision_Kalvium-Community/refs/heads/main/assets/images/chart_mockup.svg" style="width: 100%; height: 100%; object-fit: contain; opacity: 0.8;" onerror="this.style.display='none'">
-
-<!-- Fallback CSS Chart if image doesn't load immediately -->
-<div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: -1;">
-<div style="display: flex; height: 100%; align-items: flex-end; justify-content: space-between; padding-bottom: 20px;">
-<div style="color: var(--nav-text); font-size: 0.75rem; position: absolute; left: 0; bottom: 20px;">0</div>
-<div style="color: var(--nav-text); font-size: 0.75rem; position: absolute; left: 0; bottom: 100px;">95</div>
-<div style="color: var(--nav-text); font-size: 0.75rem; position: absolute; left: 0; bottom: 180px;">190</div>
-<div style="color: var(--nav-text); font-size: 0.75rem; position: absolute; left: 0; bottom: 260px;">285</div>
-<div style="color: var(--nav-text); font-size: 0.75rem; position: absolute; left: 0; bottom: 340px;">380</div>
+<div style="color: var(--nav-text); font-size: 0.85rem; font-weight: 500;">Routes Optimised</div>
+</a>
 </div>
 
-<!-- Fake SVG Lines -->
-<svg width="100%" height="100%" viewBox="0 0 600 300" preserveAspectRatio="none">
-<!-- Green Line -->
-<path d="M 50 150 Q 150 120, 250 160 T 450 100 T 600 120" fill="none" stroke="#22c55e" stroke-width="2"/>
-<path d="M 50 150 Q 150 120, 250 160 T 450 100 T 600 120 L 600 300 L 50 300 Z" fill="rgba(34,197,94,0.1)" stroke="none"/>
-<!-- Red Line -->
-<path d="M 50 280 Q 150 270, 250 285 T 450 275 T 600 280" fill="none" stroke="#ef4444" stroke-width="2"/>
-<path d="M 50 280 Q 150 270, 250 285 T 450 275 T 600 280 L 600 300 L 50 300 Z" fill="rgba(239,68,68,0.1)" stroke="none"/>
+<!-- Inline High-Fidelity Responsive SVG Chart Mockup -->
+<div style="position: relative; width: 100%; border-radius: 12px; background: rgba(15, 23, 42, 0.6); padding: 15px; border: 1px solid rgba(255, 255, 255, 0.04); box-sizing: border-box;">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 340" width="100%" height="auto" style="display: block;">
+  <defs>
+    <linearGradient id="chartGreenGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#22c55e" stop-opacity="0.35" />
+      <stop offset="80%" stop-color="#22c55e" stop-opacity="0.04" />
+      <stop offset="100%" stop-color="#22c55e" stop-opacity="0.0" />
+    </linearGradient>
+    <linearGradient id="chartRedGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ef4444" stop-opacity="0.30" />
+      <stop offset="80%" stop-color="#ef4444" stop-opacity="0.03" />
+      <stop offset="100%" stop-color="#ef4444" stop-opacity="0.0" />
+    </linearGradient>
+    <filter id="chartGlow" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur stdDeviation="3" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Y-Axis Grid Lines and Labels -->
+  <text x="25" y="38" fill="#64748b" font-family="'Inter', sans-serif" font-size="11" font-weight="500" text-anchor="end">380</text>
+  <line x1="38" y1="34" x2="700" y2="34" stroke="rgba(255, 255, 255, 0.06)" stroke-dasharray="3,3" stroke-width="1" />
+
+  <text x="25" y="98" fill="#64748b" font-family="'Inter', sans-serif" font-size="11" font-weight="500" text-anchor="end">285</text>
+  <line x1="38" y1="94" x2="700" y2="94" stroke="rgba(255, 255, 255, 0.06)" stroke-dasharray="3,3" stroke-width="1" />
+
+  <text x="25" y="158" fill="#64748b" font-family="'Inter', sans-serif" font-size="11" font-weight="500" text-anchor="end">190</text>
+  <line x1="38" y1="154" x2="700" y2="154" stroke="rgba(255, 255, 255, 0.06)" stroke-dasharray="3,3" stroke-width="1" />
+
+  <text x="25" y="218" fill="#64748b" font-family="'Inter', sans-serif" font-size="11" font-weight="500" text-anchor="end">95</text>
+  <line x1="38" y1="214" x2="700" y2="214" stroke="rgba(255, 255, 255, 0.06)" stroke-dasharray="3,3" stroke-width="1" />
+
+  <text x="25" y="278" fill="#64748b" font-family="'Inter', sans-serif" font-size="11" font-weight="500" text-anchor="end">0</text>
+  <line x1="38" y1="274" x2="700" y2="274" stroke="rgba(255, 255, 255, 0.12)" stroke-width="1" />
+
+  <!-- X-Axis Labels -->
+  <text x="50" y="300" fill="#64748b" font-family="'Inter', sans-serif" font-size="12" font-weight="500" text-anchor="middle">Jan</text>
+  <text x="140" y="300" fill="#64748b" font-family="'Inter', sans-serif" font-size="12" font-weight="500" text-anchor="middle">Feb</text>
+  <text x="230" y="300" fill="#64748b" font-family="'Inter', sans-serif" font-size="12" font-weight="500" text-anchor="middle">Mar</text>
+  <text x="320" y="300" fill="#94a3b8" font-family="'Inter', sans-serif" font-size="12" font-weight="700" text-anchor="middle">Apr</text>
+  <text x="410" y="300" fill="#64748b" font-family="'Inter', sans-serif" font-size="12" font-weight="500" text-anchor="middle">May</text>
+  <text x="500" y="300" fill="#64748b" font-family="'Inter', sans-serif" font-size="12" font-weight="500" text-anchor="middle">Jun</text>
+  <text x="590" y="300" fill="#64748b" font-family="'Inter', sans-serif" font-size="12" font-weight="500" text-anchor="middle">Jul</text>
+  <text x="670" y="300" fill="#64748b" font-family="'Inter', sans-serif" font-size="12" font-weight="500" text-anchor="middle">Aug</text>
+
+  <!-- Green Filled Area (On-Time Delivery) -->
+  <path d="M 50,118 C 90,110 135,125 180,140 C 230,155 275,108 320,86 C 365,65 410,95 455,108 C 500,120 545,62 590,52 C 635,42 660,56 680,62 L 680,274 L 50,274 Z" fill="url(#chartGreenGrad)" />
+  <!-- Green Line Stroke -->
+  <path d="M 50,118 C 90,110 135,125 180,140 C 230,155 275,108 320,86 C 365,65 410,95 455,108 C 500,120 545,62 590,52 C 635,42 660,56 680,62" fill="none" stroke="#22c55e" stroke-width="2.8" stroke-linecap="round" filter="url(#chartGlow)" />
+
+  <!-- Red Filled Area (Delayed Shipments) -->
+  <path d="M 50,260 C 95,258 140,252 185,246 C 230,240 275,252 320,260 C 365,268 410,264 455,258 C 500,252 545,264 590,266 C 635,268 660,264 680,264 L 680,274 L 50,274 Z" fill="url(#chartRedGrad)" />
+  <!-- Red Line Stroke -->
+  <path d="M 50,260 C 95,258 140,252 185,246 C 230,240 275,252 320,260 C 365,268 410,264 455,258 C 500,252 545,264 590,266 C 635,268 660,264 680,264" fill="none" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round" filter="url(#chartGlow)" />
+
+  <!-- Interactive Marker at April (X = 320) -->
+  <line x1="320" y1="34" x2="320" y2="274" stroke="rgba(255, 255, 255, 0.45)" stroke-width="1.5" stroke-dasharray="3,3" />
+
+  <!-- Green Marker Point on Green Curve at (320, 86) -->
+  <circle cx="320" cy="86" r="6.5" fill="#22c55e" stroke="#ffffff" stroke-width="2.5" />
+
+  <!-- Red Marker Point on Red Curve at (320, 260) -->
+  <circle cx="320" cy="260" r="6.5" fill="#ef4444" stroke="#ffffff" stroke-width="2.5" />
+
+  <!-- Floating Glassmorphic Tooltip Card in Middle -->
+  <g transform="translate(268, 126)">
+    <rect x="0" y="0" width="104" height="74" rx="10" fill="#0f172a" stroke="rgba(255, 255, 255, 0.16)" stroke-width="1" />
+    <text x="52" y="22" fill="#ffffff" font-family="'Inter', sans-serif" font-size="12.5" font-weight="700" text-anchor="middle">Apr</text>
+    <circle cx="20" cy="40" r="3" fill="#ef4444" />
+    <text x="28" y="44" fill="#ef4444" font-family="'Inter', sans-serif" font-size="11" font-weight="600">Delayed : 31</text>
+    <circle cx="20" cy="58" r="3" fill="#22c55e" />
+    <text x="28" y="62" fill="#22c55e" font-family="'Inter', sans-serif" font-size="11" font-weight="600">On Time : 340</text>
+  </g>
 </svg>
 </div>
-</div>
+
 </div>
 
-<!-- AI Insights Panel -->
+<!-- Right Column: AI Insights & Recent Events (Clickable) -->
 <div style="flex: 1;">
 <div style="color: var(--nav-text); font-size: 0.8rem; font-weight: 700; letter-spacing: 1px; margin-bottom: 20px;">AI INSIGHTS</div>
 
-<div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 12px; padding: 20px; margin-bottom: 15px;">
+<!-- High Delay Risk Card (Clickable -> Route Analytics) -->
+<a href="/route_analytics{q_str}" class="dash-insight-card" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(239, 68, 68, 0.25);" target="_self">
 <div style="color: #ef4444; font-size: 0.7rem; font-weight: 800; letter-spacing: 1px; margin-bottom: 10px; display: flex; align-items: center; gap: 5px;"><span>🔴</span> HIGH DELAY RISK</div>
 <div style="color: white; font-weight: 700; font-size: 1rem; margin-bottom: 15px;">Mumbai → Pune</div>
 <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--nav-text); margin-bottom: 8px;">
@@ -139,9 +197,10 @@ dashboard_html = """
 <div style="height: 4px; background: rgba(239,68,68,0.2); border-radius: 2px;">
 <div style="width: 87%; height: 100%; background: #ef4444; border-radius: 2px;"></div>
 </div>
-</div>
+</a>
 
-<div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(245, 158, 11, 0.2); border-radius: 12px; padding: 20px; margin-bottom: 15px;">
+<!-- Warehouse Alert Card (Clickable -> Warehouse Intelligence) -->
+<a href="/warehouse_intelligence{q_str}" class="dash-insight-card" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(245, 158, 11, 0.25);" target="_self">
 <div style="color: #f59e0b; font-size: 0.7rem; font-weight: 800; letter-spacing: 1px; margin-bottom: 10px; display: flex; align-items: center; gap: 5px;"><span>⚠️</span> WAREHOUSE ALERT</div>
 <div style="color: white; font-weight: 700; font-size: 1rem; margin-bottom: 15px;">Pune Distribution Center</div>
 <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--nav-text); margin-bottom: 8px;">
@@ -151,53 +210,54 @@ dashboard_html = """
 <div style="height: 4px; background: rgba(245,158,11,0.2); border-radius: 2px;">
 <div style="width: 95%; height: 100%; background: #f59e0b; border-radius: 2px;"></div>
 </div>
-</div>
+</a>
 
-<div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(16, 185, 129, 0.2); border-radius: 12px; padding: 20px;">
+<!-- Recommendation Card (Clickable Action Button) -->
+<div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: 12px; padding: 20px;">
 <div style="color: #10b981; font-size: 0.7rem; font-weight: 800; letter-spacing: 1px; margin-bottom: 10px; display: flex; align-items: center; gap: 5px;"><span>💡</span> RECOMMENDATION</div>
 <div style="color: var(--nav-text); font-size: 0.9rem; line-height: 1.6; margin-bottom: 15px;">
 Redirect shipments through <span style="color: white; font-weight: 600;">Nashik Hub</span> to reduce delivery time by <span style="color: #10b981; font-weight: 700;">18%</span>.
 </div>
-<div style="background: rgba(16, 185, 129, 0.1); color: #10b981; text-align: center; padding: 10px; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; border: 1px solid rgba(16,185,129,0.2);">
+<a href="/route_analytics{q_str}" class="btn-apply-rec" target="_self">
 Apply Recommendation
-</div>
+</a>
 </div>
 
+<!-- Recent Events List (Clickable Links) -->
 <div style="margin-top: 30px;">
-<div style="color: var(--nav-text); font-size: 0.8rem; font-weight: 700; letter-spacing: 1px; margin-bottom: 20px;">RECENT EVENTS</div>
+<div style="color: var(--nav-text); font-size: 0.8rem; font-weight: 700; letter-spacing: 1px; margin-bottom: 16px;">RECENT EVENTS</div>
 
-<div style="display: flex; gap: 12px; margin-bottom: 15px;">
+<a href="/shipment_tracking{q_str}" class="dash-event-link" target="_self">
 <div style="color: #10b981; font-size: 0.6rem; margin-top: 4px;">●</div>
 <div>
 <div style="color: white; font-size: 0.85rem; line-height: 1.4; margin-bottom: 2px;">Shipment SH-4821 scanned at Chennai port</div>
 <div style="color: var(--nav-text); font-size: 0.75rem;">2m ago</div>
 </div>
-</div>
+</a>
 
-<div style="display: flex; gap: 12px; margin-bottom: 15px;">
+<a href="/route_analytics{q_str}" class="dash-event-link" target="_self">
 <div style="color: #f59e0b; font-size: 0.6rem; margin-top: 4px;">●</div>
 <div>
 <div style="color: white; font-size: 0.85rem; line-height: 1.4; margin-bottom: 2px;">Route NH-48 congestion detected</div>
 <div style="color: var(--nav-text); font-size: 0.75rem;">8m ago</div>
 </div>
-</div>
+</a>
 
-<div style="display: flex; gap: 12px;">
+<a href="/warehouse_intelligence{q_str}" class="dash-event-link" target="_self">
 <div style="color: #3b82f6; font-size: 0.6rem; margin-top: 4px;">●</div>
 <div>
 <div style="color: white; font-size: 0.85rem; line-height: 1.4; margin-bottom: 2px;">Bangalore WH transfer completed</div>
 <div style="color: var(--nav-text); font-size: 0.75rem;">15m ago</div>
 </div>
+</a>
+</div>
+
 </div>
 </div>
 
 </div>
 </div>
-
 </div>
-</div>
-</div>
-</div>
-"""
+</div>"""
 
 st.markdown(css_content + get_top_nav_html('dashboard') + dashboard_html, unsafe_allow_html=True)

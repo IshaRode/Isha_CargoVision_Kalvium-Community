@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 340" width="100%" height="100%">
+  <defs>
+    <!-- Green Gradient for On-Time Area -->
+    <linearGradient id="greenGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#22c55e" stop-opacity="0.38" />
+      <stop offset="85%" stop-color="#22c55e" stop-opacity="0.04" />
+      <stop offset="100%" stop-color="#22c55e" stop-opacity="0.0" />
+    </linearGradient>
+    <!-- Red Gradient for Delayed Area -->
+    <linearGradient id="redGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ef4444" stop-opacity="0.32" />
+      <stop offset="85%" stop-color="#ef4444" stop-opacity="0.03" />
+      <stop offset="100%" stop-color="#ef4444" stop-opacity="0.0" />
+    </linearGradient>
+    <!-- Filter for soft glow -->
+    <filter id="glow" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur stdDeviation="3" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Y-Axis Grid Lines and Labels -->
+  <!-- 380 -->
+  <text x="25" y="38" fill="#64748b" font-family="'Inter', sans-serif" font-size="11" font-weight="500" text-anchor="end">380</text>
+  <line x1="38" y1="34" x2="700" y2="34" stroke="rgba(255, 255, 255, 0.06)" stroke-dasharray="3,3" stroke-width="1" />
+
+  <!-- 285 -->
+  <text x="25" y="98" fill="#64748b" font-family="'Inter', sans-serif" font-size="11" font-weight="500" text-anchor="end">285</text>
+  <line x1="38" y1="94" x2="700" y2="94" stroke="rgba(255, 255, 255, 0.06)" stroke-dasharray="3,3" stroke-width="1" />
+
+  <!-- 190 -->
+  <text x="25" y="158" fill="#64748b" font-family="'Inter', sans-serif" font-size="11" font-weight="500" text-anchor="end">190</text>
+  <line x1="38" y1="154" x2="700" y2="154" stroke="rgba(255, 255, 255, 0.06)" stroke-dasharray="3,3" stroke-width="1" />
+
+  <!-- 95 -->
+  <text x="25" y="218" fill="#64748b" font-family="'Inter', sans-serif" font-size="11" font-weight="500" text-anchor="end">95</text>
+  <line x1="38" y1="214" x2="700" y2="214" stroke="rgba(255, 255, 255, 0.06)" stroke-dasharray="3,3" stroke-width="1" />
+
+  <!-- 0 Base -->
+  <text x="25" y="278" fill="#64748b" font-family="'Inter', sans-serif" font-size="11" font-weight="500" text-anchor="end">0</text>
+  <line x1="38" y1="274" x2="700" y2="274" stroke="rgba(255, 255, 255, 0.12)" stroke-width="1" />
+
+  <!-- X-Axis Labels -->
+  <text x="50" y="300" fill="#64748b" font-family="'Inter', sans-serif" font-size="12" font-weight="500" text-anchor="middle">Jan</text>
+  <text x="140" y="300" fill="#64748b" font-family="'Inter', sans-serif" font-size="12" font-weight="500" text-anchor="middle">Feb</text>
+  <text x="230" y="300" fill="#64748b" font-family="'Inter', sans-serif" font-size="12" font-weight="500" text-anchor="middle">Mar</text>
+  <text x="320" y="300" fill="#94a3b8" font-family="'Inter', sans-serif" font-size="12" font-weight="700" text-anchor="middle">Apr</text>
+  <text x="410" y="300" fill="#64748b" font-family="'Inter', sans-serif" font-size="12" font-weight="500" text-anchor="middle">May</text>
+  <text x="500" y="300" fill="#64748b" font-family="'Inter', sans-serif" font-size="12" font-weight="500" text-anchor="middle">Jun</text>
+  <text x="590" y="300" fill="#64748b" font-family="'Inter', sans-serif" font-size="12" font-weight="500" text-anchor="middle">Jul</text>
+  <text x="670" y="300" fill="#64748b" font-family="'Inter', sans-serif" font-size="12" font-weight="500" text-anchor="middle">Aug</text>
+
+  <!-- Green Filled Area (On-Time Delivery) -->
+  <path d="M 50,118 C 90,110 135,125 180,140 C 230,155 275,108 320,86 C 365,65 410,95 455,108 C 500,120 545,62 590,52 C 635,42 660,56 680,62 L 680,274 L 50,274 Z" fill="url(#greenGrad)" />
+  <!-- Green Line Stroke -->
+  <path d="M 50,118 C 90,110 135,125 180,140 C 230,155 275,108 320,86 C 365,65 410,95 455,108 C 500,120 545,62 590,52 C 635,42 660,56 680,62" fill="none" stroke="#22c55e" stroke-width="2.8" stroke-linecap="round" filter="url(#glow)" />
+
+  <!-- Red Filled Area (Delayed Shipments) -->
+  <path d="M 50,260 C 95,258 140,252 185,246 C 230,240 275,252 320,260 C 365,268 410,264 455,258 C 500,252 545,264 590,266 C 635,268 660,264 680,264 L 680,274 L 50,274 Z" fill="url(#redGrad)" />
+  <!-- Red Line Stroke -->
+  <path d="M 50,260 C 95,258 140,252 185,246 C 230,240 275,252 320,260 C 365,268 410,264 455,258 C 500,252 545,264 590,266 C 635,268 660,264 680,264" fill="none" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round" filter="url(#glow)" />
+
+  <!-- Interactive Marker at April (X = 320) -->
+  <line x1="320" y1="34" x2="320" y2="274" stroke="rgba(255, 255, 255, 0.45)" stroke-width="1.5" stroke-dasharray="3,3" />
+
+  <!-- Green Marker Point on Green Curve at (320, 86) -->
+  <circle cx="320" cy="86" r="6.5" fill="#22c55e" stroke="#ffffff" stroke-width="2.5" />
+
+  <!-- Red Marker Point on Red Curve at (320, 260) -->
+  <circle cx="320" cy="260" r="6.5" fill="#ef4444" stroke="#ffffff" stroke-width="2.5" />
+
+  <!-- Floating Glassmorphic Tooltip Card in Middle -->
+  <g transform="translate(268, 126)">
+    <!-- Card Drop Shadow & Background -->
+    <rect x="0" y="0" width="104" height="74" rx="10" fill="#0f172a" stroke="rgba(255, 255, 255, 0.16)" stroke-width="1" />
+    <!-- Month Name -->
+    <text x="52" y="22" fill="#ffffff" font-family="'Inter', sans-serif" font-size="12.5" font-weight="700" text-anchor="middle">Apr</text>
+    <!-- Delayed Metric -->
+    <circle cx="20" cy="40" r="3" fill="#ef4444" />
+    <text x="28" y="44" fill="#ef4444" font-family="'Inter', sans-serif" font-size="11" font-weight="600">Delayed : 31</text>
+    <!-- On-Time Metric -->
+    <circle cx="20" cy="58" r="3" fill="#22c55e" />
+    <text x="28" y="62" fill="#22c55e" font-family="'Inter', sans-serif" font-size="11" font-weight="600">On Time : 340</text>
+  </g>
+</svg>
