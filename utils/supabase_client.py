@@ -31,9 +31,12 @@ def get_supabase_client() -> Client:
 
     if not supabase_url or not supabase_key:
         # Check Streamlit secrets
-        if hasattr(st, "secrets") and "SUPABASE_URL" in st.secrets:
-            supabase_url = st.secrets["SUPABASE_URL"]
-            supabase_key = st.secrets.get("SUPABASE_KEY") or st.secrets.get("SUPABASE_ANON_KEY")
+        try:
+            if hasattr(st, "secrets") and "SUPABASE_URL" in st.secrets:
+                supabase_url = st.secrets.get("SUPABASE_URL")
+                supabase_key = st.secrets.get("SUPABASE_KEY") or st.secrets.get("SUPABASE_ANON_KEY")
+        except Exception:
+            pass
 
     if not supabase_url or not supabase_key:
         raise ValueError(
@@ -44,6 +47,13 @@ def get_supabase_client() -> Client:
 
 def is_supabase_configured() -> bool:
     """Checks if Supabase credentials are available in environment or secrets."""
-    url = os.environ.get("SUPABASE_URL") or (hasattr(st, "secrets") and st.secrets.get("SUPABASE_URL"))
-    key = os.environ.get("SUPABASE_KEY") or os.environ.get("SUPABASE_ANON_KEY") or (hasattr(st, "secrets") and (st.secrets.get("SUPABASE_KEY") or st.secrets.get("SUPABASE_ANON_KEY")))
+    url = os.environ.get("SUPABASE_URL")
+    key = os.environ.get("SUPABASE_KEY") or os.environ.get("SUPABASE_ANON_KEY")
+    if not (url and key):
+        try:
+            if hasattr(st, "secrets"):
+                url = url or st.secrets.get("SUPABASE_URL")
+                key = key or st.secrets.get("SUPABASE_KEY") or st.secrets.get("SUPABASE_ANON_KEY")
+        except Exception:
+            pass
     return bool(url and key)
