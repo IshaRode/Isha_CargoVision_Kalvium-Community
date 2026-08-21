@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 from utils.data_loader import load_data
 import os
+import textwrap
 from components.top_navigation import get_top_nav_html
 from utils.auth import require_auth
 
@@ -16,92 +17,80 @@ st.set_page_config(
 require_auth("Executive Reports & Insights")
 
 css_file = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'assets', 'styles.css')
-with open(css_file) as f:
-    css_content = f"<style>{f.read()}</style>"
+if os.path.exists(css_file):
+    with open(css_file) as f:
+        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
-report_html_top = """
-<div style="background-color: var(--hero-bg-dark); min-height: 100vh; font-family: 'Inter', sans-serif;">
+st.markdown(get_top_nav_html('reports'), unsafe_allow_html=True)
 
-<div style="text-align: center; padding: 60px 20px 40px;">
-<div style="color: var(--accent-blue); font-size: 0.85rem; font-weight: 700; letter-spacing: 1.5px; margin-bottom: 10px; text-transform: uppercase;">EXECUTIVE REPORTING</div>
-<h1 style="color: white; font-size: 3rem; font-weight: 800; margin-bottom: 20px; letter-spacing: -1px;">Reports & Insights</h1>
-<p style="color: var(--nav-text); font-size: 1.1rem; max-width: 600px; margin: 0 auto; line-height: 1.6;">Automated executive reports, SLA dashboards, and custom analytics exports for carrier scorecards and board reviews.</p>
+def render_html(html_code: str):
+    clean_html = textwrap.dedent(html_code).strip()
+    st.markdown(clean_html, unsafe_allow_html=True)
+
+header_html = """
+<div class="tower-header-bar" style="margin-top: 10px;">
+<div>
+<div class="tower-title">
+<span>📄 Executive Reports & Operational Analytics</span>
 </div>
-
-<div style="max-width: 1200px; margin: 0 auto 100px; background-color: #1e293b; border-radius: 16px; overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); border: 1px solid rgba(255,255,255,0.05);">
-
-<!-- Mac Window Header -->
-<div style="background-color: #0f172a; padding: 15px 20px; display: flex; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05);">
-<div style="display: flex; gap: 8px;">
-<div style="width: 12px; height: 12px; border-radius: 50%; background-color: #ef4444;"></div>
-<div style="width: 12px; height: 12px; border-radius: 50%; background-color: #f59e0b;"></div>
-<div style="width: 12px; height: 12px; border-radius: 50%; background-color: #22c55e;"></div>
+<p class="tower-subtitle">Automated executive summaries, carrier performance scorecards, and custom analytics exports.</p>
 </div>
-<div style="margin: 0 auto; background: rgba(255,255,255,0.05); padding: 6px 20px; border-radius: 6px; color: var(--nav-text); font-size: 0.85rem; width: 300px; text-align: center; border: 1px solid rgba(255,255,255,0.05);">app.cargovision.ai/reports</div>
-<div style="background: rgba(34, 197, 94, 0.1); color: #22c55e; border: 1px solid rgba(34, 197, 94, 0.2); padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; font-weight: bold;">LIVE</div>
-</div>
-
-<!-- Main Content -->
-<div style="padding: 30px;">
-"""
-
-report_html_bottom = """
+<div class="tower-header-right">
+<div class="tower-live-pill">
+<span class="tower-live-dot"></span>
+<span>LIVE EXPORT ENGINE</span>
 </div>
 </div>
 </div>
 """
+render_html(header_html)
 
-# Render top parts (CSS + Nav + HTML Wrapper Top)
-st.markdown(css_content + get_top_nav_html('reports') + report_html_top, unsafe_allow_html=True)
+# Filter Controls
+with st.container():
+    col1, col2, col3 = st.columns([0.4, 0.4, 0.2], gap="medium")
+    with col1:
+        report_type = st.selectbox("Report Type", ["Executive Summary", "Carrier Performance", "Warehouse Utilization", "Route Efficiency"])
+    with col2:
+        date_range = st.selectbox("Date Range", ["Last 7 Days", "Last 30 Days", "This Quarter", "Year to Date", "Custom"])
+    with col3:
+        st.markdown("<div style='height: 28px;'></div>", unsafe_allow_html=True)
+        st.button("⚡ Generate Report", type="primary", use_container_width=True)
 
-# Build the interactive Streamlit components INSIDE the HTML window
-# We will use Streamlit's native layout features but customized via CSS
-
-st.markdown("<div style='background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 25px; border-radius: 12px; margin-bottom: 30px;'>", unsafe_allow_html=True)
-col1, col2, col3 = st.columns(3)
-
-with col1:
-    report_type = st.selectbox("Report Type", ["Executive Summary", "Carrier Performance", "Warehouse Utilization", "Route Efficiency"])
-with col2:
-    date_range = st.selectbox("Date Range", ["Last 7 Days", "Last 30 Days", "This Quarter", "Year to Date", "Custom"])
-with col3:
-    st.markdown("<div style='margin-top: 28px;'></div>", unsafe_allow_html=True)
-    st.button("Generate Report", type="primary", use_container_width=True)
-
-st.markdown("</div>", unsafe_allow_html=True)
-
-st.markdown(f"<div style='color: white; font-weight: 700; font-size: 1.2rem; margin-bottom: 20px;'>Data Preview: {report_type} ({date_range})</div>", unsafe_allow_html=True)
+st.markdown("<div style='height: 14px;'></div>", unsafe_allow_html=True)
+st.markdown(f"<div style='color: #ffffff; font-weight: 700; font-size: 1.15rem; margin-bottom: 12px;'>Data Preview: <span style='color: #38bdf8;'>{report_type}</span> ({date_range})</div>", unsafe_allow_html=True)
 
 # Load data based on selection
 if report_type == "Executive Summary":
-    df = load_data('shipments.csv').head(20)
+    df = load_data('shipments.csv').head(25)
 elif report_type == "Warehouse Utilization":
-    df = load_data('warehouses.csv').head(20)
+    df = load_data('warehouses.csv').head(25)
 elif report_type == "Route Efficiency":
-    df = load_data('routes.csv').head(20)
+    df = load_data('routes.csv').head(25)
 else:
-    df = pd.DataFrame({"Metric": ["On-Time Delivery", "Cost per Mile", "Damage Rate"], "Value": ["96.7%", "$1.45", "0.2%"]})
+    df = pd.DataFrame({
+        "Metric": ["On-Time Delivery", "Cost per Ton-Km", "Damage Rate", "Fleet Utilization", "Average Dwell Time"],
+        "Value": ["96.7%", "₹14.50", "0.18%", "88.4%", "2.4 hours"],
+        "Benchmark Target": ["95.0%", "₹16.00", "< 0.25%", "85.0%", "< 3.0 hours"],
+        "Status": ["Exceeding", "Optimal", "Good", "Exceeding", "Optimal"]
+    })
 
 # Display dataframe
 st.dataframe(df, use_container_width=True, hide_index=True)
 
-st.markdown("<div style='margin-bottom: 20px;'></div>", unsafe_allow_html=True)
+st.markdown("<div style='height: 16px;'></div>", unsafe_allow_html=True)
 
 csv = df.to_csv(index=False).encode('utf-8')
 
-st.markdown("<div style='display: flex; gap: 20px;'>", unsafe_allow_html=True)
-col_btn1, col_btn2, col_blank = st.columns([1, 1, 3])
+col_btn1, col_btn2, _ = st.columns([0.2, 0.2, 0.6], gap="small")
 with col_btn1:
     st.download_button(
-        label="⬇️ Download CSV",
+        label="⬇️ Export CSV",
         data=csv,
         file_name=f"{report_type.replace(' ', '_').lower()}.csv",
         mime="text/csv",
-        use_container_width=True
+        use_container_width=True,
+        type="primary"
     )
 with col_btn2:
-    st.button("📄 Download PDF", use_container_width=True)
-st.markdown("</div>", unsafe_allow_html=True)
-
-# Close the HTML wrapper
-st.markdown(report_html_bottom, unsafe_allow_html=True)
+    if st.button("📄 Export PDF", use_container_width=True):
+        st.toast("PDF compilation ready for export!", icon="📄")

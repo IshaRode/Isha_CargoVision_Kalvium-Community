@@ -1,5 +1,6 @@
 import streamlit as st
 import os
+import textwrap
 from components.top_navigation import get_top_nav_html
 from utils.auth import init_auth, is_authenticated, get_auth_token
 from utils.auth_ui import render_auth_page
@@ -19,13 +20,21 @@ if not is_authenticated():
     render_auth_page()
     st.stop()
 
-# If IS authenticated: Show the existing CargoVision dashboard & platform
+# Load custom CSS
 css_file = os.path.join(os.path.dirname(__file__), 'assets', 'styles.css')
-with open(css_file) as f:
-    css_content = f"<style>{f.read()}</style>"
+if os.path.exists(css_file):
+    with open(css_file) as f:
+        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+
+# Top Navigation
+st.markdown(get_top_nav_html('home'), unsafe_allow_html=True)
 
 token = get_auth_token()
 q_str = f"?auth_token={token}" if token else ""
+
+def render_html(html_code: str):
+    clean_html = textwrap.dedent(html_code).strip()
+    st.markdown(clean_html, unsafe_allow_html=True)
 
 hero_html = f"""
 <div class="hero-wrapper">
@@ -89,6 +98,7 @@ hero_html = f"""
 </div>
 </div>
 """
+render_html(hero_html)
 
 white_body_html = f"""
 <div class="white-section-wrapper">
@@ -159,5 +169,4 @@ white_body_html = f"""
 </div>
 </div>
 """
-
-st.markdown(css_content + get_top_nav_html('home') + hero_html + white_body_html, unsafe_allow_html=True)
+render_html(white_body_html)

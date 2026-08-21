@@ -1,5 +1,6 @@
 import streamlit as st
 import os
+import textwrap
 from components.top_navigation import get_top_nav_html
 from utils.auth import require_auth, get_auth_token
 
@@ -17,14 +18,21 @@ token = get_auth_token()
 q_str = f"?auth_token={token}" if token else ""
 
 css_file = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'assets', 'styles.css')
-with open(css_file) as f:
-    css_content = f"<style>{f.read()}</style>"
+if os.path.exists(css_file):
+    with open(css_file) as f:
+        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
-white_body_html = f"""<div class="white-section-wrapper" style="background-color: var(--light-bg) !important; min-height: 100vh;">
+st.markdown(get_top_nav_html('routes'), unsafe_allow_html=True)
+
+def render_html(html_code: str):
+    clean_html = textwrap.dedent(html_code).strip()
+    st.markdown(clean_html, unsafe_allow_html=True)
+
+white_body_html = f"""<div class="white-section-wrapper" style="min-height: 100vh;">
 <div class="page-content">
 <div class="section-subtitle">PLATFORM CAPABILITIES</div>
-<h2 class="section-title" style="color: var(--text-dark) !important; margin-bottom: 20px;">Intelligence Built for Modern Logistics</h2>
-<p style="text-align: center; color: var(--text-muted); font-size: 1.1rem; max-width: 600px; margin: 0 auto 60px auto;">Six core modules working together to transform raw logistics data into clear, actionable decisions.</p>
+<h2 class="section-title" style="margin-bottom: 20px;">Intelligence Built for Modern Logistics</h2>
+<p style="text-align: center; color: var(--text-secondary); font-size: 1.05rem; max-width: 600px; margin: 0 auto 60px auto;">Six core modules working together to transform raw logistics data into clear, actionable decisions.</p>
 
 <div class="feature-grid">
 <!-- Card 1 -->
@@ -91,4 +99,4 @@ white_body_html = f"""<div class="white-section-wrapper" style="background-color
 </div>
 </div>"""
 
-st.markdown(css_content + get_top_nav_html('routes') + white_body_html, unsafe_allow_html=True)
+render_html(white_body_html)
