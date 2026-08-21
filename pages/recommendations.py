@@ -1,6 +1,5 @@
 import streamlit as st
 import os
-import textwrap
 from components.top_navigation import get_top_nav_html
 from utils.auth import require_auth, get_auth_token
 
@@ -20,13 +19,9 @@ q_str = f"?auth_token={token}" if token else ""
 css_file = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'assets', 'styles.css')
 if os.path.exists(css_file):
     with open(css_file) as f:
-        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+        st.html(f"<style>{f.read()}</style>")
 
-st.markdown(get_top_nav_html('ai_predictions'), unsafe_allow_html=True)
-
-def render_html(html_code: str):
-    clean_html = textwrap.dedent(html_code).strip()
-    st.markdown(clean_html, unsafe_allow_html=True)
+st.html(get_top_nav_html('ai_predictions'))
 
 recs_html_top = f"""<div style="min-height: 100vh;">
 
@@ -111,4 +106,4 @@ for rec in recs_items:
 </div>
 """
 
-render_html(recs_html_top + cards_html + recs_html_bottom)
+st.html(recs_html_top + cards_html + recs_html_bottom)

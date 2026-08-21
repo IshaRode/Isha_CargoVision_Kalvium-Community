@@ -17,12 +17,11 @@ require_auth("Route Analytics")
 token = get_auth_token()
 q_str = f"?auth_token={token}" if token else ""
 
-css_file = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'assets', 'styles.css')
 if os.path.exists(css_file):
     with open(css_file) as f:
-        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+        st.html(f"<style>{f.read()}</style>")
 
-st.markdown(get_top_nav_html('routes'), unsafe_allow_html=True)
+st.html(get_top_nav_html('routes'))
 
 def render_html(html_code: str):
     clean_html = textwrap.dedent(html_code).strip()
@@ -99,4 +98,4 @@ white_body_html = f"""<div class="white-section-wrapper" style="min-height: 100v
 </div>
 </div>"""
 
-render_html(white_body_html)
+st.html(white_body_html)

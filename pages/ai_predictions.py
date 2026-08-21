@@ -1,6 +1,5 @@
 import streamlit as st
 import os
-import textwrap
 from components.top_navigation import get_top_nav_html
 from utils.auth import require_auth
 
@@ -17,13 +16,9 @@ require_auth("AI Delay Predictions")
 css_file = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'assets', 'styles.css')
 if os.path.exists(css_file):
     with open(css_file) as f:
-        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+        st.html(f"<style>{f.read()}</style>")
 
-st.markdown(get_top_nav_html('ai_predictions'), unsafe_allow_html=True)
-
-def render_html(html_code: str):
-    clean_html = textwrap.dedent(html_code).strip()
-    st.markdown(clean_html, unsafe_allow_html=True)
+st.html(get_top_nav_html('ai_predictions'))
 
 white_body_html = """
 <div class="white-section-wrapper" style="min-height: 100vh;">
@@ -95,4 +90,4 @@ white_body_html = """
 </div>
 """
 
-render_html(white_body_html)
+st.html(white_body_html)
