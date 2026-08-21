@@ -17,27 +17,30 @@ token = get_auth_token()
 q_str = f"?auth_token={token}" if token else ""
 
 css_file = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'assets', 'styles.css')
-with open(css_file) as f:
-    css_content = f"<style>{f.read()}</style>"
+if os.path.exists(css_file):
+    with open(css_file) as f:
+        st.html(f"<style>{f.read()}</style>")
 
-recs_html_top = f"""<div style="background-color: var(--hero-bg-dark); min-height: 100vh; font-family: 'Inter', sans-serif;">
+st.html(get_top_nav_html('ai_predictions'))
 
-<div style="text-align: center; padding: 60px 20px 40px;">
+recs_html_top = f"""<div style="min-height: 100vh;">
+
+<div style="text-align: center; padding: 40px 20px 30px;">
 <div style="color: var(--accent-blue); font-size: 0.85rem; font-weight: 700; letter-spacing: 1.5px; margin-bottom: 10px; text-transform: uppercase;">AI PRESCRIPTIONS</div>
-<h1 style="color: white; font-size: 3rem; font-weight: 800; margin-bottom: 20px; letter-spacing: -1px;">Smart Recommendations</h1>
-<p style="color: var(--nav-text); font-size: 1.1rem; max-width: 600px; margin: 0 auto; line-height: 1.6;">AI-generated operational suggestions ranked by impact — reroute a lane, rebalance a warehouse, or adjust a carrier split.</p>
+<h1 style="color: white; font-size: 2.8rem; font-weight: 800; margin-bottom: 16px; letter-spacing: -1px;">Smart Recommendations</h1>
+<p style="color: var(--text-secondary); font-size: 1.05rem; max-width: 600px; margin: 0 auto; line-height: 1.6;">AI-generated operational suggestions ranked by impact — reroute a lane, rebalance a warehouse, or adjust a carrier split.</p>
 </div>
 
-<div style="max-width: 1100px; margin: 0 auto 100px; background-color: #1e293b; border-radius: 16px; overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); border: 1px solid rgba(255,255,255,0.05);">
+<div style="max-width: 1100px; margin: 0 auto 60px; background-color: var(--bg-card); border-radius: 16px; overflow: hidden; box-shadow: var(--card-shadow); border: 1px solid var(--border-subtle);">
 
-<!-- Mac Window Header -->
-<div style="background-color: #0f172a; padding: 15px 20px; display: flex; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05);">
+<!-- Header -->
+<div style="background-color: rgba(15, 23, 42, 0.8); padding: 14px 20px; display: flex; align-items: center; border-bottom: 1px solid var(--border-subtle);">
 <div style="display: flex; gap: 8px;">
 <div style="width: 12px; height: 12px; border-radius: 50%; background-color: #ef4444;"></div>
 <div style="width: 12px; height: 12px; border-radius: 50%; background-color: #f59e0b;"></div>
 <div style="width: 12px; height: 12px; border-radius: 50%; background-color: #22c55e;"></div>
 </div>
-<div style="margin: 0 auto; background: rgba(255,255,255,0.05); padding: 6px 20px; border-radius: 6px; color: var(--nav-text); font-size: 0.85rem; width: 300px; text-align: center; border: 1px solid rgba(255,255,255,0.05);">app.cargovision.ai/recommendations</div>
+<div style="margin: 0 auto; background: rgba(255,255,255,0.05); padding: 6px 20px; border-radius: 6px; color: var(--text-secondary); font-size: 0.85rem; width: 300px; text-align: center; border: 1px solid rgba(255,255,255,0.05);">app.cargovision.ai/recommendations</div>
 <div style="background: rgba(34, 197, 94, 0.1); color: #22c55e; border: 1px solid rgba(34, 197, 94, 0.2); padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; font-weight: bold;">LIVE</div>
 </div>
 
@@ -91,16 +94,16 @@ for rec in recs_items:
 <div>
 <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 8px;">
 <span style="background: {rec['bg_badge']}; color: {rec['color']}; font-size: 0.75rem; font-weight: 700; padding: 4px 10px; border-radius: 12px;">{rec['risk_reduction']}</span>
-<span style="color: var(--nav-text); font-size: 0.8rem; font-weight: 500;">{rec['type']}</span>
+<span style="color: var(--text-secondary); font-size: 0.8rem; font-weight: 500;">{rec['type']}</span>
 </div>
 <h3 style="color: white; margin: 0 0 8px 0; font-size: 1.2rem; font-weight: 700;">{rec['title']}</h3>
-<p style="color: var(--nav-text); margin: 0 0 12px 0; font-size: 0.92rem; line-height: 1.5;">{rec['description']}</p>
+<p style="color: var(--text-secondary); margin: 0 0 12px 0; font-size: 0.92rem; line-height: 1.5;">{rec['description']}</p>
 <div style="color: {rec['color']}; font-weight: 600; font-size: 0.88rem;">⚡ {rec['impact']}</div>
 </div>
 <div style="flex-shrink: 0;">
-<a href="{rec['link']}" class="btn-apply-rec" style="padding: 10px 22px; font-size: 0.9rem;" target="_self">Execute Action</a>
+<a href="{rec['link']}" class="btn-primary" style="padding: 10px 22px; font-size: 0.9rem;" target="_self">Execute Action</a>
 </div>
 </div>
 """
 
-st.markdown(css_content + get_top_nav_html('routes') + recs_html_top + cards_html + recs_html_bottom, unsafe_allow_html=True)
+st.html(recs_html_top + cards_html + recs_html_bottom)

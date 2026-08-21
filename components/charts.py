@@ -18,7 +18,7 @@ def get_base_layout():
         )
     )
 
-def create_delay_trends_chart():
+def create_delay_trends_chart(delays_data=None):
     """
     Creates an interactive multi-series Delay Trends chart
     showing On-Time, Delayed, and High-Risk shipment counts across months.
@@ -92,7 +92,7 @@ def create_delay_trends_chart():
     )
     return fig
 
-def create_warehouse_utilization_chart():
+def create_warehouse_utilization_chart(shipments_data=None):
     """
     Creates an interactive Warehouse Utilization bar chart
     highlighting critical capacity thresholds.
@@ -157,13 +157,25 @@ def create_warehouse_utilization_chart():
     )
     return fig
 
-def create_shipment_status_chart():
+def create_shipment_status_chart(shipments_data=None):
     """
     Creates an interactive Donut chart showing active delivery status distribution.
     """
-    labels = ['Delivered', 'In Transit', 'Delayed', 'Pending']
-    values = [4120, 3412, 489, 320]
-    colors = ['#10b981', '#0ea5e9', '#ef4444', '#f59e0b']
+    if shipments_data and len(shipments_data) > 0:
+        df = pd.DataFrame(shipments_data)
+        counts = df['status'].value_counts().to_dict()
+        labels = list(counts.keys())
+        values = list(counts.values())
+        total = sum(values)
+        
+        # Color mapping
+        color_map = {'Delivered': '#10b981', 'In Transit': '#0ea5e9', 'Delayed': '#ef4444', 'Pending': '#f59e0b'}
+        colors = [color_map.get(label, '#94a3b8') for label in labels]
+    else:
+        labels = ['Delivered', 'In Transit', 'Delayed', 'Pending']
+        values = [4120, 3412, 489, 320]
+        colors = ['#10b981', '#0ea5e9', '#ef4444', '#f59e0b']
+        total = sum(values)
 
     fig = go.Figure(data=[go.Pie(
         labels=labels,
@@ -177,7 +189,7 @@ def create_shipment_status_chart():
 
     # Center label annotation
     fig.add_annotation(
-        text="<b>8,341</b><br><span style='font-size:11px;color:#94a3b8;'>Total Active</span>",
+        text=f"<b>{total:,}</b><br><span style='font-size:11px;color:#94a3b8;'>Total Active</span>",
         x=0.5, y=0.5,
         font=dict(size=18, color="#ffffff", family="Inter"),
         showarrow=False

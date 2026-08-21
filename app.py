@@ -19,10 +19,14 @@ if not is_authenticated():
     render_auth_page()
     st.stop()
 
-# If IS authenticated: Show the existing CargoVision dashboard & platform
+# Load custom CSS
 css_file = os.path.join(os.path.dirname(__file__), 'assets', 'styles.css')
-with open(css_file) as f:
-    css_content = f"<style>{f.read()}</style>"
+if os.path.exists(css_file):
+    with open(css_file) as f:
+        st.html(f"<style>{f.read()}</style>")
+
+# Top Navigation
+st.html(get_top_nav_html('home'))
 
 token = get_auth_token()
 q_str = f"?auth_token={token}" if token else ""
@@ -89,6 +93,7 @@ hero_html = f"""
 </div>
 </div>
 """
+st.html(hero_html)
 
 white_body_html = f"""
 <div class="white-section-wrapper">
@@ -159,5 +164,4 @@ white_body_html = f"""
 </div>
 </div>
 """
-
-st.markdown(css_content + get_top_nav_html('home') + hero_html + white_body_html, unsafe_allow_html=True)
+st.html(white_body_html)

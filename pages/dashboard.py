@@ -242,7 +242,7 @@ Updated Real-Time • Multi-Series Feed
         ])
 
         with chart_tab1:
-            fig_delay = create_delay_trends_chart()
+            fig_delay = create_delay_trends_chart(delays_data)
             st.plotly_chart(fig_delay, use_container_width=True, config={"displayModeBar": False})
             render_html("""
 <div style="display: flex; justify-content: space-around; padding: 10px 14px; background: rgba(15, 23, 42, 0.5); border-radius: 10px; margin-top: 4px; border: 1px solid rgba(255,255,255,0.04);">
@@ -262,7 +262,7 @@ Updated Real-Time • Multi-Series Feed
 """)
 
         with chart_tab2:
-            fig_wh = create_warehouse_utilization_chart()
+            fig_wh = create_warehouse_utilization_chart(shipments_data)
             st.plotly_chart(fig_wh, use_container_width=True, config={"displayModeBar": False})
             render_html("""
 <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 14px; background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 8px; margin-top: 4px;">
@@ -272,7 +272,7 @@ Updated Real-Time • Multi-Series Feed
 """)
 
         with chart_tab3:
-            fig_status = create_shipment_status_chart()
+            fig_status = create_shipment_status_chart(shipments_data)
             st.plotly_chart(fig_status, use_container_width=True, config={"displayModeBar": False})
             render_html("""
 <div style="display: flex; justify-content: space-around; padding: 10px 14px; background: rgba(15, 23, 42, 0.5); border-radius: 10px; margin-top: 4px; border: 1px solid rgba(255,255,255,0.04);">

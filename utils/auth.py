@@ -4,7 +4,6 @@ import re
 import json
 import base64
 from utils.supabase_client import get_supabase_client, is_supabase_configured
-from utils.db_service import get_user_profile, save_user_profile
 
 # CargoVision Standard Operational Locations
 CARGOVISION_LOCATIONS = [
@@ -183,6 +182,7 @@ def login_user(email: str, password: str):
             metadata = response.user.user_metadata or {}
             
             # Fetch profile from user_profiles table in Supabase
+            from utils.db_service import get_user_profile, save_user_profile
             profile = get_user_profile(u_id)
             
             if profile:
@@ -329,6 +329,7 @@ def signup_user(
             u_id = str(response.user.id)
             
             # Save profile to user_profiles table in Supabase
+            from utils.db_service import save_user_profile
             save_user_profile(
                 user_id=u_id,
                 name=name_clean,
