@@ -1098,3 +1098,17 @@ div[data-testid="stTable"] {
     text-decoration: none !important;
     opacity: 0.85;
 }
+
+/* Fix for Streamlit containers blocking clicks */
+div[data-testid="stHtml"] {
+    pointer-events: none;
+}
+div[data-testid="stHtml"] > * {
+    pointer-events: auto;
+}
+div[data-testid="stMarkdownContainer"] {
+    pointer-events: none;
+}
+div[data-testid="stMarkdownContainer"] > * {
+    pointer-events: auto;
+}
