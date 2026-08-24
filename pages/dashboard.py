@@ -48,11 +48,9 @@ if os.path.exists(css_file):
 
 def render_html(html_code: str):
     """Safely renders HTML without Markdown indentation parsing bugs."""
-    clean_html = textwrap.dedent(html_code).strip()
-    if hasattr(st, "html"):
-        st.html(clean_html)
-    else:
-        st.markdown(clean_html, unsafe_allow_html=True)
+    clean_lines = [line.lstrip() for line in html_code.splitlines()]
+    clean_html = "\n".join(clean_lines).strip()
+    st.markdown(clean_html, unsafe_allow_html=True)
 
 # 4. Render Top Navigation
 st.markdown(get_top_nav_html('dashboard'), unsafe_allow_html=True)

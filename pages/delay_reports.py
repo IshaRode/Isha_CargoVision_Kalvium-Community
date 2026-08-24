@@ -35,14 +35,12 @@ if os.path.exists(css_file):
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
 def render_html(html_code: str):
-    clean_html = textwrap.dedent(html_code).strip()
-    if hasattr(st, "html"):
-        st.html(clean_html)
-    else:
-        st.markdown(clean_html, unsafe_allow_html=True)
+    clean_lines = [line.lstrip() for line in html_code.splitlines()]
+    clean_html = "\n".join(clean_lines).strip()
+    st.markdown(clean_html, unsafe_allow_html=True)
 
 # 3. Top Navigation
-st.markdown(get_top_nav_html('reports'), unsafe_allow_html=True)
+st.markdown(get_top_nav_html('delay_reports'), unsafe_allow_html=True)
 
 # State for Add Delay Report form toggle
 if "show_add_delay" not in st.session_state:

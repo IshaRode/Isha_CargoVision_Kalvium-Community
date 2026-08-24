@@ -1,5 +1,6 @@
 import streamlit as st
 import os
+import textwrap
 from components.top_navigation import get_top_nav_html
 from utils.auth import require_auth, get_auth_token
 
@@ -13,34 +14,39 @@ st.set_page_config(
 # Protect this page
 require_auth("Smart Recommendations")
 
+def render_html(html_code: str):
+    clean_lines = [line.lstrip() for line in html_code.splitlines()]
+    clean_html = "\n".join(clean_lines).strip()
+    st.markdown(clean_html, unsafe_allow_html=True)
+
 token = get_auth_token()
 q_str = f"?auth_token={token}" if token else ""
 
 css_file = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'assets', 'styles.css')
 if os.path.exists(css_file):
     with open(css_file) as f:
-        st.html(f"<style>{f.read()}</style>")
+        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
-st.html(get_top_nav_html('ai_predictions'))
+render_html(get_top_nav_html('ai_predictions'))
 
 recs_html_top = f"""<div style="min-height: 100vh;">
 
-<div style="text-align: center; padding: 40px 20px 30px;">
-<div style="color: var(--accent-blue); font-size: 0.85rem; font-weight: 700; letter-spacing: 1.5px; margin-bottom: 10px; text-transform: uppercase;">AI PRESCRIPTIONS</div>
-<h1 style="color: white; font-size: 2.8rem; font-weight: 800; margin-bottom: 16px; letter-spacing: -1px;">Smart Recommendations</h1>
-<p style="color: var(--text-secondary); font-size: 1.05rem; max-width: 600px; margin: 0 auto; line-height: 1.6;">AI-generated operational suggestions ranked by impact — reroute a lane, rebalance a warehouse, or adjust a carrier split.</p>
+<div style="text-align:center;padding:40px 20px 30px;">
+<div style="color:#0ea5e9;font-size:0.85rem;font-weight:700;letter-spacing:1.5px;margin-bottom:10px;text-transform:uppercase;">AI PRESCRIPTIONS</div>
+<h1 style="color:white;font-size:2.8rem;font-weight:800;margin-bottom:16px;letter-spacing:-1px;font-family:'Outfit',sans-serif;">Smart Recommendations</h1>
+<p style="color:#94a3b8;font-size:1.05rem;max-width:600px;margin:0 auto;line-height:1.6;">AI-generated operational suggestions ranked by impact — reroute a lane, rebalance a warehouse, or adjust a carrier split.</p>
 </div>
 
-<div style="max-width: 1100px; margin: 0 auto 60px; background-color: var(--bg-card); border-radius: 16px; overflow: hidden; box-shadow: var(--card-shadow); border: 1px solid var(--border-subtle);">
+<div style="width:100%;max-width:100%;margin:0 0 60px;background-color:rgba(30,41,59,0.55);border-radius:16px;overflow:hidden;box-shadow:0 10px 30px -5px rgba(0,0,0,0.35);border:1px solid rgba(255,255,255,0.08);">
 
 <!-- Header -->
-<div style="background-color: rgba(15, 23, 42, 0.8); padding: 14px 20px; display: flex; align-items: center; border-bottom: 1px solid var(--border-subtle);">
+<div style="background-color:rgba(15,23,42,0.8);padding:14px 20px;display:flex;align-items:center;border-bottom:1px solid rgba(255,255,255,0.08);">
 <div style="display: flex; gap: 8px;">
 <div style="width: 12px; height: 12px; border-radius: 50%; background-color: #ef4444;"></div>
 <div style="width: 12px; height: 12px; border-radius: 50%; background-color: #f59e0b;"></div>
 <div style="width: 12px; height: 12px; border-radius: 50%; background-color: #22c55e;"></div>
 </div>
-<div style="margin: 0 auto; background: rgba(255,255,255,0.05); padding: 6px 20px; border-radius: 6px; color: var(--text-secondary); font-size: 0.85rem; width: 300px; text-align: center; border: 1px solid rgba(255,255,255,0.05);">app.cargovision.ai/recommendations</div>
+<div style="margin:0 auto;background:rgba(255,255,255,0.05);padding:6px 20px;border-radius:6px;color:#94a3b8;font-size:0.85rem;width:300px;text-align:center;border:1px solid rgba(255,255,255,0.05);">app.cargovision.ai/recommendations</div>
 <div style="background: rgba(34, 197, 94, 0.1); color: #22c55e; border: 1px solid rgba(34, 197, 94, 0.2); padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; font-weight: bold;">LIVE</div>
 </div>
 
@@ -94,16 +100,16 @@ for rec in recs_items:
 <div>
 <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 8px;">
 <span style="background: {rec['bg_badge']}; color: {rec['color']}; font-size: 0.75rem; font-weight: 700; padding: 4px 10px; border-radius: 12px;">{rec['risk_reduction']}</span>
-<span style="color: var(--text-secondary); font-size: 0.8rem; font-weight: 500;">{rec['type']}</span>
+<span style="color:#94a3b8;font-size:0.8rem;font-weight:500;">{rec['type']}</span>
 </div>
 <h3 style="color: white; margin: 0 0 8px 0; font-size: 1.2rem; font-weight: 700;">{rec['title']}</h3>
-<p style="color: var(--text-secondary); margin: 0 0 12px 0; font-size: 0.92rem; line-height: 1.5;">{rec['description']}</p>
+<p style="color:#94a3b8;margin:0 0 12px 0;font-size:0.92rem;line-height:1.5;">{rec['description']}</p>
 <div style="color: {rec['color']}; font-weight: 600; font-size: 0.88rem;">⚡ {rec['impact']}</div>
 </div>
 <div style="flex-shrink: 0;">
-<a href="{rec['link']}" class="btn-primary" style="padding: 10px 22px; font-size: 0.9rem;" target="_self">Execute Action</a>
+<a href="{rec['link']}" style="background:linear-gradient(135deg,#0ea5e9 0%,#0284c7 100%);color:white;padding:10px 22px;font-size:0.9rem;border-radius:24px;font-weight:600;text-decoration:none;display:inline-block;" target="_self">Execute Action</a>
 </div>
 </div>
 """
 
-st.html(recs_html_top + cards_html + recs_html_bottom)
+render_html(recs_html_top + cards_html + recs_html_bottom)
