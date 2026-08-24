@@ -163,10 +163,10 @@ Logout
 
     with kpi_col1:
         render_html("""
-<div class="tower-kpi-card">
+<div class="tower-kpi-card glow-card-interactive">
 <div class="kpi-top-row">
 <div class="kpi-icon-bubble kpi-icon-red">⏱️</div>
-<span class="kpi-trend-tag trend-good">↓ 14.2%</span>
+<span class="badge-glow-green">↓ 14.2%</span>
 </div>
 <div class="kpi-main-val" style="color: #ef4444;">4.2h</div>
 <div class="kpi-main-label">Average Delay</div>
@@ -176,10 +176,10 @@ Logout
 
     with kpi_col2:
         render_html("""
-<div class="tower-kpi-card">
+<div class="tower-kpi-card glow-card-interactive">
 <div class="kpi-top-row">
 <div class="kpi-icon-bubble kpi-icon-green">🎯</div>
-<span class="kpi-trend-tag trend-good">↑ 2.3%</span>
+<span class="badge-glow-green">↑ 2.3%</span>
 </div>
 <div class="kpi-main-val" style="color: #22c55e;">94.8%</div>
 <div class="kpi-main-label">On-Time Delivery Rate</div>
@@ -189,10 +189,10 @@ Logout
 
     with kpi_col3:
         render_html(f"""
-<div class="tower-kpi-card">
+<div class="tower-kpi-card glow-card-interactive">
 <div class="kpi-top-row">
 <div class="kpi-icon-bubble kpi-icon-amber">⚠️</div>
-<span class="kpi-trend-tag trend-warn">{active_delays_count} Active Alerts</span>
+<span class="badge-glow-amber">{active_delays_count} Active Alerts</span>
 </div>
 <div class="kpi-main-val" style="color: #f59e0b;">12</div>
 <div class="kpi-main-label">Routes at Risk</div>
@@ -203,10 +203,10 @@ Logout
     with kpi_col4:
         display_shipments = max(active_shipments_count, 8341)
         render_html(f"""
-<div class="tower-kpi-card">
+<div class="tower-kpi-card glow-card-interactive">
 <div class="kpi-top-row">
 <div class="kpi-icon-bubble kpi-icon-blue">🚚</div>
-<span class="kpi-trend-tag trend-good">↑ 5.2%</span>
+<span class="badge-glow-blue">↑ 5.2%</span>
 </div>
 <div class="kpi-main-val" style="color: #38bdf8;">{display_shipments:,}</div>
 <div class="kpi-main-label">Active Shipments</div>

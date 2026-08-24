@@ -50,15 +50,33 @@ render_html(header_html)
 with st.container():
     col1, col2, col3 = st.columns([0.4, 0.4, 0.2], gap="medium")
     with col1:
-        report_type = st.selectbox("Report Type", ["Executive Summary", "Carrier Performance", "Warehouse Utilization", "Route Efficiency"])
+        report_type = st.selectbox("Report Scope", ["Executive Summary", "Carrier Performance", "Warehouse Utilization", "Route Efficiency"])
     with col2:
-        date_range = st.selectbox("Date Range", ["Last 7 Days", "Last 30 Days", "This Quarter", "Year to Date", "Custom"])
+        date_range = st.selectbox("Reporting Period", ["Last 7 Days", "Last 30 Days", "This Quarter", "Year to Date", "Custom"])
     with col3:
         st.markdown("<div style='height: 28px;'></div>", unsafe_allow_html=True)
-        st.button("⚡ Generate Report", type="primary", use_container_width=True)
+        if st.button("⚡ Generate Report", type="primary", use_container_width=True):
+            st.toast(f"✅ Generated {report_type} for {date_range}!", icon="📊")
 
-st.markdown("<div style='height: 14px;'></div>", unsafe_allow_html=True)
-st.markdown(f"<div style='color: #ffffff; font-weight: 700; font-size: 1.15rem; margin-bottom: 12px;'>Data Preview: <span style='color: #38bdf8;'>{report_type}</span> ({date_range})</div>", unsafe_allow_html=True)
+# Metric Summary Cards
+render_html(f"""
+<div style="display: flex; gap: 16px; margin: 20px 0 24px;">
+<div class="tower-kpi-card glow-card-interactive" style="flex: 1; padding: 14px 18px;">
+<div style="font-size: 0.75rem; color: #94a3b8; font-weight: 600;">ACTIVE REPORT SCOPE</div>
+<div style="font-size: 1.15rem; font-weight: 800; color: #38bdf8;">{report_type}</div>
+</div>
+<div class="tower-kpi-card glow-card-interactive" style="flex: 1; padding: 14px 18px;">
+<div style="font-size: 0.75rem; color: #94a3b8; font-weight: 600;">TIMEFRAME WINDOW</div>
+<div style="font-size: 1.15rem; font-weight: 800; color: #4ade80;">{date_range}</div>
+</div>
+<div class="tower-kpi-card glow-card-interactive" style="flex: 1; padding: 14px 18px;">
+<div style="font-size: 0.75rem; color: #94a3b8; font-weight: 600;">DATA ENGINE STATUS</div>
+<div style="font-size: 1.15rem; font-weight: 800; color: #fbbf24;">⚡ Supabase Synced</div>
+</div>
+</div>
+""")
+
+st.markdown(f"<div style='color: #ffffff; font-weight: 700; font-size: 1.15rem; margin-bottom: 12px;'>Executive Data Matrix: <span style='color: #38bdf8;'>{report_type}</span> ({date_range})</div>", unsafe_allow_html=True)
 
 # Load data based on selection
 if report_type == "Executive Summary":
@@ -72,7 +90,7 @@ else:
         "Metric": ["On-Time Delivery", "Cost per Ton-Km", "Damage Rate", "Fleet Utilization", "Average Dwell Time"],
         "Value": ["96.7%", "₹14.50", "0.18%", "88.4%", "2.4 hours"],
         "Benchmark Target": ["95.0%", "₹16.00", "< 0.25%", "85.0%", "< 3.0 hours"],
-        "Status": ["Exceeding", "Optimal", "Good", "Exceeding", "Optimal"]
+        "Status": ["Exceeding Target", "Optimal Efficiency", "Within Limit", "Exceeding Target", "Optimal Efficiency"]
     })
 
 # Display dataframe
@@ -82,10 +100,10 @@ st.markdown("<div style='height: 16px;'></div>", unsafe_allow_html=True)
 
 csv = df.to_csv(index=False).encode('utf-8')
 
-col_btn1, col_btn2, _ = st.columns([0.2, 0.2, 0.6], gap="small")
+col_btn1, col_btn2, _ = st.columns([0.25, 0.25, 0.5], gap="small")
 with col_btn1:
     st.download_button(
-        label="⬇️ Export CSV",
+        label="⬇️ Export CSV Report",
         data=csv,
         file_name=f"{report_type.replace(' ', '_').lower()}.csv",
         mime="text/csv",
@@ -93,5 +111,5 @@ with col_btn1:
         type="primary"
     )
 with col_btn2:
-    if st.button("📄 Export PDF", use_container_width=True):
+    if st.button("📄 Export PDF Executive Deck", use_container_width=True):
         st.toast("PDF compilation ready for export!", icon="📄")

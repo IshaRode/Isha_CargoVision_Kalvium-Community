@@ -55,101 +55,113 @@ warehouse_html = f"""<div style="min-height:100vh;">
 
 <!-- KPI Cards Row -->
 <div style="display: flex; gap: 20px; margin-bottom: 30px;">
-<a href="/shipment_tracking{q_str}" target="_self" style="background:rgba(30,41,59,0.55);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:20px;text-decoration:none;display:block;flex:1;">
+<a href="/shipment_tracking{q_str}" target="_self" class="glow-card-interactive" style="background:rgba(30,41,59,0.55);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:20px;text-decoration:none;display:block;flex:1;">
 <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
 <span style="font-size: 1.5rem;">🏭</span>
-<span style="color: #3b82f6; font-size: 0.75rem; font-weight: 700;">NETWORK</span>
+<span class="badge-glow-blue">NETWORK</span>
 </div>
 <div style="color: white; font-size: 2.5rem; font-weight: 800; margin-bottom: 5px;">66.7%</div>
 <div style="color:#94a3b8;font-size:0.95rem;margin-bottom:15px;font-weight:600;">Overall Utilization</div>
-<div style="color: #ef4444; font-size: 0.85rem; font-weight: 600;">↓ 2.1% higher than avg</div>
+<div style="color: #4ade80; font-size: 0.85rem; font-weight: 600;">↓ 2.1% optimal efficiency</div>
 </a>
 
-<a href="/dashboard{q_str}" target="_self" style="background:rgba(30,41,59,0.55);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:20px;text-decoration:none;display:block;flex:1;">
+<a href="/dashboard{q_str}" target="_self" class="glow-card-interactive" style="background:rgba(30,41,59,0.55);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:20px;text-decoration:none;display:block;flex:1;">
 <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
 <span style="font-size: 1.5rem;">⚡</span>
-<span style="color: #10b981; font-size: 0.75rem; font-weight: 700;">THROUGHPUT</span>
+<span class="badge-glow-green">THROUGHPUT</span>
 </div>
 <div style="color: white; font-size: 2.5rem; font-weight: 800; margin-bottom: 5px;">14.4h</div>
 <div style="color:#94a3b8;font-size:0.95rem;margin-bottom:15px;font-weight:600;">Avg Processing Time</div>
-<div style="color: #10b981; font-size: 0.85rem; font-weight: 600;">↑ 0.4 hrs faster</div>
+<div style="color: #4ade80; font-size: 0.85rem; font-weight: 600;">↑ 0.4 hrs faster than SLA</div>
 </a>
 
-<a href="/dashboard{q_str}" target="_self" style="background:rgba(30,41,59,0.55);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:20px;text-decoration:none;display:block;flex:1;">
+<a href="/dashboard{q_str}" target="_self" class="glow-card-interactive" style="background:rgba(30,41,59,0.55);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:20px;text-decoration:none;display:block;flex:1;">
 <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
 <span style="font-size: 1.5rem;">⚠️</span>
-<span style="color: #ef4444; font-size: 0.75rem; font-weight: 700;">CRITICAL</span>
+<span class="badge-glow-red">CRITICAL</span>
 </div>
 <div style="color: white; font-size: 2.5rem; font-weight: 800; margin-bottom: 5px;">6</div>
-<div style="color:#94a3b8;font-size:0.95rem;margin-bottom:15px;font-weight:600;">Warehouses Over Capacity</div>
-<div style="color: #ef4444; font-size: 0.85rem; font-weight: 600;">↓ Immediate Action Needed</div>
+<div style="color:#94a3b8;font-size:0.95rem;margin-bottom:15px;font-weight:600;">Hubs Near Capacity</div>
+<div style="color: #fca5a5; font-size: 0.85rem; font-weight: 600;">↓ Rerouting Active</div>
 </a>
 
-<a href="/shipment_tracking{q_str}" target="_self" style="background:rgba(30,41,59,0.55);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:20px;text-decoration:none;display:block;flex:1;">
+<a href="/shipment_tracking{q_str}" target="_self" class="glow-card-interactive" style="background:rgba(30,41,59,0.55);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:20px;text-decoration:none;display:block;flex:1;">
 <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
 <span style="font-size: 1.5rem;">📦</span>
-<span style="color: #0ea5e9; font-size: 0.75rem; font-weight: 700;">VOLUME</span>
+<span class="badge-glow-amber">VOLUME</span>
 </div>
 <div style="color: white; font-size: 2.5rem; font-weight: 800; margin-bottom: 5px;">142k</div>
 <div style="color:#94a3b8;font-size:0.95rem;margin-bottom:15px;font-weight:600;">Daily Transfer Volume</div>
-<div style="color:#64748b;font-size:0.85rem;font-weight:600;">— Peak volume expected today</div>
+<div style="color:#fbbf24;font-size:0.85rem;font-weight:600;">— Peak volume expected today</div>
 </a>
 </div>
 
 <!-- Active Bottlenecks Section -->
-<div style="color:#64748b;font-size:0.8rem;font-weight:700;letter-spacing:1px;margin-bottom:20px;margin-top:40px;">ACTIVE BOTTLENECKS</div>
+<div style="color:#64748b;font-size:0.8rem;font-weight:700;letter-spacing:1px;margin-bottom:20px;margin-top:40px;">ACTIVE WAREHOUSE BOTTLENECKS & DISPATCH STATUS</div>
 
 <div style="display: flex; gap: 20px;">
 
 <!-- WH-15 -->
-<a href="/route_analytics{q_str}" style="flex:1;background:rgba(255,255,255,0.02);border:1px solid rgba(239,68,68,0.2);border-left:4px solid #ef4444;border-radius:12px;padding:20px;text-decoration:none;display:block;" target="_self">
-<div style="color: #ef4444; font-size: 0.7rem; font-weight: 800; letter-spacing: 1px; margin-bottom: 10px;">⚠️ OVER CAPACITY</div>
-<div style="color: white; font-weight: 700; font-size: 1.1rem; margin-bottom: 15px;">WH-15 (Mumbai)</div>
+<a href="/route_analytics{q_str}" class="glow-card-interactive" style="flex:1;background:rgba(255,255,255,0.02);border:1px solid rgba(239,68,68,0.25);border-left:4px solid #ef4444;border-radius:12px;padding:20px;text-decoration:none;display:block;" target="_self">
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+<span class="badge-glow-red">⚠️ OVER CAPACITY</span>
+<span style="font-size: 0.72rem; color: #94a3b8;">12 Docks</span>
+</div>
+<div style="color: white; font-weight: 700; font-size: 1.1rem; margin-bottom: 15px;">WH-15 (Mumbai DC)</div>
 <div style="display:flex;justify-content:space-between;font-size:0.85rem;color:#94a3b8;margin-bottom:8px;">
 <span>Utilization</span>
 <span style="color:#ef4444;font-weight:700;">104%</span>
 </div>
-<div style="height: 4px; background: rgba(239,68,68,0.2); border-radius: 2px;">
-<div style="width: 100%; height: 100%; background: #ef4444; border-radius: 2px;"></div>
+<div class="glass-progress-bg">
+<div class="glass-progress-fill-red" style="width: 100%;"></div>
 </div>
 </a>
 
 <!-- WH-16 -->
-<a href="/route_analytics{q_str}" style="flex:1;background:rgba(255,255,255,0.02);border:1px solid rgba(239,68,68,0.2);border-left:4px solid #ef4444;border-radius:12px;padding:20px;text-decoration:none;display:block;" target="_self">
-<div style="color: #ef4444; font-size: 0.7rem; font-weight: 800; letter-spacing: 1px; margin-bottom: 10px;">⚠️ OVER CAPACITY</div>
-<div style="color: white; font-weight: 700; font-size: 1.1rem; margin-bottom: 15px;">WH-16 (Pune DC)</div>
+<a href="/route_analytics{q_str}" class="glow-card-interactive" style="flex:1;background:rgba(255,255,255,0.02);border:1px solid rgba(239,68,68,0.25);border-left:4px solid #ef4444;border-radius:12px;padding:20px;text-decoration:none;display:block;" target="_self">
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+<span class="badge-glow-red">⚠️ OVER CAPACITY</span>
+<span style="font-size: 0.72rem; color: #94a3b8;">8 Docks</span>
+</div>
+<div style="color: white; font-weight: 700; font-size: 1.1rem; margin-bottom: 15px;">WH-16 (Pune Hub)</div>
 <div style="display:flex;justify-content:space-between;font-size:0.85rem;color:#94a3b8;margin-bottom:8px;">
 <span>Utilization</span>
 <span style="color:#ef4444;font-weight:700;">98%</span>
 </div>
-<div style="height: 4px; background: rgba(239,68,68,0.2); border-radius: 2px;">
-<div style="width: 98%; height: 100%; background: #ef4444; border-radius: 2px;"></div>
+<div class="glass-progress-bg">
+<div class="glass-progress-fill-red" style="width: 98%;"></div>
 </div>
 </a>
 
 <!-- WH-19 -->
-<a href="/route_analytics{q_str}" style="flex:1;background:rgba(255,255,255,0.02);border:1px solid rgba(245,158,11,0.2);border-left:4px solid #f59e0b;border-radius:12px;padding:20px;text-decoration:none;display:block;" target="_self">
-<div style="color: #f59e0b; font-size: 0.7rem; font-weight: 800; letter-spacing: 1px; margin-bottom: 10px;">⚡ HIGH UTILIZATION</div>
-<div style="color: white; font-weight: 700; font-size: 1.1rem; margin-bottom: 15px;">WH-19 (Delhi Hub)</div>
+<a href="/route_analytics{q_str}" class="glow-card-interactive" style="flex:1;background:rgba(255,255,255,0.02);border:1px solid rgba(245,158,11,0.25);border-left:4px solid #f59e0b;border-radius:12px;padding:20px;text-decoration:none;display:block;" target="_self">
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+<span class="badge-glow-amber">⚡ HIGH UTILIZATION</span>
+<span style="font-size: 0.72rem; color: #94a3b8;">16 Docks</span>
+</div>
+<div style="color: white; font-weight: 700; font-size: 1.1rem; margin-bottom: 15px;">WH-19 (Delhi Central)</div>
 <div style="display:flex;justify-content:space-between;font-size:0.85rem;color:#94a3b8;margin-bottom:8px;">
 <span>Utilization</span>
 <span style="color:#f59e0b;font-weight:700;">91%</span>
 </div>
-<div style="height: 4px; background: rgba(245,158,11,0.2); border-radius: 2px;">
-<div style="width: 91%; height: 100%; background: #f59e0b; border-radius: 2px;"></div>
+<div class="glass-progress-bg">
+<div class="glass-progress-fill-amber" style="width: 91%;"></div>
 </div>
 </a>
 
 <!-- WH-22 -->
-<a href="/route_analytics{q_str}" style="flex:1;background:rgba(255,255,255,0.02);border:1px solid rgba(245,158,11,0.2);border-left:4px solid #f59e0b;border-radius:12px;padding:20px;text-decoration:none;display:block;" target="_self">
-<div style="color: #f59e0b; font-size: 0.7rem; font-weight: 800; letter-spacing: 1px; margin-bottom: 10px;">⚡ HIGH UTILIZATION</div>
-<div style="color: white; font-weight: 700; font-size: 1.1rem; margin-bottom: 15px;">WH-22 (Chennai)</div>
+<a href="/route_analytics{q_str}" class="glow-card-interactive" style="flex:1;background:rgba(255,255,255,0.02);border:1px solid rgba(245,158,11,0.25);border-left:4px solid #f59e0b;border-radius:12px;padding:20px;text-decoration:none;display:block;" target="_self">
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+<span class="badge-glow-amber">⚡ HIGH UTILIZATION</span>
+<span style="font-size: 0.72rem; color: #94a3b8;">10 Docks</span>
+</div>
+<div style="color: white; font-weight: 700; font-size: 1.1rem; margin-bottom: 15px;">WH-22 (Chennai Port)</div>
 <div style="display:flex;justify-content:space-between;font-size:0.85rem;color:#94a3b8;margin-bottom:8px;">
 <span>Utilization</span>
 <span style="color:#f59e0b;font-weight:700;">88%</span>
 </div>
-<div style="height: 4px; background: rgba(245,158,11,0.2); border-radius: 2px;">
-<div style="width: 88%; height: 100%; background: #f59e0b; border-radius: 2px;"></div>
+<div class="glass-progress-bg">
+<div class="glass-progress-fill-amber" style="width: 88%;"></div>
 </div>
 </a>
 
@@ -157,6 +169,6 @@ warehouse_html = f"""<div style="min-height:100vh;">
 
 </div>
 </div>
-</div>"""
+</div>""""""
 
 render_html(warehouse_html)

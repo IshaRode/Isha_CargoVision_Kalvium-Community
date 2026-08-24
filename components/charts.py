@@ -28,40 +28,46 @@ def create_delay_trends_chart(delays_data=None):
     delayed = [45, 38, 31, 42, 29, 35, 26, 22]
     high_risk = [18, 14, 12, 19, 11, 15, 9, 8]
 
+    if delays_data and len(delays_data) > 0:
+        # Dynamic calculation if real delay records exist
+        active_delays_cnt = len(delays_data)
+        delayed[-1] = max(15, active_delays_cnt)
+        high_risk[-1] = max(5, int(active_delays_cnt * 0.35))
+
     fig = go.Figure()
 
     # 1. On-Time Shipments (Cyan Glow Area)
     fig.add_trace(go.Scatter(
         x=months,
         y=on_time,
-        name="On-Time",
+        name="On-Time Rate",
         mode="lines+markers",
-        line=dict(color="#0ea5e9", width=3, shape="spline"),
+        line=dict(color="#38bdf8", width=3.5, shape="spline"),
         fill="tozeroy",
-        fillcolor="rgba(14, 165, 233, 0.12)",
-        marker=dict(size=7, color="#0ea5e9", line=dict(color="#ffffff", width=1.5)),
+        fillcolor="rgba(14, 165, 233, 0.15)",
+        marker=dict(size=8, color="#0ea5e9", line=dict(color="#ffffff", width=2)),
         hovertemplate="<b>%{x}</b><br>📦 On-Time: <b>%{y}</b> shipments<extra></extra>"
     ))
 
-    # 2. Delayed Shipments (Amber Line)
+    # 2. Delayed Shipments (Amber Glow Line)
     fig.add_trace(go.Scatter(
         x=months,
         y=delayed,
-        name="Delayed",
+        name="Delayed Traffic",
         mode="lines+markers",
-        line=dict(color="#f59e0b", width=2.5, shape="spline"),
-        marker=dict(size=7, color="#f59e0b", symbol="circle"),
+        line=dict(color="#fbbf24", width=3, shape="spline"),
+        marker=dict(size=8, color="#f59e0b", line=dict(color="#ffffff", width=1.5), symbol="circle"),
         hovertemplate="<b>%{x}</b><br>⏳ Delayed: <b>%{y}</b> shipments<extra></extra>"
     ))
 
-    # 3. High-Risk Shipments (Red Dashed Line)
+    # 3. High-Risk Corridors (Red Neon Dashed Line)
     fig.add_trace(go.Scatter(
         x=months,
         y=high_risk,
-        name="High-Risk",
+        name="Critical Risk",
         mode="lines+markers",
-        line=dict(color="#ef4444", width=2, dash="dash", shape="spline"),
-        marker=dict(size=7, color="#ef4444", symbol="diamond"),
+        line=dict(color="#f87171", width=2.5, dash="dash", shape="spline"),
+        marker=dict(size=8, color="#ef4444", line=dict(color="#ffffff", width=1.5), symbol="diamond"),
         hovertemplate="<b>%{x}</b><br>⚠️ High-Risk: <b>%{y}</b> shipments<extra></extra>"
     ))
 
@@ -72,20 +78,20 @@ def create_delay_trends_chart(delays_data=None):
         legend=dict(
             orientation="h",
             yanchor="bottom",
-            y=1.02,
+            y=1.04,
             xanchor="right",
             x=1,
-            font=dict(color="#cbd5e1", size=11)
+            font=dict(color="#e2e8f0", size=11, family="Outfit, sans-serif")
         ),
         xaxis=dict(
             showgrid=False,
             showline=True,
-            linecolor="rgba(255, 255, 255, 0.1)",
+            linecolor="rgba(255, 255, 255, 0.15)",
             tickfont=dict(color="#94a3b8", size=12)
         ),
         yaxis=dict(
             showgrid=True,
-            gridcolor="rgba(255, 255, 255, 0.06)",
+            gridcolor="rgba(255, 255, 255, 0.05)",
             tickfont=dict(color="#94a3b8", size=12),
             title=dict(text="Shipments Count", font=dict(color="#64748b", size=11))
         )
@@ -121,9 +127,9 @@ def create_warehouse_utilization_chart(shipments_data=None):
         orientation='h',
         marker=dict(
             color=colors[::-1],
-            line=dict(color='rgba(255,255,255,0.15)', width=1)
+            line=dict(color='rgba(255,255,255,0.2)', width=1)
         ),
-        text=[f"{u}%" for u in utilization[::-1]],
+        text=[f" <b>{u}%</b>" for u in utilization[::-1]],
         textposition='outside',
         textfont=dict(color='#ffffff', size=11, family='Inter'),
         hovertemplate="<b>%{y}</b><br>Capacity Utilization: <b>%{x}%</b><extra></extra>"
@@ -133,10 +139,10 @@ def create_warehouse_utilization_chart(shipments_data=None):
     fig.add_vline(
         x=90,
         line_dash="dot",
-        line_color="rgba(239, 68, 68, 0.7)",
+        line_color="rgba(239, 68, 68, 0.8)",
         annotation_text="90% Critical Threshold",
         annotation_position="top right",
-        annotation_font=dict(color="#ef4444", size=10)
+        annotation_font=dict(color="#f87171", size=11, family="Outfit, sans-serif")
     )
 
     fig.update_layout(
@@ -146,13 +152,13 @@ def create_warehouse_utilization_chart(shipments_data=None):
         xaxis=dict(
             range=[0, 108],
             showgrid=True,
-            gridcolor="rgba(255, 255, 255, 0.06)",
+            gridcolor="rgba(255, 255, 255, 0.05)",
             tickfont=dict(color="#94a3b8", size=11),
             title=dict(text="Capacity Utilization (%)", font=dict(color="#64748b", size=11))
         ),
         yaxis=dict(
             showgrid=False,
-            tickfont=dict(color="#f8fafc", size=12)
+            tickfont=dict(color="#f8fafc", size=12, family="Outfit, sans-serif")
         )
     )
     return fig
