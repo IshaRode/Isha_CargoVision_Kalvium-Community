@@ -24,7 +24,8 @@ if os.path.exists(css_file):
 st.markdown(get_top_nav_html('reports'), unsafe_allow_html=True)
 
 def render_html(html_code: str):
-    clean_html = textwrap.dedent(html_code).strip()
+    clean_lines = [line.lstrip() for line in html_code.splitlines()]
+    clean_html = "\n".join(clean_lines).strip()
     st.markdown(clean_html, unsafe_allow_html=True)
 
 header_html = """
