@@ -24,8 +24,11 @@ def get_top_nav_html(active_page='home'):
     return f"""<div class="top-nav-wrapper">
 <div class="top-nav-container">
 <div class="logo-section">
-<div class="nav-logo-icon">CV</div>
-<span class="nav-logo-text">CargoVision</span>
+<div class="nav-logo-icon" style="background: linear-gradient(135deg, #0ea5e9, #6366f1); color: #ffffff; font-weight: 800; border-radius: 8px; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 12px rgba(14, 165, 233, 0.4);">CV</div>
+<span class="nav-logo-text" style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.2rem; background: linear-gradient(90deg, #ffffff, #38bdf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">CargoVision</span>
+<span class="badge-glow-green" style="font-size: 0.65rem; padding: 2px 7px; margin-left: 6px; display: inline-flex; align-items: center; gap: 4px;">
+<span class="tower-live-dot" style="width: 5px; height: 5px;"></span> v2.4 Live
+</span>
 </div>
 <div class="nav-links">
 <a href="/{q_str}" target="_self" class="top-nav-link {active_classes['home']}">Home</a>
