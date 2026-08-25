@@ -245,6 +245,22 @@ Enterprise Logistics Intelligence & Multi-Tier Control Tower
                     with col_p2:
                         su_confirm = st.text_input("Confirm Password *", type="password", placeholder="Re-enter password", key="su_confirm")
 
+                    # Live Password Strength Meter
+                    if su_pass:
+                        from utils.auth import evaluate_password_strength
+                        p_eval = evaluate_password_strength(su_pass)
+                        st.markdown(f"""
+<div style="margin: -8px 0 12px; background: rgba(15,23,42,0.5); padding: 8px 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);">
+<div style="display: flex; justify-content: space-between; font-size: 0.72rem; font-weight: 700; color: #94a3b8; margin-bottom: 4px;">
+<span>SECURITY STRENGTH</span>
+<span style="color: {p_eval['color']};">{p_eval['label']}</span>
+</div>
+<div class="glass-progress-bg" style="height: 6px;">
+<div style="height: 100%; width: {p_eval['pct']}%; background: {p_eval['color']}; border-radius: 3px; transition: width 0.3s ease;"></div>
+</div>
+</div>
+""", unsafe_allow_html=True)
+
                     col_r1, col_r2 = st.columns(2)
                     with col_r1:
                         # Only allowed roles for public registration
@@ -264,6 +280,17 @@ Enterprise Logistics Intelligence & Multi-Tier Control Tower
                             key="su_assigned_loc",
                             help="You will be authorized to record operational events and updates at this location."
                         )
+
+                    # Location Authorization Preview Card
+                    st.markdown(f"""
+<div style="background: rgba(14,165,233,0.08); border: 1px solid rgba(14,165,233,0.2); border-left: 3px solid #0ea5e9; border-radius: 8px; padding: 10px 14px; margin-bottom: 12px;">
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;">
+<span style="font-size: 0.75rem; font-weight: 700; color: #38bdf8;">📍 LOCATION RBAC SCOPE</span>
+<span style="font-size: 0.7rem; font-weight: 700; color: #22c55e; background: rgba(34,197,94,0.15); padding: 1px 6px; border-radius: 4px;">VERIFIED</span>
+</div>
+<div style="font-size: 0.82rem; color: #f8fafc; font-weight: 600;">Authorized for operational scan logging at <b>{su_assigned_loc}</b>.</div>
+</div>
+""", unsafe_allow_html=True)
 
                     st.markdown("<div style='height: 4px;'></div>", unsafe_allow_html=True)
                     submit_signup = st.form_submit_button("Register Account & Profile", use_container_width=True, type="primary")
