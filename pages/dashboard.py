@@ -46,6 +46,269 @@ if os.path.exists(css_file):
     with open(css_file) as f:
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
+# Dashboard-only visual refinements. The shared stylesheet remains unchanged.
+st.markdown("""
+<style id="dashboard-ui-overrides">
+    .tower-header-bar {
+        padding: 6px 4px 22px !important;
+        margin: 0 0 28px !important;
+    }
+
+    .tower-title {
+        font-size: 1.9rem !important;
+        line-height: 1.15 !important;
+        letter-spacing: 0 !important;
+    }
+
+    .tower-subtitle {
+        font-size: 0.86rem !important;
+        line-height: 1.55 !important;
+    }
+
+    .side-nav-card {
+        padding: 18px 12px !important;
+        gap: 6px !important;
+        border-radius: 14px !important;
+    }
+
+    .side-nav-heading {
+        padding: 4px 12px 12px !important;
+    }
+
+    .side-nav-link {
+        min-height: 42px !important;
+        padding: 10px 12px !important;
+        gap: 11px !important;
+    }
+
+    .tower-kpi-card {
+        min-height: 166px !important;
+        height: 100% !important;
+        padding: 20px 21px !important;
+        border-radius: 14px !important;
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
+    .kpi-top-row {
+        min-height: 38px !important;
+        margin-bottom: 16px !important;
+    }
+
+    .kpi-icon-bubble {
+        width: 38px !important;
+        height: 38px !important;
+    }
+
+    .kpi-main-val {
+        font-size: 2.15rem !important;
+        line-height: 1 !important;
+        margin-bottom: 7px !important;
+    }
+
+    .kpi-main-label {
+        font-size: 0.82rem !important;
+        line-height: 1.3 !important;
+        margin-bottom: 5px !important;
+    }
+
+    .tower-kpi-card > div:last-child {
+        margin-top: auto !important;
+        line-height: 1.35 !important;
+    }
+
+    .tower-panel {
+        padding: 24px !important;
+        margin-bottom: 24px !important;
+        border-radius: 14px !important;
+    }
+
+    .tower-panel-header {
+        min-height: 28px !important;
+        margin-bottom: 18px !important;
+        padding-bottom: 14px !important;
+        gap: 14px !important;
+    }
+
+    .tower-panel-title {
+        font-size: 1rem !important;
+        line-height: 1.3 !important;
+    }
+
+    div[data-testid="stTabs"] {
+        margin-top: 2px !important;
+    }
+
+    button[data-baseweb="tab"] {
+        padding: 11px 16px !important;
+        font-size: 0.84rem !important;
+        white-space: nowrap !important;
+    }
+
+    div[data-testid="stPlotlyChart"] {
+        margin: 8px 0 14px !important;
+    }
+
+    .tower-panel [style*="justify-content: space-around"] {
+        gap: 18px !important;
+        padding: 13px 16px !important;
+        border-radius: 9px !important;
+    }
+
+    .ai-insight-box {
+        padding: 16px 17px !important;
+        margin: 0 0 12px !important;
+        border-radius: 11px !important;
+        border: 1px solid rgba(255, 255, 255, 0.08) !important;
+        box-shadow: 0 8px 22px rgba(0, 0, 0, 0.12) !important;
+    }
+
+    .ai-insight-box:last-of-type {
+        margin-bottom: 0 !important;
+    }
+
+    .ai-insight-box > div[style*="justify-content: space-between"] {
+        gap: 12px !important;
+    }
+
+    .ai-insight-box b {
+        color: #f8fafc !important;
+    }
+
+    .ai-progress-track {
+        height: 7px !important;
+        margin-top: 14px !important;
+        border-radius: 99px !important;
+        overflow: hidden !important;
+        background: rgba(255, 255, 255, 0.08) !important;
+    }
+
+    .ai-progress-fill-red,
+    .ai-progress-fill-amber {
+        height: 100% !important;
+        border-radius: inherit !important;
+    }
+
+    .ai-tag-risk,
+    .ai-tag-alert,
+    .ai-tag-rec {
+        display: inline-flex !important;
+        align-items: center !important;
+        min-height: 22px !important;
+        margin-bottom: 10px !important;
+        letter-spacing: 0.04em !important;
+    }
+
+    div[data-testid="stButton"] {
+        margin: 8px 0 4px !important;
+    }
+
+    div[data-testid="stButton"] > button {
+        min-height: 42px !important;
+        border-radius: 9px !important;
+        font-weight: 700 !important;
+        letter-spacing: 0 !important;
+    }
+
+    .event-row {
+        min-height: 66px !important;
+        align-items: center !important;
+        gap: 14px !important;
+        padding: 13px 15px !important;
+        margin-bottom: 10px !important;
+        border-radius: 10px !important;
+    }
+
+    .event-icon-circle {
+        width: 34px !important;
+        height: 34px !important;
+    }
+
+    .event-title-text {
+        line-height: 1.35 !important;
+        margin-bottom: 4px !important;
+    }
+
+    .event-sub-text {
+        line-height: 1.45 !important;
+    }
+
+    .event-time-badge {
+        align-self: flex-start !important;
+        padding-top: 2px !important;
+        color: #7f8ea3 !important;
+    }
+
+    .risk-table-container {
+        width: 100% !important;
+        border-collapse: separate !important;
+        border-spacing: 0 6px !important;
+        table-layout: auto !important;
+    }
+
+    .risk-table-container th {
+        padding: 0 10px 8px !important;
+        color: #7f8ea3 !important;
+        font-size: 0.68rem !important;
+        font-weight: 700 !important;
+        letter-spacing: 0.06em !important;
+        text-transform: uppercase !important;
+        white-space: nowrap !important;
+        text-align: left !important;
+    }
+
+    .risk-table-container td {
+        padding: 12px 10px !important;
+        background: rgba(15, 23, 42, 0.52) !important;
+        border-top: 1px solid rgba(255, 255, 255, 0.05) !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+        font-size: 0.78rem !important;
+        line-height: 1.35 !important;
+        vertical-align: middle !important;
+        white-space: nowrap !important;
+    }
+
+    .risk-table-container td:first-child {
+        border-left: 1px solid rgba(255, 255, 255, 0.05) !important;
+        border-radius: 8px 0 0 8px !important;
+        font-size: 0.82rem !important;
+    }
+
+    .risk-table-container td:last-child {
+        border-right: 1px solid rgba(255, 255, 255, 0.05) !important;
+        border-radius: 0 8px 8px 0 !important;
+    }
+
+    .badge-risk-high,
+    .badge-risk-med,
+    .badge-risk-low {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        min-width: 54px !important;
+        padding: 4px 9px !important;
+        border-radius: 99px !important;
+        font-size: 0.7rem !important;
+        font-weight: 700 !important;
+    }
+
+    @media (max-width: 1100px) {
+        .tower-panel {
+            padding: 20px !important;
+        }
+
+        .tower-kpi-card {
+            padding: 18px !important;
+        }
+
+        .risk-table-container {
+            display: block !important;
+            overflow-x: auto !important;
+        }
+    }
+</style>
+""", unsafe_allow_html=True)
+
 def render_html(html_code: str):
     """Safely renders HTML without Markdown indentation parsing bugs."""
     clean_lines = [line.lstrip() for line in html_code.splitlines()]
