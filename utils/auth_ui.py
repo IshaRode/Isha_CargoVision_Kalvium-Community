@@ -151,7 +151,7 @@ Enterprise Logistics Intelligence & Multi-Tier Control Tower
                             st.success(f"✅ {msg}")
                             time.sleep(0.4)
                             try:
-                                st.switch_page("app.py")
+                                st.switch_page("pages/dashboard.py")
                             except Exception:
                                 st.rerun()
                         else:

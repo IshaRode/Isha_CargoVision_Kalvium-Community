@@ -50,7 +50,7 @@ render_html(header_html)
 with st.container():
     col1, col2, col3 = st.columns([0.4, 0.4, 0.2], gap="medium")
     with col1:
-        report_type = st.selectbox("Report Scope", ["Executive Summary", "Carrier Performance", "Warehouse Utilization", "Route Efficiency"])
+        report_type = st.selectbox("Report Scope", ["Executive Summary", "Carrier Performance", "Route Efficiency"])
     with col2:
         date_range = st.selectbox("Reporting Period", ["Last 7 Days", "Last 30 Days", "This Quarter", "Year to Date", "Custom"])
     with col3:

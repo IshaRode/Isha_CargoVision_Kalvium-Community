@@ -49,17 +49,31 @@ html, body, .stApp, [data-testid="stAppViewContainer"], [data-testid="stApp"], .
     -moz-osx-font-smoothing: grayscale;
 }
 
-/* Nuke ALL Streamlit Default Header Bars, Toolbars & Deploy buttons */
+/* Nuke ALL Streamlit Default Header Bars, Toolbars, Deploy buttons & Left Sidebar */
 [data-testid="stHeader"],
 .stApp > header,
 header[data-testid="stHeader"],
 [data-testid="stToolbar"],
 [data-testid="stDecoration"],
-[data-testid="stStatusWidget"] {
+[data-testid="stStatusWidget"],
+[data-testid="stSidebar"],
+[data-testid="stSidebarNav"],
+[data-testid="stSidebarContent"],
+[data-testid="stSidebarUserContent"],
+[data-testid="stSidebarCollapseButton"],
+[data-testid="stSidebarHeader"],
+[data-testid="stSidebarNavItems"],
+section[data-testid="stSidebar"],
+button[data-testid="stSidebarCollapseButton"],
+.stSidebar,
+div[data-testid="collapsedControl"] {
     display: none !important;
     height: 0 !important;
     min-height: 0 !important;
     max-height: 0 !important;
+    width: 0 !important;
+    min-width: 0 !important;
+    max-width: 0 !important;
     padding: 0 !important;
     margin: 0 !important;
     visibility: hidden !important;
@@ -187,7 +201,7 @@ h1 a, h2 a, h3 a, h4 a {
 
 .nav-links { 
     display: flex; 
-    gap: 6px; 
+    gap: 12px; 
     align-items: center; 
     white-space: nowrap;
     flex-wrap: nowrap;
@@ -557,15 +571,16 @@ button[data-testid="stBaseButton-primary"],
 button[kind="primary"],
 button[kind="primaryFormSubmit"],
 .stButton > button[kind="primary"],
+div[data-testid="stButton"] > button[kind="primary"],
 div[data-testid="stFormSubmitButton"] > button,
 div[data-testid="stFormSubmitButton"] button {
     background: linear-gradient(135deg, var(--accent-blue) 0%, #0284c7 100%) !important;
     background-color: var(--accent-blue) !important;
     color: #ffffff !important;
-    font-weight: 600 !important;
+    font-weight: 700 !important;
     font-size: 0.92rem !important;
-    border: none !important;
-    border-radius: 10px !important;
+    border: 1px solid rgba(14, 165, 233, 0.4) !important;
+    border-radius: 12px !important;
     min-height: 44px !important;
     height: 44px !important;
     padding: 0 20px !important;

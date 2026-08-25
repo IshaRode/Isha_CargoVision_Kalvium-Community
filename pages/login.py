@@ -13,7 +13,7 @@ init_auth()
 
 if is_authenticated():
     try:
-        st.switch_page("app.py")
+        st.switch_page("pages/dashboard.py")
     except Exception:
         st.rerun()
 else:
