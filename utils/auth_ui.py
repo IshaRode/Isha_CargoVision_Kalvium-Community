@@ -112,6 +112,47 @@ Enterprise Logistics Intelligence & Multi-Tier Control Tower
         # RIGHT COLUMN: Authentication Container Card
         # ==========================================
         with col_right:
+            # ------------------------------------------
+            # AUTHENTICATION MODE SWITCHER PILL BAR
+            # ------------------------------------------
+            auth_mode_curr = st.session_state.get("auth_mode", "login")
+            
+            st.markdown(f"""
+<div style="display: flex; background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 4px; margin-bottom: 20px;">
+<div style="flex: 1; text-align: center;">
+<a href="#" onclick="return false;" style="display: block; padding: 8px 12px; border-radius: 8px; font-weight: 700; font-size: 0.84rem; text-decoration: none; color: {'#ffffff' if auth_mode_curr=='login' else '#94a3b8'}; background: {'linear-gradient(135deg, rgba(14,165,233,0.3), rgba(2,132,199,0.3))' if auth_mode_curr=='login' else 'transparent'}; border: {'1px solid rgba(14,165,233,0.4)' if auth_mode_curr=='login' else 'none'};">
+🔑 Sign In
+</a>
+</div>
+<div style="flex: 1; text-align: center;">
+<a href="#" onclick="return false;" style="display: block; padding: 8px 12px; border-radius: 8px; font-weight: 700; font-size: 0.84rem; text-decoration: none; color: {'#ffffff' if auth_mode_curr=='signup' else '#94a3b8'}; background: {'linear-gradient(135deg, rgba(34,197,94,0.3), rgba(16,185,129,0.3))' if auth_mode_curr=='signup' else 'transparent'}; border: {'1px solid rgba(34,197,94,0.4)' if auth_mode_curr=='signup' else 'none'};">
+📝 Staff Registration
+</a>
+</div>
+<div style="flex: 1; text-align: center;">
+<a href="#" onclick="return false;" style="display: block; padding: 8px 12px; border-radius: 8px; font-weight: 700; font-size: 0.84rem; text-decoration: none; color: {'#ffffff' if auth_mode_curr=='forgot' else '#94a3b8'}; background: {'linear-gradient(135deg, rgba(245,158,11,0.3), rgba(217,119,6,0.3))' if auth_mode_curr=='forgot' else 'transparent'}; border: {'1px solid rgba(245,158,11,0.4)' if auth_mode_curr=='forgot' else 'none'};">
+🛡️ Reset Access
+</a>
+</div>
+</div>
+""", unsafe_allow_html=True)
+
+            btn_sw1, btn_sw2, btn_sw3 = st.columns(3)
+            with btn_sw1:
+                if st.button("🔑 Sign In", key="pill_mode_login", use_container_width=True, type="primary" if auth_mode_curr=="login" else "secondary"):
+                    st.session_state["auth_mode"] = "login"
+                    st.rerun()
+            with btn_sw2:
+                if st.button("📝 Sign Up", key="pill_mode_signup", use_container_width=True, type="primary" if auth_mode_curr=="signup" else "secondary"):
+                    st.session_state["auth_mode"] = "signup"
+                    st.rerun()
+            with btn_sw3:
+                if st.button("🛡️ Password Reset", key="pill_mode_forgot", use_container_width=True, type="primary" if auth_mode_curr=="forgot" else "secondary"):
+                    st.session_state["auth_mode"] = "forgot"
+                    st.rerun()
+
+            st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
+
             # Quick Demo Buttons (When local / demo mode or quick testing is useful)
             if not is_supabase_configured():
                 st.info("💡 **Local / Demo Mode**: Click below to quickly test role and location authorization without manual signup:")
@@ -176,7 +217,22 @@ Enterprise Logistics Intelligence & Multi-Tier Control Tower
                 with st.form("signup_form", clear_on_submit=False):
                     st.markdown("""<div style="margin-bottom: 16px;">
 <div style="color: #ffffff; font-size: 1.5rem; font-weight: 800; margin: 0 0 4px 0; letter-spacing: -0.5px;">Create Staff Account</div>
-<div style="color: #94a3b8; font-size: 0.86rem; margin: 0;">Register your operational profile with assigned location authorization.</div>
+<div style="color: #94a3b8; font-size: 0.86rem; margin: 0 0 14px 0;">Register your operational profile with assigned location authorization.</div>
+
+<!-- Registration Progress Steps Bar -->
+<div style="display: flex; align-items: center; justify-content: space-between; background: rgba(15,23,42,0.6); padding: 8px 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 16px;">
+<div style="display: flex; align-items: center; gap: 6px; font-size: 0.75rem; font-weight: 700; color: #38bdf8;">
+<span style="width: 18px; height: 18px; background: #0ea5e9; color: white; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 0.65rem;">1</span> Profile
+</div>
+<div style="width: 20px; height: 1px; background: rgba(255,255,255,0.2);"></div>
+<div style="display: flex; align-items: center; gap: 6px; font-size: 0.75rem; font-weight: 700; color: #4ade80;">
+<span style="width: 18px; height: 18px; background: #22c55e; color: white; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 0.65rem;">2</span> Location
+</div>
+<div style="width: 20px; height: 1px; background: rgba(255,255,255,0.2);"></div>
+<div style="display: flex; align-items: center; gap: 6px; font-size: 0.75rem; font-weight: 700; color: #fbbf24;">
+<span style="width: 18px; height: 18px; background: #f59e0b; color: white; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 0.65rem;">3</span> Security
+</div>
+</div>
 </div>""", unsafe_allow_html=True)
 
                     su_name = st.text_input("Full Name *", placeholder="e.g. Rahul Sharma", key="su_name")
