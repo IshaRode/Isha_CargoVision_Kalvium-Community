@@ -1,11 +1,11 @@
 import streamlit as st
 import os
-import textwrap
+import pandas as pd
 from components.top_navigation import get_top_nav_html
-from utils.auth import require_auth, get_auth_token
+from utils.auth import require_auth, get_auth_token, get_current_user
 
 st.set_page_config(
-    page_title="CargoVision | Routes",
+    page_title="CargoVision | Route Analytics",
     page_icon="🚚",
     layout="wide",
     initial_sidebar_state="collapsed"
@@ -13,10 +13,10 @@ st.set_page_config(
 
 require_auth("Route Analytics")
 
-def render_html(html_code: str):
-    clean_lines = [line.lstrip() for line in html_code.splitlines()]
-    clean_html = "\n".join(clean_lines).strip()
-    st.markdown(clean_html, unsafe_allow_html=True)
+user = get_current_user() or {"name": "User", "role": "Operations Manager", "assigned_location": "Mumbai Hub"}
+user_name = user.get("name", "User")
+user_role = user.get("role", "Operations Staff")
+user_location = user.get("assigned_location", "Mumbai Hub")
 
 token = get_auth_token()
 q_str = f"?auth_token={token}" if token else ""
@@ -26,65 +26,128 @@ if os.path.exists(css_file):
     with open(css_file) as f:
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
-render_html(get_top_nav_html('routes'))
+st.markdown(get_top_nav_html('routes'), unsafe_allow_html=True)
 
-card_style = "background:rgba(30,41,59,0.55);border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:32px;"
+col_nav, col_main = st.columns([0.18, 0.82], gap="medium")
 
-render_html(f"""
-<div style="background-color:#0f172a;border-radius:20px;border:1px solid rgba(255,255,255,0.08);min-height:100vh;padding:60px 40px;box-sizing:border-box;">
-  <div style="width:100%;max-width:100%;margin:0;">
+with col_nav:
+    sidebar_html = f"""
+<div class="side-nav-card">
+<div class="side-nav-heading">OPERATIONS</div>
+<a href="/dashboard{q_str}" class="side-nav-link" target="_self">
+<span>📊</span> Overview
+</a>
+<a href="/shipment_tracking{q_str}" class="side-nav-link" target="_self">
+<span>📦</span> Shipments
+</a>
+<a href="/route_analytics{q_str}" class="side-nav-link active" target="_self">
+<span>🛣️</span> Routes
+</a>
+<a href="/ai_predictions{q_str}" class="side-nav-link" target="_self">
+<span>🧠</span> AI Insights
+</a>
+<a href="/reports{q_str}" target="_self" class="side-nav-link">
+<span>📄</span> Reports
+</a>
 
-    <div style="text-align:center;margin-bottom:60px;">
-      <div style="font-size:0.8rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#0ea5e9;margin-bottom:12px;">PLATFORM CAPABILITIES</div>
-      <h1 style="color:white;font-size:2.8rem;font-weight:800;margin:0 0 16px 0;letter-spacing:-1px;font-family:'Outfit',sans-serif;">Intelligence Built for Modern Logistics</h1>
-      <p style="color:#94a3b8;font-size:1.05rem;max-width:600px;margin:0 auto;line-height:1.6;">Six core modules working together to transform raw logistics data into clear, actionable decisions.</p>
-    </div>
-
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;">
-
-      <div style="{card_style}">
-        <div style="width:48px;height:48px;border-radius:12px;background:rgba(59,130,246,0.1);display:flex;align-items:center;justify-content:center;margin-bottom:20px;font-size:1.4rem;">🔮</div>
-        <div style="color:white;font-size:1.1rem;font-weight:700;margin-bottom:10px;">AI Delay Prediction</div>
-        <div style="color:#94a3b8;font-size:0.92rem;line-height:1.6;margin-bottom:20px;">Forecast delivery disruptions 48-72 hours ahead using multi-variate ML models trained on millions of shipment records.</div>
-        <a href="/ai_predictions{q_str}" target="_self" style="color:#3b82f6;background:rgba(59,130,246,0.1);padding:8px 16px;border-radius:20px;display:inline-block;font-weight:600;font-size:0.9rem;text-decoration:none;">Learn more →</a>
-      </div>
-
-      <div style="{card_style}">
-        <div style="width:48px;height:48px;border-radius:12px;background:rgba(6,182,212,0.1);display:flex;align-items:center;justify-content:center;margin-bottom:20px;font-size:1.4rem;">🗺️</div>
-        <div style="color:white;font-size:1.1rem;font-weight:700;margin-bottom:10px;">Route Analytics</div>
-        <div style="color:#94a3b8;font-size:0.92rem;line-height:1.6;margin-bottom:20px;">Analyze route efficiency, congestion windows, and carrier performance across every lane in your network.</div>
-        <a href="/route_analytics{q_str}" target="_self" style="color:#06b6d4;background:rgba(6,182,212,0.1);padding:8px 16px;border-radius:20px;display:inline-block;font-weight:600;font-size:0.9rem;text-decoration:none;">Learn more →</a>
-      </div>
-
-      <div style="{card_style}">
-        <div style="width:48px;height:48px;border-radius:12px;background:rgba(168,85,247,0.1);display:flex;align-items:center;justify-content:center;margin-bottom:20px;font-size:1.4rem;">🏭</div>
-        <div style="color:white;font-size:1.1rem;font-weight:700;margin-bottom:10px;">Warehouse Intelligence</div>
-        <div style="color:#94a3b8;font-size:0.92rem;line-height:1.6;margin-bottom:20px;">Monitor capacity utilization, dwell time, and throughput bottlenecks across your entire warehouse network in real time.</div>
-        <a href="/warehouse_intelligence{q_str}" target="_self" style="color:#a855f7;background:rgba(168,85,247,0.1);padding:8px 16px;border-radius:20px;display:inline-block;font-weight:600;font-size:0.9rem;text-decoration:none;">Learn more →</a>
-      </div>
-
-      <div style="{card_style}">
-        <div style="width:48px;height:48px;border-radius:12px;background:rgba(16,185,129,0.1);display:flex;align-items:center;justify-content:center;margin-bottom:20px;font-size:1.4rem;">📍</div>
-        <div style="color:white;font-size:1.1rem;font-weight:700;margin-bottom:10px;">Control Tower</div>
-        <div style="color:#94a3b8;font-size:0.92rem;line-height:1.6;margin-bottom:20px;">End-to-end operational dashboard providing unified visibility across shipments, delay alerts, and active network health.</div>
-        <a href="/dashboard{q_str}" target="_self" style="color:#10b981;background:rgba(16,185,129,0.1);padding:8px 16px;border-radius:20px;display:inline-block;font-weight:600;font-size:0.9rem;text-decoration:none;">Learn more →</a>
-      </div>
-
-      <div style="{card_style}">
-        <div style="width:48px;height:48px;border-radius:12px;background:rgba(245,158,11,0.1);display:flex;align-items:center;justify-content:center;margin-bottom:20px;font-size:1.4rem;">⚡</div>
-        <div style="color:white;font-size:1.1rem;font-weight:700;margin-bottom:10px;">Smart Recommendations</div>
-        <div style="color:#94a3b8;font-size:0.92rem;line-height:1.6;margin-bottom:20px;">AI-generated operational suggestions ranked by impact — reroute a lane, rebalance a warehouse, or adjust a carrier split.</div>
-        <a href="/ai_predictions{q_str}" target="_self" style="color:#f59e0b;background:rgba(245,158,11,0.1);padding:8px 16px;border-radius:20px;display:inline-block;font-weight:600;font-size:0.9rem;text-decoration:none;">Learn more →</a>
-      </div>
-
-      <div style="{card_style}">
-        <div style="width:48px;height:48px;border-radius:12px;background:rgba(239,68,68,0.1);display:flex;align-items:center;justify-content:center;margin-bottom:20px;font-size:1.4rem;">📄</div>
-        <div style="color:white;font-size:1.1rem;font-weight:700;margin-bottom:10px;">Reports & Insights</div>
-        <div style="color:#94a3b8;font-size:0.92rem;line-height:1.6;margin-bottom:20px;">Automated executive reports, SLA dashboards, and custom analytics exports for carrier scorecards and board reviews.</div>
-        <a href="/reports{q_str}" target="_self" style="color:#ef4444;background:rgba(239,68,68,0.1);padding:8px 16px;border-radius:20px;display:inline-block;font-weight:600;font-size:0.9rem;text-decoration:none;">Learn more →</a>
-      </div>
-
-    </div>
-  </div>
+<div style="margin-top: 16px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.06);">
+<div style="font-size: 0.7rem; font-weight: 700; color: #64748b; text-transform: uppercase; margin-bottom: 6px; padding: 0 10px; letter-spacing: 0.8px;">
+ACTIVE PROFILE
 </div>
-""")
+<div style="padding: 4px 10px 2px; font-size: 0.78rem; color: #f8fafc; font-weight: 600;">
+{user_name}
+</div>
+<div style="padding: 0 10px 4px; font-size: 0.72rem; color: #94a3b8;">
+{user_role}
+</div>
+<div style="padding: 2px 10px; font-size: 0.74rem; color: #38bdf8; display: flex; align-items: center; gap: 4px;">
+<span>📍</span> {user_location}
+</div>
+</div>
+</div>
+"""
+    st.markdown(sidebar_html, unsafe_allow_html=True)
+
+with col_main:
+    st.markdown(f"""
+<div class="tower-header-bar">
+<div>
+<div class="tower-title">
+<span>🛣️ Route Performance & Congestion Analytics</span>
+</div>
+<p class="tower-subtitle">Analyze transit lane bottlenecks, route risk metrics, and corridor reliability across your supply chain network.</p>
+</div>
+<div class="tower-header-right">
+<div class="tower-live-pill">
+<span class="tower-live-dot"></span>
+<span>LIVE LANES</span>
+</div>
+<div class="tower-user-location-pill">
+<span>👤 {user_role}</span> • <b style="color: #38bdf8;">{user_location}</b>
+</div>
+</div>
+</div>
+""", unsafe_allow_html=True)
+
+    # Key Metrics Banner
+    st.markdown("""
+<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px;">
+<div style="background: rgba(30, 41, 59, 0.55); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; padding: 20px;">
+<div style="font-size: 0.76rem; color: #64748b; font-weight: 700; text-transform: uppercase; margin-bottom: 6px;">MONITORED LANES</div>
+<div style="font-size: 1.8rem; font-weight: 800; color: #ffffff;">24 Active</div>
+<div style="font-size: 0.78rem; color: #10b981; margin-top: 4px;">🟢 100% Coverage</div>
+</div>
+<div style="background: rgba(30, 41, 59, 0.55); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; padding: 20px;">
+<div style="font-size: 0.76rem; color: #64748b; font-weight: 700; text-transform: uppercase; margin-bottom: 6px;">HIGH RISK LANES</div>
+<div style="font-size: 1.8rem; font-weight: 800; color: #ef4444;">3 Corridors</div>
+<div style="font-size: 0.78rem; color: #ef4444; margin-top: 4px;">⚠️ Bottleneck Warning</div>
+</div>
+<div style="background: rgba(30, 41, 59, 0.55); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; padding: 20px;">
+<div style="font-size: 0.76rem; color: #64748b; font-weight: 700; text-transform: uppercase; margin-bottom: 6px;">AVG TRANSIT TIME</div>
+<div style="font-size: 1.8rem; font-weight: 800; color: #38bdf8;">14.2 Hours</div>
+<div style="font-size: 0.78rem; color: #38bdf8; margin-top: 4px;">⚡ Inter-City Freight</div>
+</div>
+<div style="background: rgba(30, 41, 59, 0.55); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; padding: 20px;">
+<div style="font-size: 0.76rem; color: #64748b; font-weight: 700; text-transform: uppercase; margin-bottom: 6px;">ON-TIME RELIABILITY</div>
+<div style="font-size: 1.8rem; font-weight: 800; color: #22c55e;">94.8%</div>
+<div style="font-size: 0.78rem; color: #22c55e; margin-top: 4px;">↑ 1.4% vs last week</div>
+</div>
+</div>
+""", unsafe_allow_html=True)
+
+    # Route Risk Table
+    routes_data = [
+        {"route": "Mumbai Hub → Pune DC", "distance": "148 km", "avg_time": "3.5 hrs", "delay_freq": "High (18%)", "risk_score": "87% Critical", "carrier": "Express Freight", "status": "Bottleneck Alert"},
+        {"route": "Delhi Central → Jaipur Hub", "distance": "280 km", "avg_time": "5.2 hrs", "delay_freq": "Medium (8%)", "risk_score": "45% Moderate", "carrier": "BlueDart Fleet", "status": "Normal"},
+        {"route": "Bangalore Facility → Chennai Port", "distance": "346 km", "avg_time": "6.8 hrs", "delay_freq": "Low (3%)", "risk_score": "22% Optimal", "carrier": "Southern Express", "status": "Smooth"},
+        {"route": "Hyderabad Station → Vizag Hub", "distance": "620 km", "avg_time": "11.5 hrs", "delay_freq": "High (15%)", "risk_score": "78% High", "carrier": "Coastal Logistics", "status": "Weather Risk"},
+        {"route": "Kolkata Port → Patna DC", "distance": "585 km", "avg_time": "12.0 hrs", "delay_freq": "Medium (10%)", "risk_score": "52% Moderate", "carrier": "Eastern Logistics", "status": "Normal"},
+        {"route": "Ahmedabad Hub → Mumbai Hub", "distance": "524 km", "avg_time": "9.5 hrs", "delay_freq": "Low (4%)", "risk_score": "18% Optimal", "carrier": "Western Freight", "status": "Smooth"},
+    ]
+
+    st.markdown("""
+<div class="tower-panel">
+<div class="tower-panel-header">
+<h3 class="tower-panel-title">
+<span>🗺️</span> Key Logistics Route Performance Matrix
+</h3>
+<span style="font-size: 0.78rem; color: #94a3b8;">Real-Time Corridor Monitoring</span>
+</div>
+""", unsafe_allow_html=True)
+
+    df_routes = pd.DataFrame(routes_data)
+    st.dataframe(
+        df_routes,
+        column_config={
+            "route": "Transport Route Lane",
+            "distance": "Distance",
+            "avg_time": "Avg Transit Time",
+            "delay_freq": "Delay Frequency",
+            "risk_score": "AI Risk Score",
+            "carrier": "Primary Carrier Fleet",
+            "status": "Lane Status"
+        },
+        use_container_width=True,
+        hide_index=True
+    )
+    st.markdown("</div>", unsafe_allow_html=True)

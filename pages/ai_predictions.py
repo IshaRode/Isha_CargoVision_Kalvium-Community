@@ -90,52 +90,93 @@ render_html("""
 
 # Interactive AI Risk Scenario Simulator
 st.markdown("""
-<div class="tower-panel" style="margin-bottom: 24px;">
-<div class="tower-panel-header">
-<h3 class="tower-panel-title">
+<div class="tower-panel" style="margin-bottom: 24px; text-align: center; padding: 24px 20px;">
+<div style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; margin-bottom: 10px;">
+<span class="badge-glow-blue" style="font-size: 0.72rem; padding: 4px 12px; border-radius: 20px;">INTERACTIVE ENGINE</span>
+<h3 class="tower-panel-title" style="margin: 4px 0 0 0; justify-content: center; display: flex; align-items: center; gap: 8px; font-size: 1.4rem;">
 <span>🎛️</span> AI Disruption Scenario Simulator
 </h3>
-<span class="badge-glow-blue">INTERACTIVE ENGINE</span>
 </div>
-<p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 16px;">
+<p style="color: #94a3b8; font-size: 0.92rem; margin: 0 auto; max-width: 650px; line-height: 1.5;">
 Adjust external risk factors to simulate potential supply chain disruptions and view real-time AI predictions.
 </p>
 </div>
 """, unsafe_allow_html=True)
 
-sim_col1, sim_col2 = st.columns([0.45, 0.55], gap="medium")
+sim_col1, sim_col2 = st.columns([0.48, 0.52], gap="large")
 
 with sim_col1:
+    render_html("""
+<div class="tower-panel glow-card-interactive" style="background: linear-gradient(145deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.75) 100%); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 20px; padding: 22px 24px; box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35); box-sizing: border-box; margin-bottom: 0;">
+<div style="display: flex; align-items: center; gap: 8px; margin-bottom: 16px;">
+<span style="font-size: 1.15rem;">⚙️</span>
+<span style="font-family: 'Outfit', sans-serif; font-size: 1.08rem; font-weight: 700; color: #ffffff; letter-spacing: -0.2px;">Simulation Controls</span>
+</div>
+</div>
+""")
     weather_severity = st.select_slider("🌧️ Weather Severity Impact", options=["Clear (0%)", "Light Rain (25%)", "Storm Warning (60%)", "Monsoon Cyclone (90%)"], value="Storm Warning (60%)")
     traffic_factor = st.slider("🚗 Corridor Traffic Congestion Factor", min_value=1.0, max_value=3.0, value=1.8, step=0.1)
     fleet_capacity = st.slider("🚚 Regional Fleet Load (%)", min_value=50, max_value=120, value=92, step=5)
 
 with sim_col2:
-    # Compute simulated risk score
+    # Compute simulated risk score & values
     weather_pct = int(weather_severity.split("(")[1].split("%")[0])
     risk_score = min(99, int((weather_pct * 0.4) + ((traffic_factor - 1) * 35) + ((fleet_capacity - 50) * 0.3)))
+    predicted_delay = round(risk_score * 0.05, 1)
     
     risk_color = "#ef4444" if risk_score > 75 else "#f59e0b" if risk_score > 50 else "#22c55e"
+    risk_bg = "rgba(239, 68, 68, 0.15)" if risk_score > 75 else "rgba(245, 158, 11, 0.15)" if risk_score > 50 else "rgba(34, 197, 94, 0.15)"
+    risk_border = "rgba(239, 68, 68, 0.4)" if risk_score > 75 else "rgba(245, 158, 11, 0.4)" if risk_score > 50 else "rgba(34, 197, 94, 0.4)"
     risk_tag = "CRITICAL RISK" if risk_score > 75 else "MODERATE RISK" if risk_score > 50 else "LOW RISK"
     
     render_html(f"""
-<div class="tower-panel glow-card-interactive" style="background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(255,255,255,0.1);">
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-<span style="font-family: 'Outfit', sans-serif; font-size: 1.1rem; font-weight: 700; color: #ffffff;">Simulated Disruption Risk</span>
-<span class="badge-glow-red" style="background: rgba(239, 68, 68, 0.2); border-color: {risk_color}; color: {risk_color};">{risk_tag}</span>
+<div class="tower-panel glow-card-interactive" style="background: linear-gradient(145deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.75) 100%); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 20px; padding: 22px 24px; box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35); box-sizing: border-box; margin-bottom: 12px;">
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; gap: 12px; flex-wrap: nowrap;">
+<div style="display: flex; align-items: center; gap: 8px;">
+<span style="font-size: 1.15rem;">🧠</span>
+<span style="font-family: 'Outfit', sans-serif; font-size: 1.08rem; font-weight: 700; color: #ffffff; letter-spacing: -0.2px;">Simulated Disruption Risk</span>
+</div>
+<div style="background: {risk_bg}; border: 1px solid {risk_border}; color: {risk_color}; padding: 5px 14px; border-radius: 20px; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.5px; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; flex-shrink: 0;">
+<span style="width: 7px; height: 7px; border-radius: 50%; background: {risk_color}; box-shadow: 0 0 8px {risk_color}; display: inline-block;"></span>
+<span>{risk_tag}</span>
+</div>
 </div>
 
-<div style="display: flex; align-items: baseline; gap: 10px; margin-bottom: 12px;">
-<span style="font-size: 3rem; font-weight: 800; color: {risk_color}; font-family: 'Outfit';">{risk_score}%</span>
-<span style="font-size: 0.9rem; color: #94a3b8;">Predicted Delay: <b>+{round(risk_score * 0.05, 1)} hours</b></span>
+<div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; background: rgba(30, 41, 59, 0.45); border: 1px solid rgba(255, 255, 255, 0.07); padding: 14px 18px; border-radius: 16px;">
+<div>
+<div style="font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; color: #94a3b8; margin-bottom: 4px;">Risk Probability</div>
+<div style="font-size: 3.2rem; font-weight: 800; color: {risk_color}; font-family: 'Outfit', sans-serif; line-height: 1; text-shadow: 0 0 20px {risk_color}33;">
+{risk_score}%
+</div>
 </div>
 
-<div class="glass-progress-bg" style="margin-bottom: 16px;">
-<div class="glass-progress-fill-red" style="width: {risk_score}%; background: {risk_color};"></div>
+<div style="text-align: right; background: rgba(15, 23, 42, 0.65); border: 1px solid rgba(255, 255, 255, 0.08); padding: 10px 16px; border-radius: 12px;">
+<div style="font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: #94a3b8; margin-bottom: 4px; display: flex; align-items: center; gap: 5px; justify-content: flex-end;">
+<span>⏱️</span> Predicted Delay
+</div>
+<div style="font-size: 1.15rem; font-weight: 800; color: #f8fafc; font-family: 'Outfit', sans-serif;">
++{predicted_delay} hours
+</div>
+</div>
 </div>
 
-<div style="font-size: 0.82rem; color: #cbd5e1; line-height: 1.5; padding: 10px; background: rgba(255,255,255,0.03); border-radius: 8px;">
-💡 <b>AI Recommendation:</b> Reroute 35 inbound shipments via <b>Nashik Transit Hub</b> to avoid forecasted NH-48 bottleneck.
+<div style="margin-bottom: 18px;">
+<div style="display: flex; justify-content: space-between; font-size: 0.74rem; color: #64748b; font-weight: 600; margin-bottom: 6px;">
+<span>Disruption Impact Level</span>
+<span>{risk_score}/100</span>
+</div>
+<div style="height: 8px; background: rgba(255, 255, 255, 0.08); border-radius: 4px; overflow: hidden; position: relative;">
+<div style="height: 100%; width: {risk_score}%; background: linear-gradient(90deg, {risk_color}aa 0%, {risk_color} 100%); border-radius: 4px; box-shadow: 0 0 10px {risk_color}80; transition: width 0.3s ease;"></div>
+</div>
+</div>
+
+<div style="background: linear-gradient(135deg, rgba(14, 165, 233, 0.08) 0%, rgba(99, 102, 241, 0.05) 100%); border: 1px solid rgba(14, 165, 233, 0.22); border-radius: 14px; padding: 14px 16px;">
+<div style="display: flex; align-items: center; gap: 8px; font-size: 0.78rem; font-weight: 700; color: #38bdf8; text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 6px;">
+<span>💡</span> AI Recommendation
+</div>
+<div style="font-size: 0.88rem; color: #cbd5e1; line-height: 1.5;">
+Reroute 35 inbound shipments via <b style="color: #ffffff;">Nashik Transit Hub</b> to avoid forecasted NH-48 bottleneck.
+</div>
 </div>
 </div>
 """)

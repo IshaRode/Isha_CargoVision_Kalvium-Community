@@ -1,8 +1,8 @@
 from utils.auth import is_authenticated, get_current_user, get_auth_token
 
-def get_top_nav_html(active_page='home'):
+def get_top_nav_html(active_page='dashboard'):
     # Determine which link should have the 'active' class
-    pages = ['home', 'dashboard', 'shipments', 'scans', 'delay_reports', 'routes', 'warehouses', 'ai_predictions', 'reports']
+    pages = ['dashboard', 'shipments', 'routes', 'ai_predictions', 'reports']
     active_classes = {p: 'active' if p == active_page else '' for p in pages}
     
     # Check authentication state
@@ -31,13 +31,9 @@ def get_top_nav_html(active_page='home'):
 </span>
 </div>
 <div class="nav-links">
-<a href="/{q_str}" target="_self" class="top-nav-link {active_classes['home']}">Home</a>
 <a href="/dashboard{q_str}" target="_self" class="top-nav-link {active_classes['dashboard']}">Dashboard</a>
 <a href="/shipment_tracking{q_str}" target="_self" class="top-nav-link {active_classes['shipments']}">Shipments</a>
-<a href="/shipment_scans{q_str}" target="_self" class="top-nav-link {active_classes['scans']}">Scans</a>
-<a href="/delay_reports{q_str}" target="_self" class="top-nav-link {active_classes['delay_reports']}">Delays</a>
 <a href="/route_analytics{q_str}" target="_self" class="top-nav-link {active_classes['routes']}">Routes</a>
-<a href="/warehouse_intelligence{q_str}" target="_self" class="top-nav-link {active_classes['warehouses']}">Warehouses</a>
 <a href="/ai_predictions{q_str}" target="_self" class="top-nav-link {active_classes['ai_predictions']}">AI Predictions</a>
 <a href="/reports{q_str}" target="_self" class="top-nav-link {active_classes['reports']}">Reports</a>
 </div>

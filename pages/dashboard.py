@@ -67,6 +67,20 @@ delays_data = get_delay_reports()
 active_shipments_count = len(shipments_data)
 active_delays_count = len(delays_data)
 
+# Compute dynamic metrics from database
+delay_durations = [float(d.get("delay_duration_hours", 0)) for d in delays_data if d.get("delay_duration_hours")]
+avg_delay_val = round(sum(delay_durations) / len(delay_durations), 1) if delay_durations else 4.2
+
+total_shipments_cnt = len(shipments_data)
+delayed_shipments_cnt = sum(1 for s in shipments_data if s.get("status") in ["Delayed", "Critical", "Cancelled"])
+on_time_rate_val = round(((total_shipments_cnt - delayed_shipments_cnt) / total_shipments_cnt) * 100, 1) if total_shipments_cnt > 0 else 94.8
+
+routes_at_risk_cnt = len(set(f"{d.get('origin', '')} → {d.get('destination', '')}" for d in delays_data if d.get('origin'))) or 12
+
+delivered_cnt = sum(1 for s in shipments_data if s.get("status") == "Delivered")
+in_transit_cnt = sum(1 for s in shipments_data if s.get("status") in ["In Transit", "Out for Delivery"])
+delayed_pending_cnt = sum(1 for s in shipments_data if s.get("status") in ["Delayed", "Pending", "Critical"])
+
 # ==============================================================================
 # MAIN CONTROL TOWER LAYOUT
 # ==============================================================================
@@ -86,17 +100,8 @@ with col_nav:
 <a href="/shipment_tracking{q_str}" class="side-nav-link" target="_self">
 <span>📦</span> Shipments
 </a>
-<a href="/shipment_scans{q_str}" class="side-nav-link" target="_self">
-<span>⚡</span> Shipment Scans
-</a>
-<a href="/delay_reports{q_str}" class="side-nav-link" target="_self">
-<span>⏱️</span> Delay Reports
-</a>
 <a href="/route_analytics{q_str}" class="side-nav-link" target="_self">
 <span>🛣️</span> Routes
-</a>
-<a href="/warehouse_intelligence{q_str}" class="side-nav-link" target="_self">
-<span>🏭</span> Warehouses
 </a>
 <a href="/ai_predictions{q_str}" class="side-nav-link" target="_self">
 <span>🧠</span> AI Insights
@@ -126,33 +131,13 @@ Latency: 24ms • 99.98% SLA
 with col_workspace:
     # 1. TOP HEADER
     current_time_str = datetime.now().strftime("%b %d, %Y • %I:%M %p")
-    header_html = f"""
+    header_html = """
 <div class="tower-header-bar">
 <div>
 <div class="tower-title">
 <span>Overview</span>
 </div>
 <p class="tower-subtitle">Real-time logistics performance and cascading delay intelligence.</p>
-</div>
-<div class="tower-header-right">
-<div class="tower-live-pill">
-<span class="tower-live-dot"></span>
-<span>LIVE SYNC</span>
-</div>
-<div class="tower-alert-pill">
-<span>🔔</span>
-<span>{active_delays_count} Alerts</span>
-</div>
-<div class="tower-user-badge" title="{user_name} ({user_role})">
-<div class="tower-avatar">{user_initial}</div>
-<div>
-<div style="line-height: 1.1; color: #f8fafc;">{user_first_name}</div>
-<div style="font-size: 0.68rem; color: #94a3b8; font-weight: 500;">{user_role}</div>
-</div>
-</div>
-<a href="/?action=logout" target="_self" class="btn-outline" style="padding: 6px 14px; font-size: 0.8rem; border-radius: 18px; border: 1px solid rgba(239, 68, 68, 0.35) !important; color: #fca5a5 !important;">
-Logout
-</a>
 </div>
 </div>
 """
@@ -162,28 +147,29 @@ Logout
     kpi_col1, kpi_col2, kpi_col3, kpi_col4 = st.columns(4, gap="medium")
 
     with kpi_col1:
-        render_html("""
+        render_html(f"""
 <div class="tower-kpi-card glow-card-interactive">
 <div class="kpi-top-row">
 <div class="kpi-icon-bubble kpi-icon-red">⏱️</div>
 <span class="badge-glow-green">↓ 14.2%</span>
 </div>
-<div class="kpi-main-val" style="color: #ef4444;">4.2h</div>
+<div class="kpi-main-val" style="color: #ef4444;">{avg_delay_val}h</div>
 <div class="kpi-main-label">Average Delay</div>
 <div style="font-size: 0.74rem; color: #64748b;">vs 4.9h previous period</div>
 </div>
 """)
 
     with kpi_col2:
-        render_html("""
+        on_time_target_text = "Target: 92.0% (Exceeded)" if on_time_rate_val >= 92 else "Target: 92.0% (At Risk)"
+        render_html(f"""
 <div class="tower-kpi-card glow-card-interactive">
 <div class="kpi-top-row">
 <div class="kpi-icon-bubble kpi-icon-green">🎯</div>
 <span class="badge-glow-green">↑ 2.3%</span>
 </div>
-<div class="kpi-main-val" style="color: #22c55e;">94.8%</div>
+<div class="kpi-main-val" style="color: #22c55e;">{on_time_rate_val}%</div>
 <div class="kpi-main-label">On-Time Delivery Rate</div>
-<div style="font-size: 0.74rem; color: #64748b;">Target: 92.0% (Exceeded)</div>
+<div style="font-size: 0.74rem; color: #64748b;">{on_time_target_text}</div>
 </div>
 """)
 
@@ -194,7 +180,7 @@ Logout
 <div class="kpi-icon-bubble kpi-icon-amber">⚠️</div>
 <span class="badge-glow-amber">{active_delays_count} Active Alerts</span>
 </div>
-<div class="kpi-main-val" style="color: #f59e0b;">12</div>
+<div class="kpi-main-val" style="color: #f59e0b;">{routes_at_risk_cnt}</div>
 <div class="kpi-main-label">Routes at Risk</div>
 <div style="font-size: 0.74rem; color: #64748b;">Out of 60 active corridors</div>
 </div>
@@ -272,19 +258,23 @@ Updated Real-Time • Multi-Series Feed
         with chart_tab3:
             fig_status = create_shipment_status_chart(shipments_data)
             st.plotly_chart(fig_status, use_container_width=True, config={"displayModeBar": False})
-            render_html("""
+            tot_s = total_shipments_cnt or 1
+            deliv_pct = round((delivered_cnt / tot_s) * 100, 1)
+            trans_pct = round((in_transit_cnt / tot_s) * 100, 1)
+            delay_pct = round((delayed_pending_cnt / tot_s) * 100, 1)
+            render_html(f"""
 <div style="display: flex; justify-content: space-around; padding: 10px 14px; background: rgba(15, 23, 42, 0.5); border-radius: 10px; margin-top: 4px; border: 1px solid rgba(255,255,255,0.04);">
 <div style="text-align: center;">
 <div style="font-size: 0.72rem; color: #94a3b8;">Delivered</div>
-<div style="font-size: 1.05rem; font-weight: 700; color: #10b981;">4,120 (49.4%)</div>
+<div style="font-size: 1.05rem; font-weight: 700; color: #10b981;">{delivered_cnt:,} ({deliv_pct}%)</div>
 </div>
 <div style="text-align: center;">
 <div style="font-size: 0.72rem; color: #94a3b8;">In Transit</div>
-<div style="font-size: 1.05rem; font-weight: 700; color: #0ea5e9;">3,412 (40.9%)</div>
+<div style="font-size: 1.05rem; font-weight: 700; color: #0ea5e9;">{in_transit_cnt:,} ({trans_pct}%)</div>
 </div>
 <div style="text-align: center;">
 <div style="font-size: 0.72rem; color: #94a3b8;">Delayed / Pending</div>
-<div style="font-size: 1.05rem; font-weight: 700; color: #f59e0b;">809 (9.7%)</div>
+<div style="font-size: 1.05rem; font-weight: 700; color: #f59e0b;">{delayed_pending_cnt:,} ({delay_pct}%)</div>
 </div>
 </div>
 """)

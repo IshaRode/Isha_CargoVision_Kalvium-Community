@@ -15,7 +15,9 @@ from utils.auth import (
 from utils.db_service import (
     get_shipment_by_id,
     get_shipment_scans,
-    record_operational_event
+    record_operational_event,
+    get_delay_reports,
+    create_delay_report
 )
 
 st.set_page_config(
@@ -77,17 +79,8 @@ with col_nav:
 <a href="/shipment_tracking{q_str}" class="side-nav-link active" target="_self">
 <span>📦</span> Shipments
 </a>
-<a href="/shipment_scans{q_str}" class="side-nav-link" target="_self">
-<span>⚡</span> Shipment Scans
-</a>
-<a href="/delay_reports{q_str}" class="side-nav-link" target="_self">
-<span>⏱️</span> Delay Reports
-</a>
 <a href="/route_analytics{q_str}" class="side-nav-link" target="_self">
 <span>🛣️</span> Routes
-</a>
-<a href="/warehouse_intelligence{q_str}" class="side-nav-link" target="_self">
-<span>🏭</span> Warehouses
 </a>
 <a href="/ai_predictions{q_str}" class="side-nav-link" target="_self">
 <span>🧠</span> AI Insights
@@ -123,9 +116,9 @@ with col_main:
 <div class="tower-header-bar">
 <div>
 <div class="tower-title">
-<span>📦 Shipment Tracking & Verification</span>
+<span>📦 Shipment Tracking & Checkpoint Ingestion</span>
 </div>
-<p class="tower-subtitle">Search any shipment to view its live status and audit history. Recording updates requires location authorization.</p>
+<p class="tower-subtitle">Search any shipment to view real-time tracking, ETA, audit history, and log verified checkpoint events.</p>
 </div>
 <div class="tower-header-right">
 <div class="tower-live-pill">
@@ -212,13 +205,13 @@ Enter a valid Shipment ID above (such as <b>SH-1001</b>, <b>SH-1002</b>, <b>SH-1
             st.session_state["search_error"] = "Shipment ID not found. Please check the ID and try again."
             st.rerun()
 
-        # Two-Column Layout: Left (Shipment Details + Event History), Right (Record Operational Event Form)
+        # Two-Column Layout: Left (Shipment Details + Event History), Right (Record Checkpoint Event Form)
         col_details, col_event_form = st.columns([0.56, 0.44], gap="medium")
 
         with col_details:
             status_val = active_shp.get("status", "In Transit")
-            status_color = "#22c55e" if status_val == "Delivered" else "#ef4444" if status_val == "Delayed" else "#f59e0b" if status_val == "Pending" else "#38bdf8"
-            status_icon = "✅" if status_val == "Delivered" else "⚠️" if status_val == "Delayed" else "⏳" if status_val == "Pending" else "🚚"
+            status_color = "#22c55e" if status_val in ["Delivered", "Arrived"] else "#ef4444" if status_val in ["Delayed", "Critical"] else "#f59e0b" if status_val == "Pending" else "#38bdf8"
+            status_icon = "✅" if status_val == "Delivered" else "🎯" if status_val == "Arrived" else "⚠️" if status_val in ["Delayed", "Critical"] else "⏳" if status_val == "Pending" else "🚚"
 
             exp_del = active_shp.get("expected_delivery", "Today • 06:30 PM")
             if "T" in str(exp_del):
@@ -276,6 +269,52 @@ Enter a valid Shipment ID above (such as <b>SH-1001</b>, <b>SH-1002</b>, <b>SH-1
 </div>
 """, unsafe_allow_html=True)
 
+            # Delay Incident Information Card (If shipment has delays)
+            shipment_delays = get_delay_reports(active_shp.get("shipment_id"))
+            if shipment_delays:
+                top_del = shipment_delays[0]
+                d_reason = top_del.get("delay_reason", "Unspecified Incident")
+                d_duration = top_del.get("delay_duration_hours", 2.0)
+                d_severity = top_del.get("severity", "High").upper()
+                d_notes = top_del.get("description", "No additional details provided.")
+                d_time = top_del.get("reported_at", "")
+                if "T" in str(d_time):
+                    d_time = str(d_time).replace("T", " ")[:16]
+
+                st.markdown(f"""
+<div class="tower-panel" style="border: 1px solid rgba(239, 68, 68, 0.35); background: linear-gradient(135deg, rgba(239, 68, 68, 0.08) 0%, rgba(15, 23, 42, 0.8) 100%);">
+<div class="tower-panel-header">
+<div style="display: flex; align-items: center; gap: 8px;">
+<span style="font-size: 1.2rem;">🚨</span>
+<h3 class="tower-panel-title" style="color: #ef4444;">Delay Incident Information</h3>
+</div>
+<span style="background: rgba(239, 68, 68, 0.2); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.4); padding: 4px 12px; border-radius: 14px; font-size: 0.76rem; font-weight: 700;">
+{d_severity} SEVERITY
+</span>
+</div>
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+<div style="background: rgba(15, 23, 42, 0.6); padding: 10px 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.06);">
+<div style="font-size: 0.72rem; color: #64748b; font-weight: 700; text-transform: uppercase;">DELAY REASON</div>
+<div style="font-size: 0.95rem; font-weight: 700; color: #fca5a5;">⚠️ {d_reason}</div>
+</div>
+<div style="background: rgba(15, 23, 42, 0.6); padding: 10px 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.06);">
+<div style="font-size: 0.72rem; color: #64748b; font-weight: 700; text-transform: uppercase;">DELAY DURATION</div>
+<div style="font-size: 0.95rem; font-weight: 700; color: #f59e0b;">⏱️ +{d_duration} hours</div>
+</div>
+</div>
+
+<div style="background: rgba(15, 23, 42, 0.6); padding: 12px 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.06); margin-bottom: 10px;">
+<div style="font-size: 0.72rem; color: #64748b; font-weight: 700; text-transform: uppercase; margin-bottom: 4px;">INCIDENT NOTES</div>
+<div style="font-size: 0.88rem; color: #cbd5e1; line-height: 1.5;">{d_notes}</div>
+</div>
+
+<div style="font-size: 0.76rem; color: #94a3b8; text-align: right;">
+Reported: <b style="color: #ffffff;">{d_time}</b>
+</div>
+</div>
+""", unsafe_allow_html=True)
+
             # Operational Event History Timeline (With User Audit Trail)
             scans_history = get_shipment_scans(active_shp.get("shipment_id"))
             
@@ -283,8 +322,8 @@ Enter a valid Shipment ID above (such as <b>SH-1001</b>, <b>SH-1002</b>, <b>SH-1
             if scans_history:
                 for sc in scans_history:
                     st_sc = sc.get("scan_status", "In Transit")
-                    sc_color = "#22c55e" if st_sc == "Arrived" else "#ef4444" if st_sc == "Delayed" else "#0ea5e9" if st_sc == "Departed" else "#38bdf8"
-                    sc_icon = "🎯" if st_sc == "Arrived" else "⚠️" if st_sc == "Delayed" else "🛫" if st_sc == "Departed" else "🚚"
+                    sc_color = "#22c55e" if st_sc in ["Arrived", "Delivered"] else "#ef4444" if st_sc in ["Delayed", "Critical"] else "#0ea5e9" if st_sc == "Departed" else "#38bdf8"
+                    sc_icon = "🎯" if st_sc == "Arrived" else "⚠️" if st_sc in ["Delayed", "Critical"] else "🛫" if st_sc == "Departed" else "🚚"
                     
                     sc_time = sc.get("scan_time", "")
                     if "T" in str(sc_time):
@@ -320,103 +359,91 @@ Enter a valid Shipment ID above (such as <b>SH-1001</b>, <b>SH-1002</b>, <b>SH-1
 </div>
 """, unsafe_allow_html=True)
 
-        # RIGHT COLUMN: RECORD OPERATIONAL EVENT FORM (WITH LOCATION AUTHORIZATION CHECK)
+        # RIGHT COLUMN: RECORD CHECKPOINT EVENT OR REPORT DELAY FORM
         with col_event_form:
-            with st.form("record_event_form", clear_on_submit=False):
-                st.markdown(f"""
+            action_choice = st.radio(
+                "Action Selection",
+                options=["⚡ Record Checkpoint Event", "🚨 Report Delay Incident"],
+                horizontal=True,
+                label_visibility="collapsed",
+                key="shipment_action_radio"
+            )
+
+            if action_choice == "⚡ Record Checkpoint Event":
+                with st.form("record_event_form", clear_on_submit=False):
+                    st.markdown(f"""
 <div class="tower-panel-header">
 <h3 class="tower-panel-title">
-<span>⚡</span> Record Operational Event
+<span>⚡</span> Record Checkpoint Event
 </h3>
 <span style="font-size: 0.78rem; color: #38bdf8; font-weight: 700; background: rgba(14, 165, 233, 0.15); padding: 3px 10px; border-radius: 12px; border: 1px solid rgba(14, 165, 233, 0.3);">{active_shp.get('shipment_id')}</span>
 </div>
-<div style="background: rgba(14, 165, 233, 0.08); border: 1px solid rgba(14, 165, 233, 0.2); border-radius: 10px; padding: 10px 12px; margin-bottom: 14px; font-size: 0.82rem;">
-<div style="color: #f8fafc; font-weight: 600; margin-bottom: 2px;">🛡️ Location-Based Access Control</div>
+
+<div style="background: rgba(14, 165, 233, 0.08); border: 1px solid rgba(14, 165, 233, 0.2); border-radius: 10px; padding: 12px 14px; margin-bottom: 14px; font-size: 0.82rem;">
+<div style="color: #f8fafc; font-weight: 600; margin-bottom: 2px;">🛡️ Location Authorization Active</div>
 <div style="color: #94a3b8;">Logged in as: <b style="color: #ffffff;">{user_name}</b> ({user_role})</div>
-<div style="color: #94a3b8;">Your Assigned Location: <b style="color: #38bdf8;">{user_location}</b></div>
+<div style="color: #94a3b8;">Assigned Location: <b style="color: #38bdf8;">{user_location}</b></div>
+</div>
+
+<div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 10px; padding: 12px 14px; margin-bottom: 16px;">
+<div style="font-size: 0.72rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">CHECKPOINT LOCATION (AUTO-SET)</div>
+<div style="font-size: 0.98rem; font-weight: 700; color: #38bdf8; display: flex; align-items: center; justify-content: space-between;">
+<span>📍 {user_location}</span>
+<span style="font-size: 0.72rem; color: #94a3b8; font-weight: 500; background: rgba(255,255,255,0.06); padding: 2px 8px; border-radius: 10px;">Locked to Profile</span>
+</div>
 </div>
 """, unsafe_allow_html=True)
 
-                # Location options: prefill / allow selecting CargoVision standard locations or custom
-                location_mode = st.radio(
-                    "Location Selection Mode",
-                    options=["Standard Hub / Checkpoint", "Custom Checkpoint Entry"],
-                    horizontal=True,
-                    label_visibility="collapsed",
-                    key="loc_mode_radio"
-                )
-
-                if location_mode == "Standard Hub / Checkpoint":
-                    new_location = st.selectbox(
-                        "Checkpoint Location *",
-                        options=CARGOVISION_LOCATIONS,
+                    # Event Status selection
+                    event_status = st.selectbox(
+                        "Event Status *",
+                        options=["Arrived", "Departed", "In Transit", "Delayed"],
                         index=0,
-                        key="event_loc_select"
-                    )
-                else:
-                    new_location = st.text_input(
-                        "Custom Checkpoint Name *",
-                        placeholder="e.g. Pune DC Inbound Gate / Mumbai Hub Dock 3",
-                        key="event_loc_custom"
+                        key="event_status_select"
                     )
 
-                # Event Status selection
-                event_status = st.selectbox(
-                    "Event Status *",
-                    options=["In Transit", "Arrived", "Departed", "Delayed"],
-                    index=0,
-                    key="event_status_select"
-                )
+                    # Conditional delay inputs if status is Delayed
+                    delay_reason = None
+                    delay_duration = 0.0
+                    delay_notes = ""
 
-                # Conditional delay inputs if status is Delayed
-                delay_reason = None
-                delay_duration = 0.0
-                delay_notes = ""
+                    if event_status == "Delayed":
+                        st.markdown("<div style='padding: 12px 14px; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.25); border-radius: 10px; margin: 10px 0;'>", unsafe_allow_html=True)
+                        st.markdown("<div style='font-size: 0.84rem; font-weight: 700; color: #fca5a5; margin-bottom: 8px;'>🚨 Delay Incident Details</div>", unsafe_allow_html=True)
+                        
+                        d_c1, d_c2 = st.columns(2)
+                        with d_c1:
+                            delay_reason = st.selectbox(
+                                "Delay Reason",
+                                ["Traffic Congestion", "Weather", "Vehicle Breakdown", "Warehouse Congestion", "Operational Issue", "Other"],
+                                key="event_delay_reason"
+                            )
+                        with d_c2:
+                            delay_duration = st.number_input(
+                                "Delay Duration (Hours)",
+                                min_value=0.5,
+                                max_value=72.0,
+                                value=2.0,
+                                step=0.5,
+                                key="event_delay_duration"
+                            )
+                        delay_notes = st.text_input("Incident Notes", placeholder="e.g. Bottleneck observed near toll plaza", key="event_delay_notes")
+                        st.markdown("</div>", unsafe_allow_html=True)
 
-                if event_status == "Delayed":
-                    st.markdown("<div style='padding: 12px 14px; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.25); border-radius: 10px; margin: 10px 0;'>", unsafe_allow_html=True)
-                    st.markdown("<div style='font-size: 0.84rem; font-weight: 700; color: #fca5a5; margin-bottom: 8px;'>🚨 Delay Incident Details</div>", unsafe_allow_html=True)
-                    
-                    d_c1, d_c2 = st.columns(2)
-                    with d_c1:
-                        delay_reason = st.selectbox(
-                            "Delay Reason",
-                            ["Traffic Congestion", "Weather", "Vehicle Breakdown", "Warehouse Congestion", "Operational Issue", "Other"],
-                            key="event_delay_reason"
-                        )
-                    with d_c2:
-                        delay_duration = st.number_input(
-                            "Delay Duration (Hours)",
-                            min_value=0.5,
-                            max_value=72.0,
-                            value=2.0,
-                            step=0.5,
-                            key="event_delay_duration"
-                        )
-                    delay_notes = st.text_input("Incident Notes", placeholder="e.g. Bottleneck observed near toll plaza", key="event_delay_notes")
-                    st.markdown("</div>", unsafe_allow_html=True)
+                    st.markdown("<div style='height: 8px;'></div>", unsafe_allow_html=True)
+                    submit_event = st.form_submit_button("⚡ Record Checkpoint Event", type="primary", use_container_width=True)
 
-                st.markdown("<div style='height: 8px;'></div>", unsafe_allow_html=True)
-                submit_event = st.form_submit_button("💾 Record Event & Update Shipment", type="primary", use_container_width=True)
-
-                if submit_event:
-                    if not new_location:
-                        st.error("❌ Please enter or select the checkpoint location.")
-                    else:
-                        # ==========================================================
-                        # 4. LOCATION-BASED AUTHORIZATION CHECK
-                        # ==========================================================
-                        authorized, auth_msg = is_location_authorized(user, new_location)
+                    if submit_event:
+                        # Location-based authorization check
+                        authorized, auth_msg = is_location_authorized(user, user_location)
                         
                         if not authorized:
-                            # Strict block: Do NOT save event to Supabase
                             st.error(f"❌ {auth_msg}")
                         else:
-                            # User is authorized -> save to Supabase with audit metadata
-                            with st.spinner("Recording verified operational event..."):
+                            with st.spinner("Recording checkpoint event and synchronizing Supabase..."):
                                 success, msg, _ = record_operational_event(
                                     shipment_id=active_shp.get("shipment_id"),
-                                    location=new_location,
+                                    location=user_location,
                                     status=event_status,
                                     delay_reason=delay_reason,
                                     delay_duration_hours=delay_duration,
@@ -426,7 +453,100 @@ Enter a valid Shipment ID above (such as <b>SH-1001</b>, <b>SH-1002</b>, <b>SH-1
                                 )
                             if success:
                                 st.success(f"✅ {msg}")
-                                st.toast(f"✅ Verified event logged by {user_name} at {new_location} ({event_status})!", icon="🚚")
+                                st.toast(f"✅ Checkpoint event logged by {user_name} for {active_shp.get('shipment_id')} at {user_location} ({event_status})!", icon="⚡")
+                                time.sleep(0.6)
+                                st.rerun()
+                            else:
+                                st.error(f"❌ {msg}")
+
+            else:
+                # 🚨 REPORT DELAY INCIDENT FORM
+                with st.form("report_delay_form", clear_on_submit=False):
+                    st.markdown(f"""
+<div class="tower-panel-header">
+<h3 class="tower-panel-title" style="color: #ef4444;">
+<span>🚨</span> Report Delay Incident
+</h3>
+<span style="font-size: 0.78rem; color: #ef4444; font-weight: 700; background: rgba(239, 68, 68, 0.15); padding: 3px 10px; border-radius: 12px; border: 1px solid rgba(239, 68, 68, 0.3);">{active_shp.get('shipment_id')}</span>
+</div>
+
+<div style="background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 10px; padding: 12px 14px; margin-bottom: 14px; font-size: 0.82rem;">
+<div style="color: #fca5a5; font-weight: 600; margin-bottom: 2px;">🛡️ Location Authorization Active</div>
+<div style="color: #94a3b8;">Reporter: <b style="color: #ffffff;">{user_name}</b> ({user_role})</div>
+<div style="color: #94a3b8;">Assigned Location: <b style="color: #38bdf8;">{user_location}</b></div>
+</div>
+
+<div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 10px; padding: 12px 14px; margin-bottom: 16px;">
+<div style="font-size: 0.72rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">INCIDENT LOCATION (AUTO-SET)</div>
+<div style="font-size: 0.98rem; font-weight: 700; color: #38bdf8; display: flex; align-items: center; justify-content: space-between;">
+<span>📍 {user_location}</span>
+<span style="font-size: 0.72rem; color: #94a3b8; font-weight: 500; background: rgba(255,255,255,0.06); padding: 2px 8px; border-radius: 10px;">Locked to Profile</span>
+</div>
+</div>
+""", unsafe_allow_html=True)
+
+                    r_col1, r_col2 = st.columns(2)
+                    with r_col1:
+                        del_reason = st.selectbox(
+                            "Delay Reason *",
+                            ["Traffic Congestion", "Weather", "Vehicle Breakdown", "Warehouse Congestion", "Operational Issue", "Other"],
+                            key="rep_delay_reason"
+                        )
+                        del_severity = st.selectbox(
+                            "Severity Level *",
+                            ["High", "Critical", "Medium", "Low"],
+                            key="rep_delay_severity"
+                        )
+                    with r_col2:
+                        del_duration = st.number_input(
+                            "Delay Duration (Hours) *",
+                            min_value=0.5,
+                            max_value=72.0,
+                            value=2.5,
+                            step=0.5,
+                            key="rep_delay_duration"
+                        )
+
+                    del_notes = st.text_input(
+                        "Incident Description / Notes *",
+                        placeholder="Provide details regarding the delay bottleneck or incident...",
+                        key="rep_delay_notes"
+                    )
+
+                    st.markdown("<div style='height: 8px;'></div>", unsafe_allow_html=True)
+                    submit_delay = st.form_submit_button("🚨 Report Delay & Update Shipment", type="primary", use_container_width=True)
+
+                    if submit_delay:
+                        # Location authorization check
+                        authorized, auth_msg = is_location_authorized(user, user_location)
+                        
+                        if not authorized:
+                            st.error(f"❌ {auth_msg}")
+                        else:
+                            route_str = f"{active_shp.get('origin', '')} → {active_shp.get('destination', '')}"
+                            with st.spinner("Logging delay report to Supabase..."):
+                                success, msg, _ = create_delay_report(
+                                    shipment_id=active_shp.get("shipment_id"),
+                                    route=route_str,
+                                    delay_duration_hours=del_duration,
+                                    delay_reason=del_reason,
+                                    severity=del_severity,
+                                    description=del_notes or f"Delayed at {user_location} due to {del_reason}"
+                                )
+                                # Also log scan event to maintain full audit trail
+                                record_operational_event(
+                                    shipment_id=active_shp.get("shipment_id"),
+                                    location=user_location,
+                                    status="Delayed",
+                                    delay_reason=del_reason,
+                                    delay_duration_hours=del_duration,
+                                    delay_description=del_notes,
+                                    recorded_by_user_id=user_id,
+                                    recorded_by_name=f"{user_name} ({user_role})"
+                                )
+                            if success:
+                                st.success(f"✅ {msg}")
+                                st.toast(f"🚨 Delay report logged by {user_name} for {active_shp.get('shipment_id')} at {user_location}!", icon="🚨")
                                 time.sleep(0.6)
                                 st.rerun()
                             else:

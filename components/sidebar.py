@@ -7,8 +7,7 @@ def get_top_nav_html():
             <h2 style="margin: 0; font-size: 1.3rem; letter-spacing: -0.5px; color: white;">CargoVision</h2>
         </div>
         <div class="nav-links">
-            <a href="/" target="_self" class="top-nav-link active">Home</a>
-            <a href="/dashboard" target="_self" class="top-nav-link">Dashboard</a>
+            <a href="/dashboard" target="_self" class="top-nav-link active">Dashboard</a>
             <a href="/shipment_tracking" target="_self" class="top-nav-link">Shipments</a>
             <a href="/route_analytics" target="_self" class="top-nav-link">Routes</a>
             <a href="/warehouse_intelligence" target="_self" class="top-nav-link">Warehouses</a>
