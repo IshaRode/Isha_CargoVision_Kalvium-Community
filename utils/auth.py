@@ -115,10 +115,38 @@ def get_auth_token() -> str:
 
 def validate_email(email: str) -> bool:
     """Validates email format using regex."""
-    if not email:
-        return False
-    pattern = r"^[\w\.-]+@[\w\.-]+\.\w+$"
-    return bool(re.match(pattern, email.strip()))
+    pattern = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
+    return bool(re.match(pattern, email))
+
+
+def evaluate_password_strength(password: str) -> dict:
+    """
+    Evaluates password strength and returns score (0-100), label, color, and meter width.
+    Used for real-time registration feedback.
+    """
+    if not password:
+        return {"score": 0, "label": "Too Short", "color": "#64748b", "pct": 0}
+    
+    score = 0
+    if len(password) >= 6:
+        score += 25
+    if len(password) >= 10:
+        score += 25
+    if re.search(r"[A-Z]", password):
+        score += 15
+    if re.search(r"[0-9]", password):
+        score += 15
+    if re.search(r"[!@#$%^&*(),.?\":{}|<>]", password):
+        score += 20
+        
+    if score >= 80:
+        return {"score": score, "label": "Enterprise Secure 🛡️", "color": "#22c55e", "pct": 100}
+    elif score >= 50:
+        return {"score": score, "label": "Strong Password 💪", "color": "#38bdf8", "pct": score}
+    elif score >= 30:
+        return {"score": score, "label": "Moderate Password ⚡", "color": "#f59e0b", "pct": score}
+    else:
+        return {"score": score, "label": "Weak Password ⚠️", "color": "#ef4444", "pct": max(15, score)}
 
 
 def is_location_authorized(user: dict, target_location: str) -> tuple:
