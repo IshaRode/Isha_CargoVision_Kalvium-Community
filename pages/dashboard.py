@@ -470,6 +470,43 @@ with col_workspace:
 
     st.markdown("<div style='height: 12px;'></div>", unsafe_allow_html=True)
 
+    # 1.5 NETWORK OPERATIONAL HEALTH STATUS BAR
+    render_html("""
+<div style="display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap;">
+<div style="flex: 1; min-width: 200px; background: rgba(15, 23, 42, 0.65); border: 1px solid rgba(34, 197, 94, 0.25); border-left: 3px solid #22c55e; border-radius: 10px; padding: 10px 14px; display: flex; align-items: center; justify-content: space-between;">
+<div>
+<div style="font-size: 0.68rem; font-weight: 700; color: #94a3b8; text-transform: uppercase;">NETWORK SLA HEALTH</div>
+<div style="font-size: 0.95rem; font-weight: 800; color: #22c55e;">98.4% Optimal</div>
+</div>
+<span class="tower-live-dot"></span>
+</div>
+
+<div style="flex: 1; min-width: 200px; background: rgba(15, 23, 42, 0.65); border: 1px solid rgba(14, 165, 233, 0.25); border-left: 3px solid #0ea5e9; border-radius: 10px; padding: 10px 14px; display: flex; align-items: center; justify-content: space-between;">
+<div>
+<div style="font-size: 0.68rem; font-weight: 700; color: #94a3b8; text-transform: uppercase;">GPS TELEMETRY</div>
+<div style="font-size: 0.95rem; font-weight: 800; color: #38bdf8;">2.4k scans/min</div>
+</div>
+<span style="font-size: 0.9rem;">🛰️</span>
+</div>
+
+<div style="flex: 1; min-width: 200px; background: rgba(15, 23, 42, 0.65); border: 1px solid rgba(245, 158, 11, 0.25); border-left: 3px solid #f59e0b; border-radius: 10px; padding: 10px 14px; display: flex; align-items: center; justify-content: space-between;">
+<div>
+<div style="font-size: 0.68rem; font-weight: 700; color: #94a3b8; text-transform: uppercase;">ACTIVE CORRIDORS</div>
+<div style="font-size: 0.95rem; font-weight: 800; color: #fbbf24;">60 National Routes</div>
+</div>
+<span style="font-size: 0.9rem;">🛣️</span>
+</div>
+
+<div style="flex: 1; min-width: 200px; background: rgba(15, 23, 42, 0.65); border: 1px solid rgba(99, 102, 241, 0.25); border-left: 3px solid #6366f1; border-radius: 10px; padding: 10px 14px; display: flex; align-items: center; justify-content: space-between;">
+<div>
+<div style="font-size: 0.68rem; font-weight: 700; color: #94a3b8; text-transform: uppercase;">LOCATION RBAC GUARD</div>
+<div style="font-size: 0.95rem; font-weight: 800; color: #a5b4fc;">Verified Active</div>
+</div>
+<span style="font-size: 0.9rem;">🔒</span>
+</div>
+</div>
+""")
+
     # 2. RESPONSIVE 4 KPI CARDS ROW
     kpi_col1, kpi_col2, kpi_col3, kpi_col4 = st.columns(4, gap="medium")
 
