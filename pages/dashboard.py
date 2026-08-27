@@ -49,9 +49,19 @@ if os.path.exists(css_file):
 # Dashboard-only visual refinements. The shared stylesheet remains unchanged.
 st.markdown("""
 <style id="dashboard-ui-overrides">
+    [data-testid="stAppViewContainer"] .main .block-container {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 2rem 2.5rem 3rem !important;
+    }
+
+    div[data-testid="stHorizontalBlock"] {
+        align-items: stretch !important;
+    }
+
     .tower-header-bar {
-        padding: 6px 4px 22px !important;
-        margin: 0 0 28px !important;
+        padding: 6px 4px 24px !important;
+        margin: 0 0 30px !important;
     }
 
     .tower-title {
@@ -82,8 +92,9 @@ st.markdown("""
     }
 
     .tower-kpi-card {
-        min-height: 166px !important;
+        min-height: 172px !important;
         height: 100% !important;
+        box-sizing: border-box !important;
         padding: 20px 21px !important;
         border-radius: 14px !important;
         display: flex !important;
@@ -118,15 +129,17 @@ st.markdown("""
     }
 
     .tower-panel {
-        padding: 24px !important;
-        margin-bottom: 24px !important;
+        box-sizing: border-box !important;
+        height: 100% !important;
+        padding: 26px !important;
+        margin-bottom: 26px !important;
         border-radius: 14px !important;
     }
 
     .tower-panel-header {
         min-height: 28px !important;
-        margin-bottom: 18px !important;
-        padding-bottom: 14px !important;
+        margin-bottom: 20px !important;
+        padding-bottom: 16px !important;
         gap: 14px !important;
     }
 
@@ -293,6 +306,10 @@ st.markdown("""
     }
 
     @media (max-width: 1100px) {
+        [data-testid="stAppViewContainer"] .main .block-container {
+            padding: 1.5rem 1.25rem 2.5rem !important;
+        }
+
         .tower-panel {
             padding: 20px !important;
         }
