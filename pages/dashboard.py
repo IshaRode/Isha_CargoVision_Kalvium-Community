@@ -699,7 +699,7 @@ Inbound freight volume is exceeding dock throughput capacity by <b>14%</b>.
 <div class="ai-tag-rec">✅ ACTION APPLIED</div>
 <div style="font-size: 0.95rem; font-weight: 800; color: #ffffff; margin-bottom: 4px;">Nashik Hub Routing Active</div>
 <div style="font-size: 0.8rem; color: #cbd5e1; line-height: 1.4; margin-bottom: 8px;">
-42 shipments successfully rerouted via Nashik Hub. Projected delay reduction: <b>18% (~1.8h saved)</b>.
+42 shipments successfully rerouted via Nashik Hub. Projected delay reduction: <b>18% (~1.8h saved)</b>. Estimated financial savings: <b>₹3.4L in detention & fuel penalties</b>.
 </div>
 </div>
 """)
@@ -713,8 +713,11 @@ Inbound freight volume is exceeding dock throughput capacity by <b>14%</b>.
 <div style="font-size: 0.82rem; color: #f8fafc; font-weight: 600; line-height: 1.4; margin-bottom: 6px;">
 {rec_status_text}
 </div>
-<div style="font-size: 0.78rem; color: #10b981; font-weight: 700; margin-bottom: 12px;">
+<div style="font-size: 0.78rem; color: #10b981; font-weight: 700; margin-bottom: 8px;">
 ⚡ Potential delay reduction: 18% (saves ~1.8h/shipment)
+</div>
+<div style="font-size: 0.74rem; color: #38bdf8; font-weight: 600; background: rgba(14,165,233,0.1); padding: 4px 8px; border-radius: 6px; border: 1px solid rgba(14,165,233,0.2); margin-bottom: 10px;">
+💰 Projected Savings: ₹3.4L Detention + 42 Transports Rerouted
 </div>
 </div>
 """)
