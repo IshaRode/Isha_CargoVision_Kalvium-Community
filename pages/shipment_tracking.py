@@ -205,12 +205,24 @@ Enter a valid Shipment ID above (such as <b>SH-1001</b>, <b>SH-1002</b>, <b>SH-1
             st.session_state["search_error"] = "Shipment ID not found. Please check the ID and try again."
             st.rerun()
 
-        # Two-Column Layout: Left (Shipment Details + Event History), Right (Record Checkpoint Event Form)
-        col_details, col_event_form = st.columns([0.56, 0.44], gap="medium")
+        # Helper function for pretty date formatting (e.g. 20 Aug 2026 · 06:10)
+        def format_event_time(dt_str):
+            if not dt_str:
+                return "N/A"
+            try:
+                s = str(dt_str).replace("T", " ")[:16]
+                dt = datetime.strptime(s, "%Y-%m-%d %H:%M")
+                return dt.strftime("%d %b %Y · %H:%M")
+            except Exception:
+                return str(dt_str).replace("T", " ")[:16]
+
+        # Two-Column Layout: Left (~62% width for info & timeline), Right (~38% width for actions)
+        col_details, col_event_form = st.columns([0.62, 0.38], gap="large")
 
         with col_details:
             status_val = active_shp.get("status", "In Transit")
             status_color = "#22c55e" if status_val in ["Delivered", "Arrived"] else "#ef4444" if status_val in ["Delayed", "Critical"] else "#f59e0b" if status_val == "Pending" else "#38bdf8"
+            status_bg = "rgba(34, 197, 94, 0.12)" if status_val in ["Delivered", "Arrived"] else "rgba(239, 68, 68, 0.12)" if status_val in ["Delayed", "Critical"] else "rgba(245, 158, 11, 0.12)" if status_val == "Pending" else "rgba(14, 165, 233, 0.12)"
             status_icon = "✅" if status_val == "Delivered" else "🎯" if status_val == "Arrived" else "⚠️" if status_val in ["Delayed", "Critical"] else "⏳" if status_val == "Pending" else "🚚"
 
             exp_del = active_shp.get("expected_delivery", "Today • 06:30 PM")
@@ -221,175 +233,183 @@ Enter a valid Shipment ID above (such as <b>SH-1001</b>, <b>SH-1002</b>, <b>SH-1
             cargo_info = active_shp.get("cargo_type", "General Logistics Consignment")
             weight_kg = active_shp.get("weight_kg", "1,250")
             priority = active_shp.get("priority", "High")
+            origin_loc = active_shp.get("origin", "Mumbai Hub")
+            dest_loc = active_shp.get("destination", "Pune DC")
+            curr_loc = active_shp.get("current_location", origin_loc)
+            shipment_id_str = active_shp.get('shipment_id')
 
+            # 1. COMPACT SHIPMENT OVERVIEW CARD
             st.markdown(f"""
-<div class="tower-panel">
-<div class="tower-panel-header">
+<div class="tower-panel" style="margin-bottom: 16px;">
+<div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
 <div style="display: flex; align-items: center; gap: 10px;">
-<span style="font-size: 1.35rem; font-weight: 800; color: #ffffff;">{active_shp.get('shipment_id')}</span>
-<span style="background: rgba(255,255,255,0.06); color: {status_color}; border: 1px solid {status_color}50; padding: 4px 12px; border-radius: 14px; font-size: 0.78rem; font-weight: 700;">
+<span style="font-size: 1.5rem; font-weight: 800; color: #ffffff; font-family: 'Outfit', sans-serif;">{shipment_id_str}</span>
+<span style="background: {status_bg}; color: {status_color}; border: 1px solid {status_color}40; padding: 3px 10px; border-radius: 12px; font-size: 0.78rem; font-weight: 700;">
 {status_icon} {status_val}
 </span>
 </div>
-<span style="font-size: 0.8rem; color: #94a3b8; font-weight: 600;">Priority: <b style="color: #f8fafc; background: rgba(255,255,255,0.08); padding: 2px 8px; border-radius: 6px;">{priority}</b></span>
+<span style="font-size: 0.76rem; color: #94a3b8; font-weight: 600; background: rgba(255,255,255,0.06); padding: 3px 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08);">
+Priority: <b style="color: #ffffff;">{priority}</b>
+</span>
 </div>
 
-<!-- Route Visual Banner -->
-<div class="route-visual-container">
-<div class="route-endpoints-row">
-<div class="route-origin-block">
-<div class="route-tag-lbl">ORIGIN</div>
-<div class="route-node-val">{active_shp.get('origin')}</div>
-</div>
-<div class="route-flow-line">
-<div class="route-flow-bar"></div>
-</div>
-<div class="route-dest-block">
-<div class="route-tag-lbl">DESTINATION</div>
-<div class="route-node-val">{active_shp.get('destination')}</div>
-</div>
-</div>
-<div class="route-meta-footer">
-<span style="color: #94a3b8;">Current Location: <b style="color: #38bdf8;">📍 {active_shp.get('current_location')}</b></span>
-<span style="color: #94a3b8;">ETA: <b style="color: #ffffff;">{exp_del}</b></span>
-</div>
+<div style="font-size: 1.15rem; font-weight: 700; color: #38bdf8; margin-bottom: 14px; display: flex; align-items: center; gap: 8px;">
+<span>{origin_loc}</span>
+<span style="color: #64748b; font-weight: 400;">→</span>
+<span>{dest_loc}</span>
 </div>
 
-<!-- Cargo Attributes Grid -->
-<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-<div style="background: rgba(15, 23, 42, 0.5); padding: 12px 16px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.06);">
-<div style="font-size: 0.72rem; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px;">CARRIER FLEET</div>
-<div style="font-size: 0.95rem; font-weight: 700; color: #f8fafc;">🚚 {carrier_name}</div>
-</div>
-<div style="background: rgba(15, 23, 42, 0.5); padding: 12px 16px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.06);">
-<div style="font-size: 0.72rem; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px;">CARGO MANIFEST</div>
-<div style="font-size: 0.95rem; font-weight: 700; color: #f8fafc;">📦 {cargo_info} ({weight_kg} kg)</div>
-</div>
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.06); font-size: 0.85rem;">
+<div style="color: #94a3b8;">📍 Current Location: <b style="color: #38bdf8;">{curr_loc}</b></div>
+<div style="color: #94a3b8;">🚚 Carrier: <b style="color: #f8fafc;">{carrier_name}</b></div>
+<div style="color: #94a3b8;">📦 Cargo: <b style="color: #f8fafc;">{cargo_info} ({weight_kg} kg)</b></div>
+<div style="color: #94a3b8;">🕒 ETA: <b style="color: #ffffff;">{exp_del}</b></div>
 </div>
 </div>
 """, unsafe_allow_html=True)
 
-            # Delay Incident Information Card (If shipment has delays)
-            shipment_delays = get_delay_reports(active_shp.get("shipment_id"))
+            # 2. REDESIGNED COMPACT DELAY ALERT CARD
+            shipment_delays = get_delay_reports(shipment_id_str)
             if shipment_delays:
                 top_del = shipment_delays[0]
                 d_reason = top_del.get("delay_reason", "Unspecified Incident")
                 d_duration = top_del.get("delay_duration_hours", 2.0)
                 d_severity = top_del.get("severity", "High").upper()
                 d_notes = top_del.get("description", "No additional details provided.")
-                d_time = top_del.get("reported_at", "")
-                if "T" in str(d_time):
-                    d_time = str(d_time).replace("T", " ")[:16]
+                d_time_raw = top_del.get("reported_at", "")
+                d_time_fmt = format_event_time(d_time_raw)
 
                 st.markdown(f"""
-<div class="tower-panel" style="border: 1px solid rgba(239, 68, 68, 0.35); background: linear-gradient(135deg, rgba(239, 68, 68, 0.08) 0%, rgba(15, 23, 42, 0.8) 100%);">
-<div class="tower-panel-header">
-<div style="display: flex; align-items: center; gap: 8px;">
-<span style="font-size: 1.2rem;">🚨</span>
-<h3 class="tower-panel-title" style="color: #ef4444;">Delay Incident Information</h3>
+<div class="delay-alert-card">
+<div class="delay-alert-header">
+<div class="delay-alert-title">
+<span>⚠️</span> Delay Alert
 </div>
-<span style="background: rgba(239, 68, 68, 0.2); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.4); padding: 4px 12px; border-radius: 14px; font-size: 0.76rem; font-weight: 700;">
-{d_severity} SEVERITY
-</span>
+<div class="delay-duration-badge">+{d_duration} hours</div>
 </div>
-
-<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
-<div style="background: rgba(15, 23, 42, 0.6); padding: 10px 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.06);">
-<div style="font-size: 0.72rem; color: #64748b; font-weight: 700; text-transform: uppercase;">DELAY REASON</div>
-<div style="font-size: 0.95rem; font-weight: 700; color: #fca5a5;">⚠️ {d_reason}</div>
-</div>
-<div style="background: rgba(15, 23, 42, 0.6); padding: 10px 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.06);">
-<div style="font-size: 0.72rem; color: #64748b; font-weight: 700; text-transform: uppercase;">DELAY DURATION</div>
-<div style="font-size: 0.95rem; font-weight: 700; color: #f59e0b;">⏱️ +{d_duration} hours</div>
-</div>
-</div>
-
-<div style="background: rgba(15, 23, 42, 0.6); padding: 12px 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.06); margin-bottom: 10px;">
-<div style="font-size: 0.72rem; color: #64748b; font-weight: 700; text-transform: uppercase; margin-bottom: 4px;">INCIDENT NOTES</div>
-<div style="font-size: 0.88rem; color: #cbd5e1; line-height: 1.5;">{d_notes}</div>
-</div>
-
-<div style="font-size: 0.76rem; color: #94a3b8; text-align: right;">
-Reported: <b style="color: #ffffff;">{d_time}</b>
-</div>
+<div class="delay-alert-subtitle">{d_reason} • {d_severity.title()} Severity</div>
+<div class="delay-alert-body">{d_notes}</div>
+<div class="delay-alert-footer">Reported: {d_time_fmt}</div>
 </div>
 """, unsafe_allow_html=True)
 
-            # Operational Event History Timeline (With User Audit Trail)
-            scans_history = get_shipment_scans(active_shp.get("shipment_id"))
+            # 3. REDESIGNED VERTICAL EVENT TIMELINE
+            scans_history = get_shipment_scans(shipment_id_str)
             
             timeline_items = []
             if scans_history:
-                for sc in scans_history:
+                total_scans = len(scans_history)
+                for idx, sc in enumerate(scans_history):
                     st_sc = sc.get("scan_status", "In Transit")
-                    sc_color = "#22c55e" if st_sc in ["Arrived", "Delivered"] else "#ef4444" if st_sc in ["Delayed", "Critical"] else "#0ea5e9" if st_sc == "Departed" else "#38bdf8"
-                    sc_icon = "🎯" if st_sc == "Arrived" else "⚠️" if st_sc in ["Delayed", "Critical"] else "🛫" if st_sc == "Departed" else "🚚"
                     
-                    sc_time = sc.get("scan_time", "")
-                    if "T" in str(sc_time):
-                        sc_time = str(sc_time).replace("T", " ")[:16]
+                    if st_sc in ["Arrived", "Delivered"]:
+                        sc_color = "#22c55e"
+                        sc_bg = "rgba(34, 197, 94, 0.12)"
+                        sc_border = "rgba(34, 197, 94, 0.3)"
+                        sc_icon = "🎯" if st_sc == "Arrived" else "✅"
+                    elif st_sc in ["Delayed", "Critical"]:
+                        sc_color = "#ef4444"
+                        sc_bg = "rgba(239, 68, 68, 0.12)"
+                        sc_border = "rgba(239, 68, 68, 0.3)"
+                        sc_icon = "⚠️"
+                    elif st_sc == "Pending":
+                        sc_color = "#f59e0b"
+                        sc_bg = "rgba(245, 158, 11, 0.12)"
+                        sc_border = "rgba(245, 158, 11, 0.3)"
+                        sc_icon = "⏳"
+                    else:  # In Transit, Departed, etc.
+                        sc_color = "#38bdf8"
+                        sc_bg = "rgba(56, 189, 248, 0.12)"
+                        sc_border = "rgba(56, 189, 248, 0.3)"
+                        sc_icon = "↗" if st_sc == "Departed" else "🚚"
+                    
+                    sc_time_raw = sc.get("scan_time", "")
+                    sc_time_fmt = format_event_time(sc_time_raw)
                     
                     recorded_by = sc.get("recorded_by_name") or "Operations Team"
+                    location_name = sc.get("location", "Checkpoint Hub")
                     
-                    timeline_items.append(f"""
-<div class="event-row">
-<div class="event-icon-circle" style="color: {sc_color}; border: 1px solid {sc_color}40; background: {sc_color}18;">{sc_icon}</div>
-<div style="flex: 1;">
-<div style="display: flex; justify-content: space-between; align-items: baseline;">
-<div class="event-title-text">{sc.get('location')}</div>
-<span style="font-size: 0.74rem; color: {sc_color}; font-weight: 700; text-transform: uppercase;">{st_sc}</span>
-</div>
-<div class="event-sub-text">Recorded by <b style="color: #cbd5e1;">{recorded_by}</b> in CargoVision audit trail.</div>
-</div>
-<div class="event-time-badge" style="margin-left: 10px;">{sc_time}</div>
-</div>
-""")
+                    is_last = (idx == total_scans - 1)
+                    line_html = "" if is_last else f'<div style="width: 2px; background: linear-gradient(180deg, {sc_color}90 0%, rgba(255,255,255,0.08) 100%); min-height: 40px; flex-grow: 1; margin-top: 4px; margin-bottom: -10px; border-radius: 1px;"></div>'
+                    
+                    row_html = (
+                        f'<div class="timeline-event-row">'
+                        f'<div class="timeline-track-col">'
+                        f'<div class="timeline-track-dot" style="background: {sc_color}; box-shadow: 0 0 10px {sc_color}; border: 2.5px solid #0f172a;"></div>'
+                        f'{line_html}'
+                        f'</div>'
+                        f'<div class="timeline-card">'
+                        f'<div class="timeline-header-row">'
+                        f'<span class="timeline-status-badge" style="background: {sc_bg}; color: {sc_color}; border: 1px solid {sc_border};">{sc_icon} {st_sc}</span>'
+                        f'<span class="timeline-time-text">{sc_time_fmt}</span>'
+                        f'</div>'
+                        f'<div class="timeline-location-title">{location_name}</div>'
+                        f'<div class="timeline-recorded-meta">Recorded by <b style="color: #cbd5e1; font-weight: 600;">{recorded_by}</b></div>'
+                        f'</div>'
+                        f'</div>'
+                    )
+                    timeline_items.append(row_html)
 
-            timeline_content = ''.join(timeline_items) if timeline_items else '<div style="padding: 24px; text-align: center; color: #94a3b8; font-size: 0.88rem;">No previous events logged for this shipment. Record the first checkpoint event on the right!</div>'
+            timeline_content = ''.join(timeline_items) if timeline_items else '<div style="padding: 20px; text-align: center; color: #94a3b8; font-size: 0.88rem;">No previous events logged for this shipment. Record the first checkpoint event on the right!</div>'
             
             st.markdown(f"""
 <div class="tower-panel">
-<div class="tower-panel-header">
+<div class="tower-panel-header" style="margin-bottom: 12px;">
 <h3 class="tower-panel-title">
 <span>📜</span> Event & Checkpoint History ({len(scans_history)})
 </h3>
 <span style="font-size: 0.78rem; color: #94a3b8;">Audit Trail</span>
 </div>
+<div style="margin-top: 10px;">
 {timeline_content}
+</div>
 </div>
 """, unsafe_allow_html=True)
 
-        # RIGHT COLUMN: RECORD CHECKPOINT EVENT OR REPORT DELAY FORM
-        with col_event_form:
-            action_choice = st.radio(
-                "Action Selection",
-                options=["⚡ Record Checkpoint Event", "🚨 Report Delay Incident"],
-                horizontal=True,
-                label_visibility="collapsed",
-                key="shipment_action_radio"
-            )
 
-            if action_choice == "⚡ Record Checkpoint Event":
+
+
+        # ==========================================
+        # RIGHT COLUMN: SHIPMENT ACTIONS PANEL
+        # ==========================================
+        with col_event_form:
+            # Segmented Control Tab State
+            if "shipment_action_tab" not in st.session_state:
+                st.session_state["shipment_action_tab"] = "record"
+                
+            action_tab = st.session_state["shipment_action_tab"]
+
+            # Segmented Control Buttons
+            act_col1, act_col2 = st.columns(2)
+            with act_col1:
+                if st.button("⚡ Record Event", key="btn_seg_record", use_container_width=True, type="primary" if action_tab == "record" else "secondary"):
+                    st.session_state["shipment_action_tab"] = "record"
+                    st.rerun()
+            with act_col2:
+                if st.button("🚨 Report Delay", key="btn_seg_delay", use_container_width=True, type="primary" if action_tab == "delay" else "secondary"):
+                    st.session_state["shipment_action_tab"] = "delay"
+                    st.rerun()
+
+            st.markdown("<div style='height: 8px;'></div>", unsafe_allow_html=True)
+
+            if action_tab == "record":
                 with st.form("record_event_form", clear_on_submit=False):
                     st.markdown(f"""
-<div class="tower-panel-header">
-<h3 class="tower-panel-title">
-<span>⚡</span> Record Checkpoint Event
-</h3>
-<span style="font-size: 0.78rem; color: #38bdf8; font-weight: 700; background: rgba(14, 165, 233, 0.15); padding: 3px 10px; border-radius: 12px; border: 1px solid rgba(14, 165, 233, 0.3);">{active_shp.get('shipment_id')}</span>
+<div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+<div style="font-size: 1.05rem; font-weight: 700; color: #ffffff;">⚡ Record Checkpoint Event</div>
+<span style="font-size: 0.76rem; color: #38bdf8; font-weight: 700; background: rgba(14, 165, 233, 0.15); padding: 2px 8px; border-radius: 10px; border: 1px solid rgba(14, 165, 233, 0.3);">{shipment_id_str}</span>
 </div>
 
-<div style="background: rgba(14, 165, 233, 0.08); border: 1px solid rgba(14, 165, 233, 0.2); border-radius: 10px; padding: 12px 14px; margin-bottom: 14px; font-size: 0.82rem;">
-<div style="color: #f8fafc; font-weight: 600; margin-bottom: 2px;">🛡️ Location Authorization Active</div>
-<div style="color: #94a3b8;">Logged in as: <b style="color: #ffffff;">{user_name}</b> ({user_role})</div>
-<div style="color: #94a3b8;">Assigned Location: <b style="color: #38bdf8;">{user_location}</b></div>
+<div style="background: rgba(14, 165, 233, 0.08); border: 1px solid rgba(14, 165, 233, 0.2); border-radius: 8px; padding: 10px 12px; margin-bottom: 12px; font-size: 0.8rem;">
+<div style="color: #38bdf8; font-weight: 700; margin-bottom: 2px;">🛡️ LOCATION AUTHORIZATION VERIFIED</div>
+<div style="color: #cbd5e1;">User: <b style="color: #ffffff;">{user_name}</b> ({user_role})</div>
 </div>
 
-<div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 10px; padding: 12px 14px; margin-bottom: 16px;">
-<div style="font-size: 0.72rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">CHECKPOINT LOCATION (AUTO-SET)</div>
-<div style="font-size: 0.98rem; font-weight: 700; color: #38bdf8; display: flex; align-items: center; justify-content: space-between;">
+<div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; padding: 10px 12px; margin-bottom: 14px;">
+<div style="font-size: 0.7rem; font-weight: 700; color: #64748b; text-transform: uppercase; margin-bottom: 2px;">CHECKPOINT LOCATION (AUTO-SET)</div>
+<div style="font-size: 0.92rem; font-weight: 700; color: #38bdf8; display: flex; align-items: center; justify-content: space-between;">
 <span>📍 {user_location}</span>
-<span style="font-size: 0.72rem; color: #94a3b8; font-weight: 500; background: rgba(255,255,255,0.06); padding: 2px 8px; border-radius: 10px;">Locked to Profile</span>
+<span style="font-size: 0.7rem; color: #94a3b8; background: rgba(255,255,255,0.06); padding: 1px 6px; border-radius: 6px;">Locked to Profile</span>
 </div>
 </div>
 """, unsafe_allow_html=True)
@@ -408,8 +428,8 @@ Reported: <b style="color: #ffffff;">{d_time}</b>
                     delay_notes = ""
 
                     if event_status == "Delayed":
-                        st.markdown("<div style='padding: 12px 14px; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.25); border-radius: 10px; margin: 10px 0;'>", unsafe_allow_html=True)
-                        st.markdown("<div style='font-size: 0.84rem; font-weight: 700; color: #fca5a5; margin-bottom: 8px;'>🚨 Delay Incident Details</div>", unsafe_allow_html=True)
+                        st.markdown("<div style='padding: 10px 12px; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.25); border-radius: 8px; margin: 8px 0;'>", unsafe_allow_html=True)
+                        st.markdown("<div style='font-size: 0.8rem; font-weight: 700; color: #fca5a5; margin-bottom: 6px;'>🚨 Delay Incident Details</div>", unsafe_allow_html=True)
                         
                         d_c1, d_c2 = st.columns(2)
                         with d_c1:
@@ -427,10 +447,10 @@ Reported: <b style="color: #ffffff;">{d_time}</b>
                                 step=0.5,
                                 key="event_delay_duration"
                             )
-                        delay_notes = st.text_input("Incident Notes", placeholder="e.g. Bottleneck observed near toll plaza", key="event_delay_notes")
+                        delay_notes = st.text_input("Incident Notes", placeholder="e.g. Bottleneck near toll plaza", key="event_delay_notes")
                         st.markdown("</div>", unsafe_allow_html=True)
 
-                    st.markdown("<div style='height: 8px;'></div>", unsafe_allow_html=True)
+                    st.markdown("<div style='height: 4px;'></div>", unsafe_allow_html=True)
                     submit_event = st.form_submit_button("⚡ Record Checkpoint Event", type="primary", use_container_width=True)
 
                     if submit_event:
@@ -463,24 +483,21 @@ Reported: <b style="color: #ffffff;">{d_time}</b>
                 # 🚨 REPORT DELAY INCIDENT FORM
                 with st.form("report_delay_form", clear_on_submit=False):
                     st.markdown(f"""
-<div class="tower-panel-header">
-<h3 class="tower-panel-title" style="color: #ef4444;">
-<span>🚨</span> Report Delay Incident
-</h3>
-<span style="font-size: 0.78rem; color: #ef4444; font-weight: 700; background: rgba(239, 68, 68, 0.15); padding: 3px 10px; border-radius: 12px; border: 1px solid rgba(239, 68, 68, 0.3);">{active_shp.get('shipment_id')}</span>
+<div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+<div style="font-size: 1.05rem; font-weight: 700; color: #ef4444;">🚨 Report Delay Incident</div>
+<span style="font-size: 0.76rem; color: #ef4444; font-weight: 700; background: rgba(239, 68, 68, 0.15); padding: 2px 8px; border-radius: 10px; border: 1px solid rgba(239, 68, 68, 0.3);">{shipment_id_str}</span>
 </div>
 
-<div style="background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 10px; padding: 12px 14px; margin-bottom: 14px; font-size: 0.82rem;">
-<div style="color: #fca5a5; font-weight: 600; margin-bottom: 2px;">🛡️ Location Authorization Active</div>
-<div style="color: #94a3b8;">Reporter: <b style="color: #ffffff;">{user_name}</b> ({user_role})</div>
-<div style="color: #94a3b8;">Assigned Location: <b style="color: #38bdf8;">{user_location}</b></div>
+<div style="background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 8px; padding: 10px 12px; margin-bottom: 12px; font-size: 0.8rem;">
+<div style="color: #fca5a5; font-weight: 700; margin-bottom: 2px;">🛡️ REPORTER AUTHORIZATION VERIFIED</div>
+<div style="color: #cbd5e1;">Reporter: <b style="color: #ffffff;">{user_name}</b> ({user_role})</div>
 </div>
 
-<div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 10px; padding: 12px 14px; margin-bottom: 16px;">
-<div style="font-size: 0.72rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">INCIDENT LOCATION (AUTO-SET)</div>
-<div style="font-size: 0.98rem; font-weight: 700; color: #38bdf8; display: flex; align-items: center; justify-content: space-between;">
+<div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; padding: 10px 12px; margin-bottom: 14px;">
+<div style="font-size: 0.7rem; font-weight: 700; color: #64748b; text-transform: uppercase; margin-bottom: 2px;">INCIDENT LOCATION (AUTO-SET)</div>
+<div style="font-size: 0.92rem; font-weight: 700; color: #38bdf8; display: flex; align-items: center; justify-content: space-between;">
 <span>📍 {user_location}</span>
-<span style="font-size: 0.72rem; color: #94a3b8; font-weight: 500; background: rgba(255,255,255,0.06); padding: 2px 8px; border-radius: 10px;">Locked to Profile</span>
+<span style="font-size: 0.7rem; color: #94a3b8; background: rgba(255,255,255,0.06); padding: 1px 6px; border-radius: 6px;">Locked to Profile</span>
 </div>
 </div>
 """, unsafe_allow_html=True)
@@ -509,11 +526,11 @@ Reported: <b style="color: #ffffff;">{d_time}</b>
 
                     del_notes = st.text_input(
                         "Incident Description / Notes *",
-                        placeholder="Provide details regarding the delay bottleneck or incident...",
+                        placeholder="Provide details regarding the delay bottleneck...",
                         key="rep_delay_notes"
                     )
 
-                    st.markdown("<div style='height: 8px;'></div>", unsafe_allow_html=True)
+                    st.markdown("<div style='height: 4px;'></div>", unsafe_allow_html=True)
                     submit_delay = st.form_submit_button("🚨 Report Delay & Update Shipment", type="primary", use_container_width=True)
 
                     if submit_delay:

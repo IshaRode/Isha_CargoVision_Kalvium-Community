@@ -4,3 +4,4 @@ plotly
 numpy
 supabase
 python-dotenv
+google-genai

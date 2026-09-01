@@ -88,6 +88,8 @@ st.markdown("""
         border-radius: 14px !important;
         display: flex !important;
         flex-direction: column !important;
+        border: 1px solid rgba(255, 255, 255, 0.18) !important;
+        box-shadow: 0 0 0 1px rgba(255,255,255,0.06), 0 4px 20px rgba(0,0,0,0.4) !important;
     }
 
     .kpi-top-row {
@@ -642,9 +644,8 @@ Inbound freight volume is exceeding dock throughput capacity by <b>14%</b>.
                 sc_st = sc.get('scan_status', 'In Transit')
                 recent_events_rows.append(f"""
 <div class="event-row">
-<div class="event-icon-circle" style="color: #38bdf8; border: 1px solid rgba(14, 165, 233, 0.3);">⚡</div>
 <div style="flex: 1;">
-<div class="event-title-text">Shipment <b style="color: #38bdf8;">{sc_id}</b> scan recorded: {sc_st}</div>
+<div class="event-title-text">⚡ Shipment <b style="color: #38bdf8;">{sc_id}</b> scan recorded: {sc_st}</div>
 <div class="event-sub-text">Location: {sc_loc}. Verified in Supabase logs.</div>
 </div>
 <div class="event-time-badge">Just now</div>
@@ -653,9 +654,8 @@ Inbound freight volume is exceeding dock throughput capacity by <b>14%</b>.
 
         recent_events_rows.append("""
 <div class="event-row">
-<div class="event-icon-circle" style="color: #38bdf8; border: 1px solid rgba(14, 165, 233, 0.3);">📦</div>
 <div style="flex: 1;">
-<div class="event-title-text">Shipment <b style="color: #38bdf8;">SH-4821</b> scanned at Chennai Port</div>
+<div class="event-title-text">📦 Shipment <b style="color: #38bdf8;">SH-4821</b> scanned at Chennai Port</div>
 <div class="event-sub-text">Inbound container batch verified. Transferred to outbound ramp.</div>
 </div>
 <div class="event-time-badge">2m ago</div>
@@ -663,9 +663,8 @@ Inbound freight volume is exceeding dock throughput capacity by <b>14%</b>.
 """)
         recent_events_rows.append("""
 <div class="event-row">
-<div class="event-icon-circle" style="color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3);">⚠️</div>
 <div style="flex: 1;">
-<div class="event-title-text">Congestion detected on Route <b style="color: #fca5a5;">NH-48</b></div>
+<div class="event-title-text">⚠️ Congestion detected on Route <b style="color: #fca5a5;">NH-48</b></div>
 <div class="event-sub-text">Average transit speed dropped to 18 km/h near Lonavala.</div>
 </div>
 <div class="event-time-badge">8m ago</div>
@@ -673,9 +672,8 @@ Inbound freight volume is exceeding dock throughput capacity by <b>14%</b>.
 """)
         recent_events_rows.append("""
 <div class="event-row">
-<div class="event-icon-circle" style="color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3);">🏭</div>
 <div style="flex: 1;">
-<div class="event-title-text">Bangalore warehouse transfer completed</div>
+<div class="event-title-text">🏭 Bangalore warehouse transfer completed</div>
 <div class="event-sub-text">850 SKUs cleared outbound dispatch without anomalies.</div>
 </div>
 <div class="event-time-badge">15m ago</div>

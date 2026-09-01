@@ -3,6 +3,8 @@ import os
 import textwrap
 from components.top_navigation import get_top_nav_html
 from utils.auth import require_auth, get_auth_token
+from utils.db_service import get_shipment_by_id, get_shipment_ids, get_shipment_scans, get_delay_reports
+from utils.gemini_ai import build_shipment_context, get_ai_recommendation
 
 st.set_page_config(
     page_title="CargoVision | AI Predictions",
@@ -88,7 +90,9 @@ render_html("""
 </div>
 """)
 
-# Interactive AI Risk Scenario Simulator
+# ──────────────────────────────────────────────────────────────────────────────
+# EXISTING: Interactive AI Risk Scenario Simulator (unchanged)
+# ──────────────────────────────────────────────────────────────────────────────
 st.markdown("""
 <div class="tower-panel" style="margin-bottom: 24px; text-align: center; padding: 24px 20px;">
 <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; margin-bottom: 10px;">
@@ -119,7 +123,7 @@ with sim_col1:
     fleet_capacity = st.slider("🚚 Regional Fleet Load (%)", min_value=50, max_value=120, value=92, step=5)
 
 with sim_col2:
-    # Compute simulated risk score & values
+    # Compute simulated risk score & values (unchanged logic)
     weather_pct = int(weather_severity.split("(")[1].split("%")[0])
     risk_score = min(99, int((weather_pct * 0.4) + ((traffic_factor - 1) * 35) + ((fleet_capacity - 50) * 0.3)))
     predicted_delay = round(risk_score * 0.05, 1)
@@ -183,4 +187,216 @@ Reroute 35 inbound shipments via <b style="color: #ffffff;">Nashik Transit Hub</
 
     if st.button("⚡ Execute AI Mitigation Dispatch", key="btn_sim_dispatch", type="primary", use_container_width=True):
         st.toast(f"✅ Rerouting command dispatched for {risk_score}% risk scenario!", icon="🚚")
+
+
+# ──────────────────────────────────────────────────────────────────────────────
+# NEW: Smart AI Recommendation System (Gemini-powered)
+# ──────────────────────────────────────────────────────────────────────────────
+st.markdown("<div style='height: 12px;'></div>", unsafe_allow_html=True)
+
+st.markdown("""
+<div class="tower-panel" style="margin-bottom: 20px; text-align: center; padding: 24px 20px;">
+<div style="display: flex; flex-direction: column; align-items: center; gap: 8px; margin-bottom: 10px;">
+<span style="font-size: 0.72rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #a855f7; background: rgba(168, 85, 247, 0.12); border: 1px solid rgba(168, 85, 247, 0.3); padding: 4px 14px; border-radius: 20px;">GEMINI AI · LIVE</span>
+<h3 style="color: #ffffff; font-size: 1.4rem; font-weight: 800; margin: 4px 0 0 0; font-family: 'Outfit', sans-serif; display: flex; align-items: center; gap: 10px; justify-content: center;">
+✨ Smart AI Recommendation System
+</h3>
+</div>
+<p style="color: #94a3b8; font-size: 0.92rem; margin: 0 auto; max-width: 680px; line-height: 1.5;">
+Select a shipment and click <b style="color: #ffffff;">Generate Smart Recommendation</b> to let Gemini AI analyse
+its live operational data — checkpoint history, delay incidents, route risk — and deliver a targeted action.
+</p>
+</div>
+""", unsafe_allow_html=True)
+
+# Shipment selector + trigger button
+ai_col1, ai_col2 = st.columns([0.6, 0.4], gap="large")
+
+with ai_col1:
+    all_shipment_ids = get_shipment_ids()
+    selected_shipment_id = st.selectbox(
+        "Select Shipment for AI Analysis",
+        options=all_shipment_ids,
+        index=0 if all_shipment_ids else None,
+        key="ai_rec_shipment_select",
+        help="Choose the shipment you want Gemini to analyse."
+    )
+
+with ai_col2:
+    st.markdown("<div style='height: 28px;'></div>", unsafe_allow_html=True)
+    generate_clicked = st.button(
+        "✨ Generate Smart Recommendation",
+        key="btn_generate_ai_rec",
+        type="primary",
+        use_container_width=True
+    )
+
+# ── AI Result panel ──────────────────────────────────────────────────────────
+if generate_clicked:
+    if not selected_shipment_id:
+        st.warning("Please select a shipment first.")
+    else:
+        with st.spinner("🧠 Gemini is analysing the shipment data…"):
+            # 1. Fetch live data from Supabase
+            shipment  = get_shipment_by_id(selected_shipment_id)
+            scans     = get_shipment_scans(selected_shipment_id)
+            delays    = get_delay_reports(selected_shipment_id)
+
+            # 2. Build structured context (passes current simulated values)
+            context = build_shipment_context(
+                shipment=shipment,
+                scans=scans,
+                delays=delays,
+                risk_score=risk_score,
+                predicted_delay_hours=predicted_delay
+            )
+
+            # 3. Call Gemini
+            result, error = get_ai_recommendation(context)
+
+        if error:
+            st.markdown(f"""
+<div style="background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.3); border-left: 4px solid #ef4444;
+     border-radius: 10px; padding: 16px 20px; margin-top: 12px; display: flex; align-items: flex-start; gap: 12px;">
+<span style="font-size: 1.3rem;">⚠️</span>
+<div>
+<div style="font-size: 0.85rem; font-weight: 700; color: #fca5a5; margin-bottom: 4px;">AI Service Unavailable</div>
+<div style="font-size: 0.88rem; color: #cbd5e1; line-height: 1.5;">{error}</div>
+</div>
+</div>
+""", unsafe_allow_html=True)
+        else:
+            # Priority badge colours
+            priority_str = result.get("priority", "Moderate")
+            p_color = (
+                "#ef4444" if priority_str == "Critical" else
+                "#f59e0b" if priority_str == "High" else
+                "#38bdf8" if priority_str == "Moderate" else
+                "#22c55e"
+            )
+            p_bg    = (
+                "rgba(239, 68, 68, 0.12)"   if priority_str == "Critical" else
+                "rgba(245, 158, 11, 0.12)"  if priority_str == "High" else
+                "rgba(56, 189, 248, 0.12)"  if priority_str == "Moderate" else
+                "rgba(34, 197, 94, 0.12)"
+            )
+            p_border = (
+                "rgba(239, 68, 68, 0.35)"   if priority_str == "Critical" else
+                "rgba(245, 158, 11, 0.35)"  if priority_str == "High" else
+                "rgba(56, 189, 248, 0.35)"  if priority_str == "Moderate" else
+                "rgba(34, 197, 94, 0.35)"
+            )
+
+            factors = result.get("contributing_factors", [])
+            factors_html = "".join(
+                f'<div style="display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px;">'
+                f'<span style="color: #a855f7; font-weight: 700; flex-shrink: 0; margin-top: 1px;">▸</span>'
+                f'<span style="color: #cbd5e1; font-size: 0.9rem; line-height: 1.5;">{f}</span>'
+                f'</div>'
+                for f in factors
+            )
+
+            st.markdown(f"""
+<div style="background: linear-gradient(145deg, rgba(15, 23, 42, 0.96) 0%, rgba(30, 41, 59, 0.8) 100%);
+     border: 1px solid rgba(168, 85, 247, 0.25); border-radius: 18px; padding: 28px 30px; margin-top: 16px;
+     box-shadow: 0 8px 32px rgba(0,0,0,0.35);">
+
+<!-- Header -->
+<div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; flex-wrap: wrap; gap: 12px;">
+<div style="display: flex; align-items: center; gap: 10px;">
+<div style="width: 38px; height: 38px; border-radius: 10px; background: rgba(168, 85, 247, 0.15);
+     border: 1px solid rgba(168, 85, 247, 0.3); display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">✨</div>
+<div>
+<div style="font-size: 0.7rem; color: #a855f7; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px;">Smart AI Recommendation</div>
+<div style="font-size: 1.05rem; font-weight: 800; color: #ffffff; font-family: 'Outfit', sans-serif;">{selected_shipment_id}</div>
+</div>
+</div>
+<div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+<span style="background: {p_bg}; color: {p_color}; border: 1px solid {p_border};
+     padding: 5px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 800; letter-spacing: 0.8px;
+     display: inline-flex; align-items: center; gap: 6px;">
+<span style="width: 7px; height: 7px; border-radius: 50%; background: {p_color}; box-shadow: 0 0 6px {p_color}; display: inline-block;"></span>
+{priority_str.upper()} PRIORITY
+</span>
+<span style="background: rgba(168, 85, 247, 0.1); color: #a855f7; border: 1px solid rgba(168, 85, 247, 0.2);
+     padding: 5px 12px; border-radius: 20px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.5px;">
+Powered by Gemini AI
+</span>
+</div>
+</div>
+
+<!-- Divider -->
+<div style="height: 1px; background: rgba(255,255,255,0.06); margin-bottom: 24px;"></div>
+
+<!-- Risk Explanation -->
+<div style="margin-bottom: 20px;">
+<div style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px;
+     color: #64748b; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+<span style="width: 16px; height: 16px; border-radius: 4px; background: rgba(248, 113, 113, 0.15);
+     border: 1px solid rgba(248, 113, 113, 0.3); display: inline-flex; align-items: center; justify-content: center; font-size: 0.65rem;">🔍</span>
+Risk Explanation
+</div>
+<div style="background: rgba(239, 68, 68, 0.06); border: 1px solid rgba(239, 68, 68, 0.15); border-radius: 10px;
+     padding: 14px 16px; font-size: 0.92rem; color: #e2e8f0; line-height: 1.65;">
+{result.get("risk_explanation", "—")}
+</div>
+</div>
+
+<!-- Contributing Factors -->
+<div style="margin-bottom: 20px;">
+<div style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px;
+     color: #64748b; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+<span style="width: 16px; height: 16px; border-radius: 4px; background: rgba(168, 85, 247, 0.15);
+     border: 1px solid rgba(168, 85, 247, 0.3); display: inline-flex; align-items: center; justify-content: center; font-size: 0.65rem;">⚡</span>
+Key Contributing Factors
+</div>
+<div style="background: rgba(168, 85, 247, 0.04); border: 1px solid rgba(168, 85, 247, 0.12); border-radius: 10px;
+     padding: 14px 16px;">
+{factors_html}
+</div>
+</div>
+
+<!-- Recommended Action -->
+<div style="margin-bottom: 20px;">
+<div style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px;
+     color: #64748b; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+<span style="width: 16px; height: 16px; border-radius: 4px; background: rgba(14, 165, 233, 0.15);
+     border: 1px solid rgba(14, 165, 233, 0.3); display: inline-flex; align-items: center; justify-content: center; font-size: 0.65rem;">💡</span>
+Recommended Action
+</div>
+<div style="background: linear-gradient(135deg, rgba(14, 165, 233, 0.08) 0%, rgba(99, 102, 241, 0.05) 100%);
+     border: 1px solid rgba(14, 165, 233, 0.2); border-radius: 10px; padding: 16px 18px;
+     font-size: 0.95rem; color: #f8fafc; line-height: 1.65; font-weight: 500;">
+{result.get("recommended_action", "—")}
+</div>
+</div>
+
+<!-- Expected Benefit -->
+<div style="margin-bottom: 20px;">
+<div style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px;
+     color: #64748b; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+<span style="width: 16px; height: 16px; border-radius: 4px; background: rgba(34, 197, 94, 0.15);
+     border: 1px solid rgba(34, 197, 94, 0.3); display: inline-flex; align-items: center; justify-content: center; font-size: 0.65rem;">📈</span>
+Expected Benefit
+</div>
+<div style="background: rgba(34, 197, 94, 0.05); border: 1px solid rgba(34, 197, 94, 0.15); border-radius: 10px;
+     padding: 14px 16px; font-size: 0.9rem; color: #a7f3d0; line-height: 1.65;">
+{result.get("expected_benefit", "—")}
+</div>
+</div>
+
+<!-- Footer -->
+<div style="border-top: 1px solid rgba(255,255,255,0.06); padding-top: 14px; margin-top: 8px;
+     display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+<div style="font-size: 0.76rem; color: #475569; display: flex; align-items: center; gap: 6px;">
+<span>🔒</span> Analysis generated by Gemini 1.5 Flash · Based on live Supabase data · API key secured server-side
+</div>
+<div style="font-size: 0.76rem; color: #475569;">
+Risk score: {risk_score}/100 · Predicted delay: +{predicted_delay}h
+</div>
+</div>
+
+</div>
+""", unsafe_allow_html=True)
+
 
